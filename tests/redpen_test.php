@@ -5,8 +5,8 @@ require_once '../redpen.php';
 class RedPenTest extends PHPUnit_Framework_TestCase {
 
     public function testRedButton() {
-        $this->expectOutputRegex('/<button class="redpen/');
-        hello_post();
+        $this->expectOutputRegex('/<button class="redpen button"/');
+        add_redpen_button();
     }
 
 }

@@ -11,11 +11,11 @@ Author: Anton Keks & Takahiko Ito
 Version: 0.1
 */
 
-function hello_post() {
+function add_redpen_button() {
 	echo '<button class="redpen button" onclick="alert(\'Not implemented yet\')">Validate with RedPen</button>';
 }
 
-function some_css() {
+function redpen_css() {
 	echo "
 	<style type='text/css'>
 	button.redpen {
@@ -26,6 +26,6 @@ function some_css() {
 	";
 }
 
-add_action('edit_form_advanced', 'hello_post');
-add_action('admin_head', 'some_css');
+add_action('edit_form_advanced', 'add_redpen_button');
+add_action('admin_head', 'redpen_css');
 ?>
