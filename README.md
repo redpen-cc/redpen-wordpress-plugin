@@ -2,5 +2,5 @@
 
 ## Installation
 
-* To install the plugin, copy the *redpen.php* to the *wordpress/wp-content/plugins* directory.
+* To install the plugin, either link or copy this directory to *wordpress/wp-content/plugins*.
 * Then activate the plugin in the Admin console -> Plugins -> Installed plugins.
