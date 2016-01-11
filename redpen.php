@@ -16,14 +16,14 @@ function add_redpen_button() {
 }
 
 function redpen_css() {
-	echo "
-	<style type='text/css'>
+	echo '
+	<style type="text/css"">
 	button.redpen {
 		background: red !important;
 		color: white !important;
 	}
 	</style>
-	";
+	';
 }
 
 add_action('edit_form_advanced', 'add_redpen_button');
