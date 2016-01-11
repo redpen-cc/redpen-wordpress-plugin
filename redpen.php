@@ -15,7 +15,8 @@ function add_redpen_button() {
 	echo '<button class="redpen button" onclick="alert(\'Not implemented yet\')">Validate with RedPen</button>';
 }
 
-function redpen_css() {
+function redpen_head() {
+    echo '<script src="'.plugins_url('js/plugin.js', __FILE__).'"></script>';
 	echo '
 	<style type="text/css"">
 	button.redpen {
@@ -27,5 +28,5 @@ function redpen_css() {
 }
 
 add_action('edit_form_advanced', 'add_redpen_button');
-add_action('admin_head', 'redpen_css');
+add_action('admin_head', 'redpen_head');
 ?>

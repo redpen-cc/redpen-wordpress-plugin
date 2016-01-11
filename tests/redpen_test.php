@@ -11,9 +11,9 @@ class RedPenTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('add_redpen_button', $registered_actions['edit_form_advanced']);
     }
 
-    public function testCSSHookIsRegistered() {
+    public function testHeadHookIsRegistered() {
         global $registered_actions;
-        $this->assertEquals('redpen_css', $registered_actions['admin_head']);
+        $this->assertEquals('redpen_head', $registered_actions['admin_head']);
     }
 
     public function testRedButton() {
