@@ -12,10 +12,8 @@ Version: 0.1
 */
 
 function hello_post() {
-	echo "<button class='redpen button' onclick=\"alert('Not implemented yet')\">Validate with RedPen</button>";
+	echo '<button class="redpen button" onclick="alert(\'Not implemented yet\')">Validate with RedPen</button>';
 }
-
-add_action( 'edit_form_advanced', 'hello_post' );
 
 function some_css() {
 	echo "
@@ -28,5 +26,6 @@ function some_css() {
 	";
 }
 
-add_action( 'admin_head', 'some_css' );
+add_action('edit_form_advanced', 'hello_post');
+add_action('admin_head', 'some_css');
 ?>
