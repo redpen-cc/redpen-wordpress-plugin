@@ -1,13 +1,13 @@
 <?php
 /**
- * @package RedPen_Wordpress_Plugin
+ * @package RedPen
  * @version 0.1
  */
 /*
-Plugin Name: RedPen Wordpress Plugin
+Plugin Name: RedPen Text Validator
 Plugin URI: http://redpen.cc
-Description: The plugin for validating the texts with RedPen.
-Author: Anton & Takahiko
+Description: Validates posts with RedPen while editing.
+Author: Anton Keks & Takahiko Ito
 Version: 0.1
 */
 
