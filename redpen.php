@@ -11,10 +11,10 @@ Author: Anton Keks & Takahiko Ito
 Version: 0.1
 */
 
-$redpen_base_url = plugins_url('proxy.php', __FILE__) . '?mode=native&url=http://localhost:8080/';
+$redpen_base_url = plugins_url('proxy.php', __FILE__) . '/http://localhost:8080/';
 
 function add_redpen_button() {
-	echo '<button class="redpen button" onclick="alert(\'Not implemented yet\')">Validate with RedPen</button>';
+	echo '<button class="redpen button" type="button" onclick="redpenPlugin.validate($(\'#content\').val())">Validate with RedPen</button>';
 }
 
 function redpen_head() {
