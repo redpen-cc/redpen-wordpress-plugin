@@ -4,4 +4,4 @@ php:
   - 5.6
 
 script:
-  phpunit tests
+  phpunit tests-php

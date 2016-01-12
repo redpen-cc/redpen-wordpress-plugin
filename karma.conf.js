@@ -15,7 +15,7 @@ module.exports = function(config) {
       'https://code.jquery.com/jquery-2.2.0.min.js',
       'http://localhost:8080/js/redpen.js',
       'js/*.js',
-      'tests/*.js'
+      'tests-js/*.js'
     ],
 
 
