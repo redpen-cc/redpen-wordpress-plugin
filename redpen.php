@@ -23,8 +23,8 @@ function add_redpen_button() {
 function redpen_head() {
 	global $redpen_base_url;
     echo '<script src="' . $redpen_base_url . 'js/redpen.js"></script>';
-	echo '<script>$ = jQuery; redpen.setBaseUrl("' . $redpen_base_url . '")</script>';
-    echo '<script src="' . plugins_url('js/plugin.js', __FILE__) . '"></script>';
+	echo '<script src="' . plugins_url('js/plugin.js', __FILE__) . '"></script>';
+	echo '<script>redpenPlugin = new RedPenPlugin("' . $redpen_base_url . '")</script>';
 	echo '
 	<style type="text/css"">
 	button.redpen {
