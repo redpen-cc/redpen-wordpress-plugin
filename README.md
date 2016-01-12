@@ -11,3 +11,10 @@ Please refer to [RedPen Server documentation](http://redpen.cc/docs/latest/index
 
 * To install the plugin, either link or copy this directory to *wordpress/wp-content/plugins*.
 * Then activate the plugin in the Admin console -> Plugins -> Installed plugins.
+
+## Dependencies
+
+* Obviously, you will need PHP
+* php-curl is required, you can install it on Ubuntu with
+  
+    ```sudo apt-get install php5-curl``` 

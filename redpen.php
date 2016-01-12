@@ -11,12 +11,17 @@ Author: Anton Keks & Takahiko Ito
 Version: 0.1
 */
 
+$redpen_base_url = plugins_url('proxy.php', __FILE__) . '?mode=native&url=http://localhost:8080/';
+
 function add_redpen_button() {
 	echo '<button class="redpen button" onclick="alert(\'Not implemented yet\')">Validate with RedPen</button>';
 }
 
 function redpen_head() {
-    echo '<script src="'.plugins_url('js/plugin.js', __FILE__).'"></script>';
+	global $redpen_base_url;
+    echo '<script src="' . $redpen_base_url . 'js/redpen.js"></script>';
+	echo '<script>$ = jQuery; redpen.setBaseUrl("' . $redpen_base_url . '")</script>';
+    echo '<script src="' . plugins_url('js/plugin.js', __FILE__) . '"></script>';
 	echo '
 	<style type="text/css"">
 	button.redpen {
