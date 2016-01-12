@@ -2,7 +2,7 @@ module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
+    basePath: '../',
 
 
     // frameworks to use
@@ -15,7 +15,7 @@ module.exports = function(config) {
       'https://code.jquery.com/jquery-2.2.0.min.js',
       'http://localhost:8080/js/redpen.js',
       'js/*.js',
-      'tests-js/*.js'
+      'tests-js/*_test.js'
     ],
 
 
