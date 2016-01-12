@@ -1,0 +1,13 @@
+{
+  "name": "redpen-wordpress-plugin",
+  "scripts": {
+    "test": "karma start"
+  },
+  "devDependencies": {
+    "jasmine-core": "^2.2.0",
+    "karma": "^0.13.19",
+    "karma-chrome-launcher": "^0.1.7",
+    "karma-phantomjs2-launcher": "~0.1",
+    "karma-jasmine": "^0.3.5"
+  }
+}
