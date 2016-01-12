@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/redpen-cc/redpen-wordpress-plugin.svg?branch=master)](https://travis-ci.org/redpen-cc/redpen-wordpress-plugin)
+
 # A plugin that integrates RedPen validation into Wordpress (in development)
 
 ## Prerequisites
