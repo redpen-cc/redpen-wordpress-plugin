@@ -14,7 +14,10 @@ Version: 0.1
 $redpen_base_url = plugins_url('proxy.php', __FILE__) . '/http://localhost:8080/';
 
 function add_redpen_button() {
-	echo '<button class="redpen button" type="button" onclick="redpenPlugin.validate($(\'#content\').val())">Validate with RedPen</button>';
+	echo '
+		<ul id="redpen-errors"></ul>
+		<button class="redpen button" type="button" onclick="redpenPlugin.validate($(\'#content\').val())">Validate with RedPen</button>
+	';
 }
 
 function redpen_head() {
