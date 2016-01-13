@@ -10,7 +10,7 @@ function RedPenPlugin(baseUrl) {
   pub.validate = function(textarea) {
     var container = $('.redpen-error-list').empty();
 
-    var args = {config:pub.config, document:$(textarea).val(), documenParser:'PLAIN', format:'json2'};
+    var args = {config:pub.config, document:getDocumentText(textarea), documenParser:'PLAIN', format:'json2'};
 
     redpen.validateJSON(args, function(result) {
       $.each(result.errors, function(i, error) {
@@ -29,6 +29,33 @@ function RedPenPlugin(baseUrl) {
     });
   };
 
+  function isPlainText(textarea) {
+    return textarea.is(':visible');
+  }
+
+  function findTextNodes(node) {
+    var textNodes = [];
+    function recurse(i, node) {
+      if (node.nodeType == node.TEXT_NODE)
+        textNodes.push(node);
+      $.each(node.childNodes, recurse);
+    }
+    recurse(0, node);
+    return textNodes;
+  }
+
+  function breakTagsIntoLines(node) {
+    var textNodes = findTextNodes(node);
+    return textNodes.map(function(node) {return node.textContent}).join('\n');
+  }
+
+  function getDocumentText(textarea) {
+    if (isPlainText(textarea))
+      return textarea.val();
+    else
+      return breakTagsIntoLines(tinyMCE.activeEditor.getBody());
+  }
+
   function calculateGlobalOffset(textarea, position) {
     var lines = textarea.val().split('\n');
     var offset = position.offset;
@@ -39,20 +66,20 @@ function RedPenPlugin(baseUrl) {
   pub.showErrorInText = function(li, textarea) {
     var error = $(li).data('error');
 
-    var start = calculateGlobalOffset(textarea, error.position.start);
-    var end = calculateGlobalOffset(textarea, error.position.end);
-
-    var ed = tinyMCE.activeEditor;
-    if (ed) {
+    if (isPlainText(textarea)) {
+      var start = calculateGlobalOffset(textarea, error.position.start);
+      var end = calculateGlobalOffset(textarea, error.position.end);
+      textarea[0].setSelectionRange(start, end);
+    }
+    else {
+      var ed = tinyMCE.activeEditor;
       var selection = ed.selection.getSel();
       var range = ed.selection.getRng();
-      var node = ed.dom.select('p')[0].childNodes[0];
-      range.setStart(node, start);
-      range.setEnd(node, end);
+      var textNodes = findTextNodes(ed.getBody());
+      range.setStart(textNodes[error.position.start.line-1], error.position.start.offset);
+      range.setEnd(textNodes[error.position.end.line-1], error.position.end.offset);
       selection.removeAllRanges();
       selection.addRange(range);
     }
-
-    textarea[0].setSelectionRange(start, end);
   };
 }
