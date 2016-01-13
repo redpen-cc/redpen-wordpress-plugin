@@ -9,6 +9,10 @@ describe('RedpenPlugin', function() {
     }
   };
 
+  function mockTextArea(text) {
+    return $('<textarea></textarea>').val(text).appendTo('body');
+  }
+
   beforeEach(function() {
     redpen = {
       setBaseUrl: function(url) {},
@@ -54,20 +58,20 @@ describe('RedpenPlugin', function() {
       };
     }
 
-    function mockTextArea(text) {
-      return $('<textarea></textarea>').val(text);
-    }
-
     beforeEach(function() {
       container = $('<ol class="redpen-error-list"></ol>').appendTo('body');
     });
 
     it('WordPress has global jQuery, but not $, so define it locally', function() {
       var textarea = mockTextArea('Hello World!');
-      delete window.$;
-      mockValidateJSON({errors: []});
-      redpenPlugin.validate(textarea);
-      window.$ = jQuery;
+      try {
+        delete window.$;
+        mockValidateJSON({errors: []});
+        redpenPlugin.validate(textarea);
+      }
+      finally {
+        window.$ = jQuery;
+      }
     });
 
     it('displays nothing if no errors', function() {
@@ -108,5 +112,25 @@ describe('RedpenPlugin', function() {
       expect(textarea[0].setSelectionRange).toHaveBeenCalledWith(9, 11);
     });
 
+  });
+
+  describe('getDocumentText', function() {
+    it('for plain text', function() {
+      var textarea = mockTextArea('Hello World!');
+      expect(redpenPlugin.getDocumentText(textarea)).toBe('Hello World!')
+    });
+
+    it('for visual editor (tinyMCE)', function() {
+      var editorContent = '<div><p>Hello <strong>WordPress</strong></p><p>and the World!</p></div>';
+
+      tinyMCE = {
+        activeEditor: {
+          getBody: function() {return $(editorContent)[0]}
+        }
+      };
+
+      var textarea = mockTextArea().hide();
+      expect(redpenPlugin.getDocumentText(textarea)).toBe('Hello \nWordPress\nand the World!')
+    });
   });
 });
