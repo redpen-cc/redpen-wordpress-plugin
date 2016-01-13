@@ -7,17 +7,6 @@ miniProxy is licensed under the GNU GPL v3 <http://www.gnu.org/licenses/gpl.html
 
 /****************************** START CONFIGURATION ******************************/
 
-//To allow proxying any URL, set $whitelistPatterns to an empty array (the default).
-//To only allow proxying of specific URLs (whitelist), add corresponding regular expressions
-//to the $whitelistPatterns array. Enter the most specific patterns possible, to prevent possible abuse.
-//You can optionally use the "getHostnamePattern()" helper function to build a regular expression that
-//matches all URLs for a given hostname.
-$whitelistPatterns = array(
-    //Usage example: To support any URL at example.net, including sub-domains, uncomment the
-    //line below (which is equivalent to [ @^https?://([a-z0-9-]+\.)*example\.net@i ]):
-    //getHostnamePattern("example.net")
-);
-
 $urlPrefix = 'http://localhost:8080/';
 
 //To enable CORS (cross-origin resource sharing) for proxied sites, set $forceCORS to true.
@@ -28,13 +17,6 @@ $forceCORS = false;
 ob_start("ob_gzhandler");
 
 if (!function_exists("curl_init")) die ("This proxy requires PHP's cURL extension. Please install/enable it on your server and try again.");
-
-//Helper function for use inside $whitelistPatterns.
-//Returns a regex that matches all HTTP[S] URLs for a given hostname.
-function getHostnamePattern($hostname) {
-    $escapedHostname = str_replace(".", "\.", $hostname);
-    return "@^https?://([a-z0-9-]+\.)*" . $escapedHostname . "@i";
-}
 
 //Helper function used to removes/unset keys from an associative array using case insensitive matching
 function removeKeys(&$assoc, $keys2remove) {
@@ -200,18 +182,6 @@ if (empty($scheme)) {
     }
 } else if (!preg_match("/^https?$/i", $scheme)) {
     die('Error: Detected a "' . $scheme . '" URL. miniProxy exclusively supports http[s] URLs.');
-}
-
-//Validate the requested URL against the whitelist.
-$urlIsValid = count($whitelistPatterns) === 0;
-foreach ($whitelistPatterns as $pattern) {
-    if (preg_match($pattern, $url)) {
-        $urlIsValid = true;
-        break;
-    }
-}
-if (!$urlIsValid) {
-    die("Error: The requested URL was disallowed by the server administrator.");
 }
 
 $response = makeRequest($url);
