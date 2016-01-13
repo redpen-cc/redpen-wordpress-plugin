@@ -42,6 +42,17 @@ function RedPenPlugin(baseUrl) {
     var start = calculateGlobalOffset(textarea, error.position.start);
     var end = calculateGlobalOffset(textarea, error.position.end);
 
+    var ed = tinyMCE.activeEditor;
+    if (ed) {
+      var selection = ed.selection.getSel();
+      var range = ed.selection.getRng();
+      var node = ed.dom.select('p')[0].childNodes[0];
+      range.setStart(node, start);
+      range.setEnd(node, end);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+
     textarea[0].setSelectionRange(start, end);
   };
 }
