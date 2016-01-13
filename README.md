@@ -15,6 +15,18 @@ Please refer to [RedPen Server documentation](http://redpen.cc/docs/latest/index
 ## Dependencies
 
 * Obviously, you will need PHP
-* php-curl is required, you can install it on Ubuntu with
+* php-curl is required for proxy.php, you can install it on Ubuntu with
   
     ```sudo apt-get install php5-curl``` 
+
+### Running the tests
+
+* PHP unit tests are run using **[phpunit](https://phpunit.de/manual/current/en/installation.html)**, it can also be installed with *apt-get*
+
+    ```phpunit tests-php```
+    
+* JavaScript unit tests are run using Karma.
+ 
+    ```npm install && npm test``` will run Karma using PhantomJS
+
+See .travis.yml for an example how tests are run on a Continuous Integration server.
