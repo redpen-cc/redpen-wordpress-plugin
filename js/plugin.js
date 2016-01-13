@@ -29,16 +29,18 @@ function RedPenPlugin(baseUrl) {
     });
   };
 
+  function calculateGlobalOffset(textarea, position) {
+    var lines = textarea.val().split('\n');
+    var offset = position.offset;
+    for (var i = 0; i < position.line - 1; i++) offset += lines[i].length + 1;
+    return offset;
+  }
+
   pub.showErrorInText = function(li, textarea) {
     var error = $(li).data('error');
-    var lines = textarea.val().split('\n');
 
-    var start = error.position.start.offset;
-    console.log(error.position.start.line);
-    for (var i = 0; i < error.position.start.line-1; i++) start += lines[i].length + 1;
-
-    var end = error.position.end.offset;
-    for (var i = 0; i < error.position.end.line-1; i++) end += lines[i].length + 1;
+    var start = calculateGlobalOffset(textarea, error.position.start);
+    var end = calculateGlobalOffset(textarea, error.position.end);
 
     textarea[0].setSelectionRange(start, end);
   };
