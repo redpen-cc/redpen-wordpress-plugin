@@ -1,11 +1,9 @@
 describe('RedpenPlugin', function() {
 
   var redpenPlugin;
-  var redPensResponse = {
+  var mockedRedPensResponse = {
     redpens: {
-      'default': {},
-      'en': {},
-      'jp': {}
+      'default': {}
     }
   };
 
@@ -17,7 +15,7 @@ describe('RedpenPlugin', function() {
     redpen = {
       setBaseUrl: function(url) {},
       getRedPens: function(callback) {
-        callback(redPensResponse);
+        callback(mockedRedPensResponse);
       }
     };
 
@@ -32,7 +30,7 @@ describe('RedpenPlugin', function() {
     });
 
     it('loads default configuration', function() {
-      expect(redpenPlugin.config).toBe(redPensResponse.redpens.default);
+      expect(redpenPlugin.config).toBe(mockedRedPensResponse.redpens.default);
     });
 
   });
@@ -40,7 +38,7 @@ describe('RedpenPlugin', function() {
   describe('validation', function() {
     var container;
 
-    var mockErrorResponse = {
+    var mockedValidateResponse = {
       errors: [{
         errors: [
           {validator: 'Spelling', message:'Hello is spelled incorrectly', sentence:'Hello World'},
@@ -51,7 +49,7 @@ describe('RedpenPlugin', function() {
 
     function mockValidateJSON(validationResult, expectedDocument) {
       redpen.validateJSON = function (args, callback) {
-        expect(args.config).toBe(redPensResponse.redpens.default);
+        expect(args.config).toBe(mockedRedPensResponse.redpens.default);
         expect(args.format).toBe('json2');
         if (expectedDocument) expect(args.document).toBe(expectedDocument);
         callback(validationResult);
@@ -81,7 +79,7 @@ describe('RedpenPlugin', function() {
     });
 
     it('displays all errors', function() {
-      mockValidateJSON(mockErrorResponse);
+      mockValidateJSON(mockedValidateResponse);
 
       redpenPlugin.validate(mockTextArea('Hello World!'));
 
@@ -97,10 +95,10 @@ describe('RedpenPlugin', function() {
     });
 
     it('selects erroneous text when clicking on error message', function() {
-      mockErrorResponse.errors[0].errors[0].position = {
+      mockedValidateResponse.errors[0].errors[0].position = {
         start: {offset: 3, line: 2}, end: {offset: 5, line: 2}
       };
-      mockValidateJSON(mockErrorResponse);
+      mockValidateJSON(mockedValidateResponse);
 
       var textarea = mockTextArea('Hello\nWorld!');
       spyOn(textarea[0], 'setSelectionRange');
