@@ -7,16 +7,30 @@ function RedPenPlugin(baseUrl) {
     pub.config = result.redpens.default;
   });
 
-  pub.validate = function(text) {
+  pub.validate = function(textarea) {
     var container = $('.redpen-error-list').empty();
-    redpen.validateJSON({config:pub.config, document:text, documenParser:'PLAIN', format:'json2'}, function(result) {
+
+    var args = {config:pub.config, document:$(textarea).val(), documenParser:'PLAIN', format:'json2'};
+
+    redpen.validateJSON(args, function(result) {
       $.each(result.errors, function(i, error) {
-        var validators = [];
+
         $.each(error.errors, function(j, suberror) {
-          var message = $('<li class="redpen-error-message"></li>').text(suberror.message).appendTo(container);
-          $('<div class="redpen-error-validator"></div>').text(suberror.validator + ' ' + JSON.stringify(suberror.position)).appendTo(message);
+          var message = $('<li class="redpen-error-message"></li>').text(suberror.message)
+            .appendTo(container)
+            .data('error', suberror)
+            .on('click', function() {pub.showErrorInText(this);});
+
+          $('<div class="redpen-error-validator"></div>')
+            .text(suberror.validator + ' ' + JSON.stringify(suberror.position))
+            .appendTo(message);
         });
       });
     });
+  };
+
+  pub.showErrorInText = function(li) {
+    var error = $(li).data('error');
+    alert(error.position.start.offset);
   };
 }

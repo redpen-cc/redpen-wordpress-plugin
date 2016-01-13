@@ -45,20 +45,25 @@ describe('RedpenPlugin', function() {
       };
     }
 
+    function mockTextArea(text) {
+      return $('<textarea></textarea>').val(text);
+    }
+
     beforeEach(function() {
       container = $('<ol class="redpen-error-list"></ol>').appendTo('body');
     });
 
     it('WordPress has global jQuery, but not $, so define it locally', function() {
+      var textarea = mockTextArea('Hello World!');
       delete window.$;
       mockValidateJSON({errors: []});
-      redpenPlugin.validate('Hello World!');
+      redpenPlugin.validate(textarea);
       window.$ = jQuery;
     });
 
     it('displays nothing if no errors', function() {
       mockValidateJSON({errors: []});
-      redpenPlugin.validate('Hello World!');
+      redpenPlugin.validate(mockTextArea('Hello World!'));
       expect(container.find('li').length).toBe(0);
     });
 
@@ -72,7 +77,7 @@ describe('RedpenPlugin', function() {
         }]
       });
 
-      redpenPlugin.validate('Hello World!');
+      redpenPlugin.validate(mockTextArea('Hello World!'));
 
       var items = container.find('li');
       expect(items.length).toBe(2);

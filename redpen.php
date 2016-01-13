@@ -16,7 +16,7 @@ $redpen_base_url = plugins_url('proxy.php', __FILE__) . '/http://localhost:8080/
 function add_redpen_button() {
 	echo '
 		<ol class="redpen-error-list"></ol>
-		<button class="redpen button" type="button" onclick="redpenPlugin.validate(jQuery(\'#content\').val())">Validate with RedPen</button>
+		<button class="redpen button" type="button" onclick="redpenPlugin.validate(jQuery(\'#content\'))">Validate with RedPen</button>
 	';
 }
 
@@ -27,10 +27,13 @@ function redpen_head() {
 	echo '<script>var redpenPlugin = new RedPenPlugin("' . $redpen_base_url . '")</script>';
 	echo '
 	<style type="text/css"">
-	button.redpen {
-		background: red !important;
-		color: white !important;
-	}
+		button.redpen {
+			background: red !important;
+			color: white !important;
+		}
+		.redpen-error-list li {
+			cursor: help;
+		}
 	</style>
 	';
 }
