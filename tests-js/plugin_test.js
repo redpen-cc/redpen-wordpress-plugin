@@ -115,7 +115,7 @@ describe('RedpenPlugin', function() {
   describe('getDocumentText', function() {
     it('for plain text', function() {
       var textarea = mockTextArea('Hello World!');
-      expect(redpenPlugin.getDocumentText(textarea)).toBe('Hello World!')
+      expect(redpenPlugin._getDocumentText(textarea)).toBe('Hello World!')
     });
 
     it('for visual editor (tinyMCE)', function() {
@@ -128,7 +128,7 @@ describe('RedpenPlugin', function() {
       };
 
       var textarea = mockTextArea().hide();
-      expect(redpenPlugin.getDocumentText(textarea)).toBe('Hello \nWordPress\nand the World!')
+      expect(redpenPlugin._getDocumentText(textarea)).toBe('Hello \nWordPress\nand the World!')
     });
   });
 });

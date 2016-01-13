@@ -10,7 +10,7 @@ function RedPenPlugin(baseUrl) {
   pub.validate = function(textarea) {
     var container = $('.redpen-error-list').empty();
 
-    var args = {config:pub.config, document:pub.getDocumentText(textarea), documenParser:'PLAIN', format:'json2'};
+    var args = {config:pub.config, document:getDocumentText(textarea), documenParser:'PLAIN', format:'json2'};
 
     redpen.validateJSON(args, function(result) {
       $.each(result.errors, function(i, error) {
@@ -49,12 +49,13 @@ function RedPenPlugin(baseUrl) {
     return textNodes.map(function(node) {return node.textContent}).join('\n');
   }
 
-  pub.getDocumentText = function(textarea) {
+  pub._getDocumentText = getDocumentText;
+  function getDocumentText(textarea) {
     if (isPlainText(textarea))
       return textarea.val();
     else
       return breakTagsIntoLines(tinyMCE.activeEditor.getBody());
-  };
+  }
 
   function calculateGlobalOffset(textarea, position) {
     var lines = textarea.val().split('\n');
