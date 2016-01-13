@@ -81,6 +81,7 @@ function RedPenPlugin(baseUrl) {
       range.setEnd(textNodes[error.position.end.line-1], error.position.end.offset);
       selection.removeAllRanges();
       selection.addRange(range);
+      ed.getBody().focus();
     }
   };
 }
