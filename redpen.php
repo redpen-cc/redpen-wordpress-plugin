@@ -1,8 +1,4 @@
 <?php
-/**
- * @package RedPen
- * @version 0.1
- */
 /*
 Plugin Name: RedPen Text Validator
 Plugin URI: http://redpen.cc
