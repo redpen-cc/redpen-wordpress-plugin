@@ -140,8 +140,9 @@ describe('RedpenPlugin', function() {
       redpenPlugin.validate(textarea);
 
       var editorContent = '<div><p>Hello <strong>WordPress</strong></p><p>and the World!</p></div>';
-      var selection = window.getSelection();
-      var range = document.createRange();
+      var selection = jasmine.createSpyObj('selection', ['removeAllRanges', 'addRange']);
+      var range = jasmine.createSpyObj('range', ['setStart', 'setEnd']);
+
       tinyMCE = {
         activeEditor: {
           getBody: function() {return $(editorContent)[0]},
@@ -151,12 +152,6 @@ describe('RedpenPlugin', function() {
           }
         }
       };
-
-      spyOn(selection, 'removeAllRanges');
-      spyOn(selection, 'addRange');
-
-      spyOn(range, 'setStart');
-      spyOn(range, 'setEnd');
 
       container.find('.redpen-error-message').eq(0).click();
 
