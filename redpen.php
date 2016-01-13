@@ -11,7 +11,7 @@ Author: Anton Keks & Takahiko Ito
 Version: 0.1
 */
 
-$redpen_base_url = plugins_url('proxy.php', __FILE__) . '/http://localhost:8080/';
+$redpen_base_url = plugins_url('proxy.php', __FILE__) . '/';
 
 function add_redpen_button() {
 	echo '

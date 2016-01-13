@@ -18,6 +18,8 @@ $whitelistPatterns = array(
     //getHostnamePattern("example.net")
 );
 
+$urlPrefix = 'http://localhost:8080/';
+
 //To enable CORS (cross-origin resource sharing) for proxied sites, set $forceCORS to true.
 $forceCORS = false;
 
@@ -189,6 +191,7 @@ if (empty($url)) {
     $pos = strpos($url, ":/");
     $url = substr_replace($url, "://", $pos, strlen(":/"));
 }
+$url = $urlPrefix . $url;
 $scheme = parse_url($url, PHP_URL_SCHEME);
 if (empty($scheme)) {
     //Assume that any supplied URLs starting with // are HTTP URLs.
