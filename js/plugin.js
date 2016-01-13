@@ -22,7 +22,7 @@ function RedPenPlugin(baseUrl) {
             .on('click', function() {pub.showErrorInText(this, textarea);});
 
           $('<div class="redpen-error-validator"></div>')
-            .text(suberror.validator + ' ' + JSON.stringify(suberror.position))
+            .text(suberror.validator)
             .appendTo(message);
         });
       });
