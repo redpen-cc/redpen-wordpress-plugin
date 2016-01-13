@@ -11,7 +11,7 @@ $redpen_base_url = plugins_url('proxy.php', __FILE__) . '/';
 
 function add_redpen_button() {
 	echo '
-		<ol class="redpen-error-list"></ol>
+		<div class="redpen-title"></div><ol class="redpen-error-list"></ol>
 		<button class="redpen button" type="button" onclick="redpenPlugin.validate(jQuery(\'#content\'))">Validate with RedPen</button>
 	';
 }

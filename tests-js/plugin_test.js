@@ -56,7 +56,7 @@ describe('RedpenPlugin', function() {
   });
 
   describe('validation', function() {
-    var container;
+    var container, title;
 
     var mockedValidateResponse = {
       errors: [{
@@ -77,7 +77,9 @@ describe('RedpenPlugin', function() {
     }
 
     beforeEach(function () {
+      $('body').empty();
       container = $('<ol class="redpen-error-list"></ol>').appendTo('body');
+      title = $('<div class="redpen-title"></div>').appendTo('body');
     });
 
     it('WordPress has global jQuery, but not $, so define it locally', function () {
@@ -96,6 +98,7 @@ describe('RedpenPlugin', function() {
       mockValidateJSON({errors: []});
       redpenPlugin.validate(mockTextArea('Hello World!', 'Hello World!'));
       expect(container.find('li').length).toBe(0);
+      expect(title.text()).toBe('RedPen found 0 errors');
     });
 
     it('displays all errors', function () {
@@ -112,6 +115,8 @@ describe('RedpenPlugin', function() {
 
       expect(items.eq(1).text()).toMatch(/You cannot use !/);
       expect(items.eq(1).text()).toMatch(/WrongSymbol/);
+
+      expect(title.text()).toBe('RedPen found 2 errors');
     });
 
     it('highlights plain text when clicking on error message', function() {

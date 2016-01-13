@@ -9,6 +9,7 @@ function RedPenPlugin(baseUrl) {
 
   pub.validate = function(textarea) {
     var container = $('.redpen-error-list').empty();
+    var title = $('.redpen-title');
 
     var args = {config:pub.config, document:getDocumentText(textarea), documenParser:'PLAIN', format:'json2'};
 
@@ -26,6 +27,8 @@ function RedPenPlugin(baseUrl) {
             .appendTo(message);
         });
       });
+
+      title.html('<span class="redpen-red">Red</span>Pen found ' + container.children().length + ' errors');
     });
   };
 

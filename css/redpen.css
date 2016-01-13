@@ -3,6 +3,10 @@ button.redpen {
   color: white !important;
 }
 
+.redpen-red {
+  color: #a70c00;
+}
+
 .redpen-error-list li {
   cursor: help;
 }
@@ -19,3 +23,4 @@ button.redpen {
   color: #aaa;
   vertical-align: middle;
 }
+
