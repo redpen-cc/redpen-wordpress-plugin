@@ -49,6 +49,13 @@ describe('RedpenPlugin', function() {
       container = $('<ol class="redpen-error-list"></ol>').appendTo('body');
     });
 
+    it('WordPress has global jQuery, but not $, so define it locally', function() {
+      delete window.$;
+      mockValidateJSON({errors: []});
+      redpenPlugin.validate('Hello World!');
+      window.$ = jQuery;
+    });
+
     it('displays nothing if no errors', function() {
       mockValidateJSON({errors: []});
       redpenPlugin.validate('Hello World!');

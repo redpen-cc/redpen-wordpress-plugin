@@ -1,5 +1,6 @@
 function RedPenPlugin(baseUrl) {
   var pub = this;
+  var $ = jQuery;
 
   redpen.setBaseUrl(baseUrl);
   redpen.getRedPens(function(result) {
