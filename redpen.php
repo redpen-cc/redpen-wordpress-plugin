@@ -21,17 +21,7 @@ function redpen_head() {
     echo '<script src="' . $redpen_base_url . 'js/redpen.js"></script>';
 	echo '<script src="' . plugins_url('js/plugin.js', __FILE__) . '"></script>';
 	echo '<script>var redpenPlugin = new RedPenPlugin("' . $redpen_base_url . '")</script>';
-	echo '
-	<style type="text/css"">
-		button.redpen {
-			background: red !important;
-			color: white !important;
-		}
-		.redpen-error-list li {
-			cursor: help;
-		}
-	</style>
-	';
+	echo '<link rel="stylesheet" type="text/css" href="' . plugins_url('css/redpen.css', __FILE__) . '">';
 }
 
 add_action('edit_form_advanced', 'add_redpen_button');

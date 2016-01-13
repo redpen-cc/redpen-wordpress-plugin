@@ -1,0 +1,7 @@
+button.redpen {
+  background: red !important;
+  color: white !important;
+}
+.redpen-error-list li {
+  cursor: help;
+}
