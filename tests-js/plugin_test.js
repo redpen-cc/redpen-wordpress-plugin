@@ -36,6 +36,15 @@ describe('RedpenPlugin', function() {
   describe('validation', function() {
     var container;
 
+    var mockErrorResponse = {
+      errors: [{
+        errors: [
+          {validator: 'Spelling', message:'Hello is spelled incorrectly', sentence:'Hello World'},
+          {validator: 'WrongSymbol', message:'You cannot use !', sentence:'Hello World!'}
+        ]
+      }]
+    };
+
     function mockValidateJSON(validationResult) {
       redpen.validateJSON = function (args, callback) {
         expect(args.config).toBe(redPensResponse.redpens.default);
@@ -68,14 +77,7 @@ describe('RedpenPlugin', function() {
     });
 
     it('displays all errors', function() {
-      mockValidateJSON({
-        errors: [{
-          errors: [
-            {validator: 'Spelling', message:'Hello is spelled incorrectly', sentence:'Hello World'},
-            {validator: 'WrongSymbol', message:'You cannot use !', sentence:'Hello World!'}
-          ]
-        }]
-      });
+      mockValidateJSON(mockErrorResponse);
 
       redpenPlugin.validate(mockTextArea('Hello World!'));
 
@@ -88,6 +90,22 @@ describe('RedpenPlugin', function() {
 
       expect(items.eq(1).text()).toMatch(/You cannot use !/);
       expect(items.eq(1).text()).toMatch(/WrongSymbol/);
+    });
+
+    it('selects erroneous text when clicking on error message', function() {
+      mockErrorResponse.errors[0].errors[0].position = {
+        start: {offset: 3}, end: {offset: 5}
+      };
+      mockValidateJSON(mockErrorResponse);
+
+      var textarea = mockTextArea('Hello World!');
+      spyOn(textarea[0], 'setSelectionRange');
+
+      redpenPlugin.validate(textarea);
+
+      container.find('li').eq(0).click();
+
+      expect(textarea[0].setSelectionRange).toHaveBeenCalledWith(3, 5);
     });
 
   });

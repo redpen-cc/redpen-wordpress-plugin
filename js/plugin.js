@@ -19,7 +19,7 @@ function RedPenPlugin(baseUrl) {
           var message = $('<li class="redpen-error-message"></li>').text(suberror.message)
             .appendTo(container)
             .data('error', suberror)
-            .on('click', function() {pub.showErrorInText(this);});
+            .on('click', function() {pub.showErrorInText(this, textarea);});
 
           $('<div class="redpen-error-validator"></div>')
             .text(suberror.validator + ' ' + JSON.stringify(suberror.position))
@@ -29,8 +29,8 @@ function RedPenPlugin(baseUrl) {
     });
   };
 
-  pub.showErrorInText = function(li) {
+  pub.showErrorInText = function(li, textarea) {
     var error = $(li).data('error');
-    alert(error.position.start.offset);
+    textarea[0].setSelectionRange(error.position.start.offset, error.position.end.offset);
   };
 }
