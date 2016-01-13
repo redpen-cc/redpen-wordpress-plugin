@@ -31,6 +31,15 @@ function RedPenPlugin(baseUrl) {
 
   pub.showErrorInText = function(li, textarea) {
     var error = $(li).data('error');
-    textarea[0].setSelectionRange(error.position.start.offset, error.position.end.offset);
+    var lines = textarea.val().split('\n');
+
+    var start = error.position.start.offset;
+    console.log(error.position.start.line);
+    for (var i = 0; i < error.position.start.line-1; i++) start += lines[i].length + 1;
+
+    var end = error.position.end.offset;
+    for (var i = 0; i < error.position.end.line-1; i++) end += lines[i].length + 1;
+
+    textarea[0].setSelectionRange(start, end);
   };
 }

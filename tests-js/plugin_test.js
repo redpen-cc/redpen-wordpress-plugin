@@ -45,11 +45,11 @@ describe('RedpenPlugin', function() {
       }]
     };
 
-    function mockValidateJSON(validationResult) {
+    function mockValidateJSON(validationResult, expectedDocument) {
       redpen.validateJSON = function (args, callback) {
         expect(args.config).toBe(redPensResponse.redpens.default);
-        expect(args.document).toBe('Hello World!');
         expect(args.format).toBe('json2');
+        if (expectedDocument) expect(args.document).toBe(expectedDocument);
         callback(validationResult);
       };
     }
@@ -72,7 +72,7 @@ describe('RedpenPlugin', function() {
 
     it('displays nothing if no errors', function() {
       mockValidateJSON({errors: []});
-      redpenPlugin.validate(mockTextArea('Hello World!'));
+      redpenPlugin.validate(mockTextArea('Hello World!', 'Hello World!'));
       expect(container.find('li').length).toBe(0);
     });
 
@@ -94,18 +94,18 @@ describe('RedpenPlugin', function() {
 
     it('selects erroneous text when clicking on error message', function() {
       mockErrorResponse.errors[0].errors[0].position = {
-        start: {offset: 3}, end: {offset: 5}
+        start: {offset: 3, line: 2}, end: {offset: 5, line: 2}
       };
       mockValidateJSON(mockErrorResponse);
 
-      var textarea = mockTextArea('Hello World!');
+      var textarea = mockTextArea('Hello\nWorld!');
       spyOn(textarea[0], 'setSelectionRange');
 
       redpenPlugin.validate(textarea);
 
       container.find('li').eq(0).click();
 
-      expect(textarea[0].setSelectionRange).toHaveBeenCalledWith(3, 5);
+      expect(textarea[0].setSelectionRange).toHaveBeenCalledWith(9, 11);
     });
 
   });
