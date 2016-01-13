@@ -66,7 +66,16 @@ describe('RedpenPlugin', function() {
       });
 
       redpenPlugin.validate('Hello World!');
-      expect(container.find('li').length).toBe(2);
+
+      var items = container.find('li');
+      expect(items.length).toBe(2);
+      expect(items.hasClass('redpen-error-message')).toBe(true);
+
+      expect(items.eq(0).text()).toMatch(/Hello is spelled incorrectly/);
+      expect(items.eq(0).text()).toMatch(/Spelling/);
+
+      expect(items.eq(1).text()).toMatch(/You cannot use !/);
+      expect(items.eq(1).text()).toMatch(/WrongSymbol/);
     });
 
   });
