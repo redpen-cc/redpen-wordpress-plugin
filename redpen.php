@@ -14,10 +14,9 @@ function add_redpen_to_edit_form() {
 	echo '
 		<script src="' . $redpen_base_url . 'js/redpen.js"></script>
 		<script src="' . plugins_url('js/plugin.js', __FILE__) . '"></script>
-		<script>var redpenPlugin = new RedPenPlugin("' . $redpen_base_url . '"); redpenPlugin.startValidation(jQuery(\'#content\'));</script>
 		<link rel="stylesheet" type="text/css" href="' . plugins_url('css/redpen.css', __FILE__) . '">
 		<div class="redpen-title"></div><ol class="redpen-error-list"></ol>
-		<button class="redpen button" type="button" onclick="redpenPlugin.validate(jQuery(\'#content\'))">Validate with RedPen</button>
+		<script>var redpenPlugin = new RedPenPlugin("' . $redpen_base_url . '"); redpenPlugin.startValidation(jQuery(\'#content\'));</script>
 	';
 }
 

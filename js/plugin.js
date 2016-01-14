@@ -36,6 +36,9 @@ function RedPenPlugin(baseUrl) {
     textarea.on('keypress', function() {
       pub.validate(textarea);
     });
+
+    if (textarea.val())
+      pub.validate(textarea);
   };
 
   function isPlainText(textarea) {

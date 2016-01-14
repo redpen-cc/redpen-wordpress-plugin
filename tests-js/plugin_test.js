@@ -169,11 +169,15 @@ describe('RedpenPlugin', function() {
 
     it('automatic plain text validation can be started', function() {
       var textarea = mockTextArea('Hello');
-      redpenPlugin.startValidation(textarea);
 
       spyOn(redpenPlugin, 'validate');
-      textarea.trigger('keypress');
+
+      redpenPlugin.startValidation(textarea);
+
       expect(redpenPlugin.validate).toHaveBeenCalledWith(textarea);
+
+      textarea.trigger('keypress');
+      expect(redpenPlugin.validate).toHaveBeenCalledTimes(2);
     });
 
   });
