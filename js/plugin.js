@@ -1,13 +1,14 @@
-function RedPenPlugin(baseUrl) {
+function RedPenPlugin(baseUrl, textarea, editor) {
   var pub = this;
   var $ = jQuery;
+  textarea = $(textarea);
 
   redpen.setBaseUrl(baseUrl);
   redpen.getRedPens(function(result) {
     pub.config = result.redpens.default;
   });
 
-  pub.validate = function(textarea) {
+  pub.validate = function() {
     var container = $('.redpen-error-list').empty();
     var title = $('.redpen-title');
 
@@ -32,7 +33,7 @@ function RedPenPlugin(baseUrl) {
     });
   };
 
-  pub.startValidation = function(textarea, editor) {
+  pub.startValidation = function() {
     var lastText = textarea.val();
     var lastKeyUp;
 
@@ -40,22 +41,22 @@ function RedPenPlugin(baseUrl) {
       clearTimeout(lastKeyUp);
       lastKeyUp = setTimeout(function() {
         if (textarea.val() != lastText) {
-          pub.validate(textarea);
+          pub.validate();
           lastText = textarea.val();
         }
       }, 500);
     });
 
-    if (editor)
+    if (editor && editor.onChange)
       editor.onChange.add(function() {
-        pub.validate(textarea);
+        pub.validate();
       });
 
     if (lastText)
-      pub.validate(textarea);
+      pub.validate();
   };
 
-  function isPlainText(textarea) {
+  function isPlainText() {
     return textarea.is(':visible');
   }
 
@@ -76,11 +77,11 @@ function RedPenPlugin(baseUrl) {
   }
 
   pub._getDocumentText = getDocumentText;
-  function getDocumentText(textarea) {
-    if (isPlainText(textarea))
+  function getDocumentText() {
+    if (isPlainText())
       return textarea.val();
     else
-      return breakTagsIntoLines(tinyMCE.activeEditor.getBody());
+      return breakTagsIntoLines(editor.getBody());
   }
 
   function calculateGlobalOffset(textarea, position) {
@@ -93,21 +94,20 @@ function RedPenPlugin(baseUrl) {
   pub.showErrorInText = function(li, textarea) {
     var error = $(li).data('error');
 
-    if (isPlainText(textarea)) {
+    if (isPlainText()) {
       var start = calculateGlobalOffset(textarea, error.position.start);
       var end = calculateGlobalOffset(textarea, error.position.end);
       textarea[0].setSelectionRange(start, end);
     }
     else {
-      var ed = tinyMCE.activeEditor;
-      var selection = ed.selection.getSel();
-      var range = ed.selection.getRng();
-      var textNodes = findTextNodes(ed.getBody());
+      var selection = editor.selection.getSel();
+      var range = editor.selection.getRng();
+      var textNodes = findTextNodes(editor.getBody());
       range.setStart(textNodes[error.position.start.line-1], error.position.start.offset);
       range.setEnd(textNodes[error.position.end.line-1], error.position.end.offset);
       selection.removeAllRanges();
       selection.addRange(range);
-      ed.getBody().focus();
+      editor.getBody().focus();
     }
   };
 }

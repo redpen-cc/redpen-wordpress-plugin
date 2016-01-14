@@ -1,17 +1,19 @@
 describe('RedpenPlugin', function() {
 
-  var redpenPlugin;
+  var textarea, editor, redpenPlugin;
+
   var mockedRedPensResponse = {
     redpens: {
       'default': {}
     }
   };
 
-  function mockTextArea(text) {
-    return $('<textarea></textarea>').val(text).appendTo('body');
-  }
-
   beforeEach(function() {
+    $('body').empty();
+
+    textarea = $('<textarea></textarea>').val('Hello World!').appendTo('body');
+    editor = {};
+
     redpen = {
       setBaseUrl: function(url) {},
       getRedPens: function(callback) {
@@ -21,7 +23,8 @@ describe('RedpenPlugin', function() {
 
     spyOn(redpen, 'setBaseUrl');
 
-    redpenPlugin = new RedPenPlugin('http://localhost:8080');
+    textarea.show();
+    redpenPlugin = new RedPenPlugin('http://localhost:8080', textarea, editor);
   });
 
   describe('creation', function() {
@@ -37,26 +40,20 @@ describe('RedpenPlugin', function() {
 
   describe('getDocumentText', function() {
     it('for plain text', function() {
-      var textarea = mockTextArea('Hello World!');
-      expect(redpenPlugin._getDocumentText(textarea)).toBe('Hello World!')
+      expect(redpenPlugin._getDocumentText()).toBe('Hello World!')
     });
 
     it('for visual editor (tinyMCE)', function() {
       var editorContent = '<div><p>Hello <strong>WordPress</strong></p><p>and the World!</p></div>';
+      editor.getBody = function() {return $(editorContent)[0]};
+      textarea.hide();
 
-      tinyMCE = {
-        activeEditor: {
-          getBody: function() {return $(editorContent)[0]}
-        }
-      };
-
-      var textarea = mockTextArea().hide();
-      expect(redpenPlugin._getDocumentText(textarea)).toBe('Hello \nWordPress\nand the World!')
+      expect(redpenPlugin._getDocumentText()).toBe('Hello \nWordPress\nand the World!')
     });
   });
 
   describe('validation', function() {
-    var container, title;
+    var errorContainer, title;
 
     var mockedValidateResponse = {
       errors: [{
@@ -77,17 +74,15 @@ describe('RedpenPlugin', function() {
     }
 
     beforeEach(function () {
-      $('body').empty();
-      container = $('<ol class="redpen-error-list"></ol>').appendTo('body');
+      errorContainer = $('<ol class="redpen-error-list"></ol>').appendTo('body');
       title = $('<div class="redpen-title"></div>').appendTo('body');
     });
 
     it('WordPress has global jQuery, but not $, so define it locally', function () {
-      var textarea = mockTextArea('Hello World!');
       try {
         delete window.$;
         mockValidateJSON({errors: []});
-        redpenPlugin.validate(textarea);
+        redpenPlugin.validate();
       }
       finally {
         window.$ = jQuery;
@@ -96,17 +91,17 @@ describe('RedpenPlugin', function() {
 
     it('displays nothing if no errors', function () {
       mockValidateJSON({errors: []});
-      redpenPlugin.validate(mockTextArea('Hello World!', 'Hello World!'));
-      expect(container.find('li').length).toBe(0);
+      redpenPlugin.validate();
+      expect(errorContainer.find('li').length).toBe(0);
       expect(title.text()).toBe('RedPen found 0 errors');
     });
 
     it('displays all errors', function () {
       mockValidateJSON(mockedValidateResponse);
 
-      redpenPlugin.validate(mockTextArea('Hello World!'));
+      redpenPlugin.validate();
 
-      var items = container.find('li');
+      var items = errorContainer.find('li');
       expect(items.length).toBe(2);
       expect(items.hasClass('redpen-error-message')).toBe(true);
 
@@ -125,12 +120,12 @@ describe('RedpenPlugin', function() {
       };
       mockValidateJSON(mockedValidateResponse);
 
-      var textarea = mockTextArea('Hello\nWorld!');
+      textarea.val('Hello\nWorld!');
       spyOn(textarea[0], 'setSelectionRange');
 
-      redpenPlugin.validate(textarea);
+      redpenPlugin.validate();
 
-      container.find('.redpen-error-message').eq(0).click();
+      errorContainer.find('.redpen-error-message').eq(0).click();
 
       expect(textarea[0].setSelectionRange).toHaveBeenCalledWith(9, 11);
     });
@@ -141,24 +136,19 @@ describe('RedpenPlugin', function() {
       };
       mockValidateJSON(mockedValidateResponse);
 
-      var textarea = mockTextArea().hide();
-      redpenPlugin.validate(textarea);
-
       var editorContent = '<div><p>Hello <strong>WordPress</strong></p><p>and the World!</p></div>';
       var selection = jasmine.createSpyObj('selection', ['removeAllRanges', 'addRange']);
       var range = jasmine.createSpyObj('range', ['setStart', 'setEnd']);
 
-      tinyMCE = {
-        activeEditor: {
-          getBody: function() {return $(editorContent)[0]},
-          selection: {
-            getSel: function() {return selection},
-            getRng: function() {return range}
-          }
-        }
+      editor.getBody = function() {return $(editorContent)[0]};
+      editor.selection = {
+        getSel: function() {return selection},
+        getRng: function() {return range}
       };
 
-      container.find('.redpen-error-message').eq(0).click();
+      textarea.hide();
+      redpenPlugin.validate();
+      errorContainer.find('.redpen-error-message').eq(0).click();
 
       expect(range.setStart).toHaveBeenCalledWith(jasmine.objectContaining({textContent: 'WordPress'}), 1);
       expect(range.setEnd).toHaveBeenCalledWith(jasmine.objectContaining({textContent: 'WordPress'}), 4);
@@ -171,16 +161,16 @@ describe('RedpenPlugin', function() {
 
   describe('automatic validation', function() {
     it('of plain text validation can be started', function() {
-      var textarea = mockTextArea('Hello');
+      textarea.val('Hello');
 
       spyOn(redpenPlugin, 'validate');
-      redpenPlugin.startValidation(textarea);
+      redpenPlugin.startValidation();
 
-      expect(redpenPlugin.validate).toHaveBeenCalledWith(textarea);
+      expect(redpenPlugin.validate).toHaveBeenCalled();
     });
 
     it('of plain text only if text has changed', function() {
-      var textarea = mockTextArea('Hello');
+      textarea.val('Hello');
 
       spyOn(window, 'setTimeout').and.callFake(function(callback) {
         callback();
@@ -188,7 +178,7 @@ describe('RedpenPlugin', function() {
 
       spyOn(redpenPlugin, 'validate');
 
-      redpenPlugin.startValidation(textarea);
+      redpenPlugin.startValidation();
 
       textarea.trigger('keyup');
       expect(redpenPlugin.validate).toHaveBeenCalledTimes(1);
@@ -202,8 +192,8 @@ describe('RedpenPlugin', function() {
     });
 
     it('of plain text waits for more keystrokes before validating', function() {
-      var textarea = mockTextArea('Hello');
       var timeoutId = 123;
+      textarea.val('Hello');
 
       spyOn(window, 'setTimeout').and.callFake(function(callback, timeout) {
         expect(timeout).toBe(500);
@@ -214,7 +204,7 @@ describe('RedpenPlugin', function() {
 
       spyOn(redpenPlugin, 'validate');
 
-      redpenPlugin.startValidation(textarea);
+      redpenPlugin.startValidation();
 
       textarea.trigger('keyup');
 

@@ -16,12 +16,12 @@ function add_redpen_to_edit_form() {
 		<script src="' . plugins_url('js/plugin.js', __FILE__) . '"></script>
 		<link rel="stylesheet" type="text/css" href="' . plugins_url('css/redpen.css', __FILE__) . '">
 		<div class="redpen-title"></div><ol class="redpen-error-list"></ol>
-		<script>var redpenPlugin = new RedPenPlugin("' . $redpen_base_url . '")</script>
 	';
 }
 
 function start_redpen_on_tinymce_init($settings) {
-	$settings['setup'] = 'function(editor) {redpenPlugin.startValidation(jQuery("#content"), editor)}';
+	global $redpen_base_url;
+	$settings['setup'] = "function(editor) {new RedPenPlugin('$redpen_base_url', '#content', editor).startValidation()}";
 	return $settings;
 }
 
