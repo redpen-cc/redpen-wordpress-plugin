@@ -165,14 +165,11 @@ describe('RedpenPlugin', function() {
     });
 
     it('of plain text validation can be started', function() {
-      textarea.val('Hello');
       redpenPlugin.startValidation();
       expect(redpenPlugin.validate).toHaveBeenCalled();
     });
 
     it('of plain text only if text has changed', function() {
-      textarea.val('Hello');
-
       spyOn(window, 'setTimeout').and.callFake(function(callback) {
         callback();
       });
@@ -192,7 +189,6 @@ describe('RedpenPlugin', function() {
 
     it('of plain text waits for more keystrokes before validating', function() {
       var timeoutId = 123;
-      textarea.val('Hello');
 
       spyOn(window, 'setTimeout').and.callFake(function(callback, timeout) {
         expect(timeout).toBe(500);
