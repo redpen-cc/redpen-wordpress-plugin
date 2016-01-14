@@ -64,11 +64,11 @@ describe('RedpenPlugin', function() {
       }]
     };
 
-    function mockValidateJSON(validationResult, expectedDocument) {
+    function mockValidateJSON(validationResult) {
       redpen.validateJSON = function (args, callback) {
         expect(args.config).toBe(mockedRedPensResponse.redpens.default);
         expect(args.format).toBe('json2');
-        if (expectedDocument) expect(args.document).toBe(expectedDocument);
+        expect(args.document).toBe(redpenPlugin._getDocumentText());
         callback(validationResult);
       };
     }
