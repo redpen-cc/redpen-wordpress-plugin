@@ -167,7 +167,10 @@ describe('RedpenPlugin', function() {
       expect(selection.addRange).toHaveBeenCalledWith(range);
     });
 
-    it('automatic plain text validation can be started', function() {
+  });
+
+  describe('automatic validation', function() {
+    it('of plain text validation can be started', function() {
       var textarea = mockTextArea('Hello');
 
       spyOn(redpenPlugin, 'validate');
@@ -176,7 +179,7 @@ describe('RedpenPlugin', function() {
       expect(redpenPlugin.validate).toHaveBeenCalledWith(textarea);
     });
 
-    it('automatic plain text validation validates only if text has changed', function() {
+    it('of plain text only if text has changed', function() {
       var textarea = mockTextArea('Hello');
 
       spyOn(window, 'setTimeout').and.callFake(function(callback) {
@@ -198,7 +201,7 @@ describe('RedpenPlugin', function() {
       expect(redpenPlugin.validate).toHaveBeenCalledTimes(2);
     });
 
-    it('automatic plain text validation waits for more keystrokes before validating', function() {
+    it('of plain text waits for more keystrokes before validating', function() {
       var textarea = mockTextArea('Hello');
       var timeoutId = 123;
 
@@ -223,6 +226,5 @@ describe('RedpenPlugin', function() {
       expect(window.clearTimeout).toHaveBeenCalledWith(timeoutId);
       expect(window.setTimeout).toHaveBeenCalledTimes(2);
     });
-
   });
 });
