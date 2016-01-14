@@ -35,12 +35,14 @@ function RedPenPlugin(baseUrl) {
   pub.startValidation = function(textarea) {
     var lastText = textarea.val();
 
-    textarea.on('keyup', function(e) {
-      if (textarea.val() != lastText)
+    textarea.on('keyup', function() {
+      if (textarea.val() != lastText) {
         pub.validate(textarea);
+        lastText = textarea.val();
+      }
     });
 
-    if (textarea.val())
+    if (lastText)
       pub.validate(textarea);
   };
 

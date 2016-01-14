@@ -188,6 +188,9 @@ describe('RedpenPlugin', function() {
       textarea.val('Hello2');
       textarea.trigger('keyup');
       expect(redpenPlugin.validate).toHaveBeenCalledTimes(2);
+
+      textarea.trigger('keyup');
+      expect(redpenPlugin.validate).toHaveBeenCalledTimes(2);
     });
 
   });
