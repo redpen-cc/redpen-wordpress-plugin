@@ -32,6 +32,12 @@ function RedPenPlugin(baseUrl) {
     });
   };
 
+  pub.startValidation = function(textarea) {
+    textarea.on('keypress', function() {
+      pub.validate(textarea);
+    });
+  };
+
   function isPlainText(textarea) {
     return textarea.is(':visible');
   }
