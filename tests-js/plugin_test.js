@@ -167,5 +167,14 @@ describe('RedpenPlugin', function() {
       expect(selection.addRange).toHaveBeenCalledWith(range);
     });
 
+    it('automatic plain text validation can be started', function() {
+      var textarea = mockTextArea('Hello');
+      redpenPlugin.startValidation(textarea);
+
+      spyOn(redpenPlugin, 'validate');
+      textarea.trigger('keypress');
+      expect(redpenPlugin.validate).toHaveBeenCalledWith(textarea);
+    });
+
   });
 });
