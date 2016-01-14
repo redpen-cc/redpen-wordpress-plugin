@@ -162,19 +162,19 @@ describe('RedpenPlugin', function() {
   describe('automatic validation', function() {
     beforeEach(function() {
       spyOn(redpenPlugin, 'validate');
+      spyOn(window, 'setTimeout').and.callFake(function(callback) {
+        callback();
+      });
     });
 
-    it('of plain text validation can be started', function() {
+    it('can be started', function() {
       redpenPlugin.startValidation();
       expect(redpenPlugin.validate).toHaveBeenCalled();
     });
 
     it('of plain text only if text has changed', function() {
-      spyOn(window, 'setTimeout').and.callFake(function(callback) {
-        callback();
-      });
-
       redpenPlugin.startValidation();
+      expect(redpenPlugin.validate).toHaveBeenCalledTimes(1);
 
       textarea.trigger('keyup');
       expect(redpenPlugin.validate).toHaveBeenCalledTimes(1);
@@ -190,7 +190,7 @@ describe('RedpenPlugin', function() {
     it('of plain text waits for more keystrokes before validating', function() {
       var timeoutId = 123;
 
-      spyOn(window, 'setTimeout').and.callFake(function(callback, timeout) {
+      window.setTimeout.and.callFake(function(callback, timeout) {
         expect(timeout).toBe(500);
         return timeoutId;
       });
@@ -200,14 +200,27 @@ describe('RedpenPlugin', function() {
       redpenPlugin.startValidation();
 
       textarea.trigger('keyup');
-
       expect(window.clearTimeout).toHaveBeenCalledWith(undefined);
       expect(window.setTimeout).toHaveBeenCalled();
 
       textarea.trigger('keyup');
-
       expect(window.clearTimeout).toHaveBeenCalledWith(timeoutId);
       expect(window.setTimeout).toHaveBeenCalledTimes(2);
+    });
+
+    it('in visual editor', function() {
+      textarea.hide();
+
+      var editorContent = '<div><p>Hello <strong>WordPress</strong></p><p>and the World!</p></div>';
+      editor.getBody = function() {return $(editorContent)[0]};
+      editor.onKeyUp = jasmine.createSpyObj('onKeyUp', ['add']);
+
+      redpenPlugin.startValidation();
+      expect(redpenPlugin.validate).toHaveBeenCalledTimes(1);
+
+      editor.getBody = function() {return $(editorContent.replace('Hello', 'Hallo'))[0]};
+      editor.onKeyUp.add.calls.first().args[0](); // simulate keyUp in editor
+      expect(redpenPlugin.validate).toHaveBeenCalledTimes(2);
     });
   });
 });

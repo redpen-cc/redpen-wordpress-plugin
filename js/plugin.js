@@ -34,23 +34,24 @@ function RedPenPlugin(baseUrl, textarea, editor) {
   };
 
   pub.startValidation = function() {
-    var lastText = textarea.val();
+    var lastText = getDocumentText();
     var lastKeyUp;
 
-    textarea.on('keyup', function() {
+    function validateOnKeyUp() {
       clearTimeout(lastKeyUp);
       lastKeyUp = setTimeout(function() {
-        if (textarea.val() != lastText) {
+        var text = getDocumentText();
+        if (text != lastText) {
           pub.validate();
-          lastText = textarea.val();
+          lastText = text;
         }
       }, 500);
-    });
+    }
 
-    if (editor && editor.onChange)
-      editor.onChange.add(function() {
-        pub.validate();
-      });
+    textarea.on('keyup', validateOnKeyUp);
+
+    if (editor && editor.onKeyUp)
+      editor.onKeyUp.add(validateOnKeyUp);
 
     if (lastText)
       pub.validate();
