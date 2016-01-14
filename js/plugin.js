@@ -33,8 +33,11 @@ function RedPenPlugin(baseUrl) {
   };
 
   pub.startValidation = function(textarea) {
-    textarea.on('keypress', function() {
-      pub.validate(textarea);
+    var lastText = textarea.val();
+
+    textarea.on('keyup', function(e) {
+      if (textarea.val() != lastText)
+        pub.validate(textarea);
     });
 
     if (textarea.val())

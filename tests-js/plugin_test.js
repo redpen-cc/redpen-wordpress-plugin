@@ -171,12 +171,22 @@ describe('RedpenPlugin', function() {
       var textarea = mockTextArea('Hello');
 
       spyOn(redpenPlugin, 'validate');
-
       redpenPlugin.startValidation(textarea);
 
       expect(redpenPlugin.validate).toHaveBeenCalledWith(textarea);
+    });
 
-      textarea.trigger('keypress');
+    it('automatic plain text validation validates only if text has changed', function() {
+      var textarea = mockTextArea('Hello');
+
+      spyOn(redpenPlugin, 'validate');
+      redpenPlugin.startValidation(textarea);
+
+      textarea.trigger('keyup');
+      expect(redpenPlugin.validate).toHaveBeenCalledTimes(1);
+
+      textarea.val('Hello2');
+      textarea.trigger('keyup');
       expect(redpenPlugin.validate).toHaveBeenCalledTimes(2);
     });
 
