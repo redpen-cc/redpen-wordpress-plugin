@@ -34,8 +34,7 @@ function RedPenPlugin(baseUrl, textarea, editor) {
   };
 
   pub.startValidation = function() {
-    var lastText = getDocumentText();
-    var lastKeyUp;
+    var lastText, lastKeyUp;
 
     function validateOnKeyUp() {
       clearTimeout(lastKeyUp);
@@ -53,8 +52,7 @@ function RedPenPlugin(baseUrl, textarea, editor) {
     if (editor && editor.onKeyUp)
       editor.onKeyUp.add(validateOnKeyUp);
 
-    if (lastText)
-      pub.validate();
+    validateOnKeyUp();
   };
 
   function isPlainText() {

@@ -162,9 +162,11 @@ describe('RedpenPlugin', function() {
   describe('automatic validation', function() {
     beforeEach(function() {
       spyOn(redpenPlugin, 'validate');
+
       spyOn(window, 'setTimeout').and.callFake(function(callback) {
         callback();
       });
+      spyOn(window, 'clearTimeout');
     });
 
     it('can be started', function() {
@@ -192,20 +194,20 @@ describe('RedpenPlugin', function() {
 
       window.setTimeout.and.callFake(function(callback, timeout) {
         expect(timeout).toBe(500);
-        return timeoutId;
+        return timeoutId++;
       });
 
-      spyOn(window, 'clearTimeout');
-
       redpenPlugin.startValidation();
-
-      textarea.trigger('keyup');
       expect(window.clearTimeout).toHaveBeenCalledWith(undefined);
-      expect(window.setTimeout).toHaveBeenCalled();
+      expect(window.setTimeout).toHaveBeenCalledTimes(1);
 
       textarea.trigger('keyup');
-      expect(window.clearTimeout).toHaveBeenCalledWith(timeoutId);
+      expect(window.clearTimeout).toHaveBeenCalledWith(123);
       expect(window.setTimeout).toHaveBeenCalledTimes(2);
+
+      textarea.trigger('keyup');
+      expect(window.clearTimeout).toHaveBeenCalledWith(124);
+      expect(window.setTimeout).toHaveBeenCalledTimes(3);
     });
 
     it('in visual editor', function() {
