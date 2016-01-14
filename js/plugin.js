@@ -32,7 +32,7 @@ function RedPenPlugin(baseUrl) {
     });
   };
 
-  pub.startValidation = function(textarea) {
+  pub.startValidation = function(textarea, editor) {
     var lastText = textarea.val();
     var lastKeyUp;
 
@@ -45,6 +45,11 @@ function RedPenPlugin(baseUrl) {
         }
       }, 500);
     });
+
+    if (editor)
+      editor.onChange.add(function() {
+        pub.validate(textarea);
+      });
 
     if (lastText)
       pub.validate(textarea);
