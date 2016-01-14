@@ -160,12 +160,13 @@ describe('RedpenPlugin', function() {
   });
 
   describe('automatic validation', function() {
+    beforeEach(function() {
+      spyOn(redpenPlugin, 'validate');
+    });
+
     it('of plain text validation can be started', function() {
       textarea.val('Hello');
-
-      spyOn(redpenPlugin, 'validate');
       redpenPlugin.startValidation();
-
       expect(redpenPlugin.validate).toHaveBeenCalled();
     });
 
@@ -175,8 +176,6 @@ describe('RedpenPlugin', function() {
       spyOn(window, 'setTimeout').and.callFake(function(callback) {
         callback();
       });
-
-      spyOn(redpenPlugin, 'validate');
 
       redpenPlugin.startValidation();
 
@@ -201,8 +200,6 @@ describe('RedpenPlugin', function() {
       });
 
       spyOn(window, 'clearTimeout');
-
-      spyOn(redpenPlugin, 'validate');
 
       redpenPlugin.startValidation();
 
