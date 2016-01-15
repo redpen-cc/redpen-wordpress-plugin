@@ -2,6 +2,7 @@ describe('RedpenPlugin', function() {
 
   var textarea, editor, redpenPlugin;
   var errorContainer, title;
+  var proxyUrl = 'http://wordpress/proxy.php/';
 
   var mockedRedPensResponse = {
     redpens: {
@@ -29,18 +30,22 @@ describe('RedpenPlugin', function() {
     spyOn(redpen, 'setBaseUrl');
 
     textarea.show();
-    redpenPlugin = new RedPenPlugin('http://localhost:8080', textarea, editor);
+    redpenPlugin = new RedPenPlugin(proxyUrl, textarea, editor);
   });
 
   describe('creation', function() {
     it('shows an error message if redpen server is not running', function() {
       window.redpen = undefined;
-      redpenPlugin = new RedPenPlugin('http://localhost:8080', textarea, editor);
-      expect(title.text()).toBe('RedPen server is not running on the same machine as WordPress');
+      $.get = jasmine.createSpy().and.callFake(function(url, callback) {
+        expect(url).toBe(proxyUrl + 'redpen_base_url');
+        callback('http://localhost:8080/');
+      });
+      redpenPlugin = new RedPenPlugin(proxyUrl, textarea, editor);
+      expect(title.text()).toBe('RedPen server is not running on the same machine as WordPress at http://localhost:8080/, you can change it in config.php');
     });
 
     it('passes baseUrl to redpen API', function() {
-      expect(redpen.setBaseUrl).toHaveBeenCalledWith('http://localhost:8080')
+      expect(redpen.setBaseUrl).toHaveBeenCalledWith(proxyUrl)
     });
 
     it('loads default configurations', function() {

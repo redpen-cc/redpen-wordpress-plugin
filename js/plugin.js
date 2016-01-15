@@ -1,17 +1,19 @@
-function RedPenPlugin(baseUrl, textarea, editor) {
+function RedPenPlugin(proxyUrl, textarea, editor) {
   var pub = this;
   var $ = jQuery;
   textarea = $(textarea);
   var title = $('.redpen-title');
 
   if (window.redpen) {
-    redpen.setBaseUrl(baseUrl);
+    redpen.setBaseUrl(proxyUrl);
     redpen.getRedPens(function (result) {
       pub.redpens = result.redpens;
     });
   }
   else {
-    title.html('<span class="redpen-red">Red</span>Pen server is not running on the same machine as WordPress');
+    $.get(proxyUrl + 'redpen_base_url', function(redpenServerUrl) {
+      title.html('<span class="redpen-red">Red</span>Pen server is not running on the same machine as WordPress at <strong>' + redpenServerUrl + '</strong>, you can change it in <strong>config.php</strong>');
+    });
   }
 
   pub.validate = function() {

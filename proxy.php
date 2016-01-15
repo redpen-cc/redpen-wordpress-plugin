@@ -124,6 +124,12 @@ function makeRequest($url) {
 //Extract and sanitize the requested URL.
 global $url;
 $url = substr($_SERVER["REQUEST_URI"], strlen($_SERVER["SCRIPT_NAME"]) + 1);
+
+if ($url == 'redpen_base_url') {
+    echo $redpen_base_url;
+    return;
+}
+
 if (empty($url)) {
     die("<html><head><title>miniProxy</title></head><body><h1>Welcome to miniProxy!</h1>miniProxy can be directly invoked like this: <a href=\"" . PROXY_PREFIX . "http://example.net/\">" . PROXY_PREFIX . "http://example.net/</a><br /><br />Or, you can simply enter a URL below:<br /><br /><form onsubmit=\"window.location.href='" . PROXY_PREFIX . "' + document.getElementById('site').value; return false;\"><input id=\"site\" type=\"text\" size=\"50\" /><input type=\"submit\" value=\"Proxy It!\" /></form></body></html>");
 } else if (strpos($url, ":/") !== strpos($url, "://")) {
