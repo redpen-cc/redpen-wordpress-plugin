@@ -11,6 +11,7 @@ Please refer to [RedPen Server documentation](http://redpen.cc/docs/latest/index
 
 * To install the plugin, either link or copy this directory to *wordpress/wp-content/plugins*.
 * Then activate the plugin in the Admin console -> Plugins -> Installed plugins.
+* Make sure the correct RedPen server URL is defined in *config.php*.
 
 ## Dependencies
 
