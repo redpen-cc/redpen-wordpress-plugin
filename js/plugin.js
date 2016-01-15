@@ -21,7 +21,10 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
     var text = getDocumentText();
 
     redpen.detectLanguage(text, function(lang) {
-      var args = {config:pub.redpens[lang], document:text, documenParser:'PLAIN', format:'json2'};
+      var config = pub.redpens[lang];
+      pub.displayValidators(config);
+
+      var args = {config:config, document:text, documenParser:'PLAIN', format:'json2'};
 
       redpen.validateJSON(args, function(result) {
         $.each(result.errors, function(i, error) {
@@ -63,6 +66,13 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
       editor.onKeyUp.add(validateOnKeyUp);
 
     validateOnKeyUp();
+  };
+
+  pub.displayValidators = function(config) {
+    var validatorContainer = $('.redpen-active-validators').empty();
+    $.each(config.validators, function(name) {
+      validatorContainer.append('<li><input type="checkbox" checked disabled>' + name + '</li>');
+    });
   };
 
   function isPlainText() {

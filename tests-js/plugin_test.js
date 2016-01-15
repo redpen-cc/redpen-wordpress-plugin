@@ -256,4 +256,25 @@ describe('RedpenPlugin', function() {
       expect(redpenPlugin.validate).toHaveBeenCalledTimes(2);
     });
   });
+
+  describe('config', function() {
+    var validatorContainer;
+
+    beforeEach(function() {
+      validatorContainer = $('<div class="redpen-active-validators"></div>').appendTo('body');
+    });
+
+    it('validators list', function() {
+      var validators = {
+        "Spelling": {},
+        "ImpoliteCursing": {}
+      };
+
+      redpenPlugin.displayValidators({validators: validators});
+
+      expect(validatorContainer.find('li').length).toBe(2);
+      expect(validatorContainer.find('li').eq(0).text()).toBe('Spelling');
+      expect(validatorContainer.find('li').eq(1).text()).toBe('ImpoliteCursing');
+    });
+  });
 });
