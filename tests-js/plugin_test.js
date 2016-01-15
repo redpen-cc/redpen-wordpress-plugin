@@ -4,7 +4,8 @@ describe('RedpenPlugin', function() {
 
   var mockedRedPensResponse = {
     redpens: {
-      'default': {}
+      'en': {},
+      'ja': {}
     }
   };
 
@@ -18,7 +19,7 @@ describe('RedpenPlugin', function() {
       setBaseUrl: function(url) {},
       getRedPens: function(callback) {
         callback(mockedRedPensResponse);
-      }
+      },
     };
 
     spyOn(redpen, 'setBaseUrl');
@@ -32,8 +33,8 @@ describe('RedpenPlugin', function() {
       expect(redpen.setBaseUrl).toHaveBeenCalledWith('http://localhost:8080')
     });
 
-    it('loads default configuration', function() {
-      expect(redpenPlugin.config).toBe(mockedRedPensResponse.redpens.default);
+    it('loads default configurations', function() {
+      expect(redpenPlugin.redpens).toBe(mockedRedPensResponse.redpens);
     });
 
   });
@@ -66,7 +67,7 @@ describe('RedpenPlugin', function() {
 
     function mockValidateJSON(validationResult) {
       redpen.validateJSON = function (args, callback) {
-        expect(args.config).toBe(mockedRedPensResponse.redpens.default);
+        expect(args.config).toBe(mockedRedPensResponse.redpens.en);
         expect(args.format).toBe('json2');
         expect(args.document).toBe(redpenPlugin._getDocumentText());
         callback(validationResult);
@@ -76,6 +77,9 @@ describe('RedpenPlugin', function() {
     beforeEach(function () {
       errorContainer = $('<ol class="redpen-error-list"></ol>').appendTo('body');
       title = $('<div class="redpen-title"></div>').appendTo('body');
+      redpen.detectLanguage = jasmine.createSpy().and.callFake(function(text, callback) {
+        callback('en');
+      });
     });
 
     it('WordPress has global jQuery, but not $, so define it locally', function () {
@@ -87,6 +91,22 @@ describe('RedpenPlugin', function() {
       finally {
         window.$ = jQuery;
       }
+    });
+
+    it('language is detected and the correct configuration is chosen', function() {
+      var japaneseText = '本稿では,複数の計算機（クラスタ）でで動作する各サーバーを「インスタンス」と呼びまます。';
+      textarea.val(japaneseText);
+      redpen.detectLanguage = jasmine.createSpy().and.callFake(function(text, callback) {
+        expect(text).toBe(japaneseText);
+        callback('ja');
+      });
+      redpen.validateJSON = jasmine.createSpy();
+
+      redpenPlugin.validate();
+
+      expect(redpen.validateJSON).toHaveBeenCalledWith(
+        jasmine.objectContaining({config: mockedRedPensResponse.redpens.ja, document: japaneseText}),
+        jasmine.any(Function));
     });
 
     it('displays nothing if no errors', function () {

@@ -5,31 +5,34 @@ function RedPenPlugin(baseUrl, textarea, editor) {
 
   redpen.setBaseUrl(baseUrl);
   redpen.getRedPens(function(result) {
-    pub.config = result.redpens.default;
+    pub.redpens = result.redpens;
   });
 
   pub.validate = function() {
     var container = $('.redpen-error-list').empty();
     var title = $('.redpen-title');
+    var text = getDocumentText();
 
-    var args = {config:pub.config, document:getDocumentText(textarea), documenParser:'PLAIN', format:'json2'};
+    redpen.detectLanguage(text, function(lang) {
+      var args = {config:pub.redpens[lang], document:text, documenParser:'PLAIN', format:'json2'};
 
-    redpen.validateJSON(args, function(result) {
-      $.each(result.errors, function(i, error) {
+      redpen.validateJSON(args, function(result) {
+        $.each(result.errors, function(i, error) {
 
-        $.each(error.errors, function(j, suberror) {
-          var message = $('<li class="redpen-error-message"></li>').text(suberror.message)
-            .appendTo(container)
-            .data('error', suberror)
-            .on('click', function() {pub.showErrorInText(this, textarea);});
+          $.each(error.errors, function(j, suberror) {
+            var message = $('<li class="redpen-error-message"></li>').text(suberror.message)
+              .appendTo(container)
+              .data('error', suberror)
+              .on('click', function() {pub.showErrorInText(this, textarea);});
 
-          $('<div class="redpen-error-validator"></div>')
-            .text(suberror.validator)
-            .appendTo(message);
+            $('<div class="redpen-error-validator"></div>')
+              .text(suberror.validator)
+              .appendTo(message);
+          });
         });
-      });
 
-      title.html('<span class="redpen-red">Red</span>Pen found ' + container.children().length + ' errors');
+        title.html('<span class="redpen-red">Red</span>Pen found ' + container.children().length + ' errors');
+      });
     });
   };
 
