@@ -2,15 +2,20 @@ function RedPenPlugin(baseUrl, textarea, editor) {
   var pub = this;
   var $ = jQuery;
   textarea = $(textarea);
+  var title = $('.redpen-title');
 
-  redpen.setBaseUrl(baseUrl);
-  redpen.getRedPens(function(result) {
-    pub.redpens = result.redpens;
-  });
+  if (window.redpen) {
+    redpen.setBaseUrl(baseUrl);
+    redpen.getRedPens(function (result) {
+      pub.redpens = result.redpens;
+    });
+  }
+  else {
+    title.html('<span class="redpen-red">Red</span>Pen server is not running on the same machine as WordPress');
+  }
 
   pub.validate = function() {
     var container = $('.redpen-error-list').empty();
-    var title = $('.redpen-title');
     var text = getDocumentText();
 
     redpen.detectLanguage(text, function(lang) {

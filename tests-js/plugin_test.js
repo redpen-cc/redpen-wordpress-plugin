@@ -1,6 +1,7 @@
 describe('RedpenPlugin', function() {
 
   var textarea, editor, redpenPlugin;
+  var errorContainer, title;
 
   var mockedRedPensResponse = {
     redpens: {
@@ -12,6 +13,9 @@ describe('RedpenPlugin', function() {
   beforeEach(function() {
     $('body').empty();
 
+    errorContainer = $('<ol class="redpen-error-list"></ol>').appendTo('body');
+    title = $('<div class="redpen-title"></div>').appendTo('body');
+
     textarea = $('<textarea></textarea>').val('Hello World!').appendTo('body');
     editor = {};
 
@@ -19,7 +23,7 @@ describe('RedpenPlugin', function() {
       setBaseUrl: function(url) {},
       getRedPens: function(callback) {
         callback(mockedRedPensResponse);
-      },
+      }
     };
 
     spyOn(redpen, 'setBaseUrl');
@@ -29,6 +33,12 @@ describe('RedpenPlugin', function() {
   });
 
   describe('creation', function() {
+    it('shows an error message if redpen server is not running', function() {
+      window.redpen = undefined;
+      redpenPlugin = new RedPenPlugin('http://localhost:8080', textarea, editor);
+      expect(title.text()).toBe('RedPen server is not running on the same machine as WordPress');
+    });
+
     it('passes baseUrl to redpen API', function() {
       expect(redpen.setBaseUrl).toHaveBeenCalledWith('http://localhost:8080')
     });
@@ -54,8 +64,6 @@ describe('RedpenPlugin', function() {
   });
 
   describe('validation', function() {
-    var errorContainer, title;
-
     var mockedValidateResponse = {
       errors: [{
         errors: [
@@ -75,8 +83,6 @@ describe('RedpenPlugin', function() {
     }
 
     beforeEach(function () {
-      errorContainer = $('<ol class="redpen-error-list"></ol>').appendTo('body');
-      title = $('<div class="redpen-title"></div>').appendTo('body');
       redpen.detectLanguage = jasmine.createSpy().and.callFake(function(text, callback) {
         callback('en');
       });
