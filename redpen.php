@@ -33,14 +33,14 @@ function add_redpen_to_edit_form() {
 		<script>
 		jQuery(function($) {
 			$(".redpen-container").appendTo("#normal-sortables");
-			window.redpenPlugin = new RedPenPlugin(\'' . $redpen_proxy_url .'\').startValidation(\'#content\');
+			window.redpenPlugin = new RedPenPlugin(\'' . $redpen_proxy_url .'\').autoValidate(\'#content\');
 		});
 		</script>
 	';
 }
 
 function start_redpen_on_tinymce_init($settings) {
-	$settings['setup'] = "function(editor) {redpenPlugin.startValidation(editor)}";
+	$settings['setup'] = "function(editor) {redpenPlugin.autoValidate(editor)}";
 	return $settings;
 }
 

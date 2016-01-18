@@ -46,7 +46,7 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
     });
   };
 
-  pub.startValidation = function(what) {
+  pub.autoValidate = function(what) {
     var lastText, lastKeyUp;
 
     function validateOnKeyUp() {
