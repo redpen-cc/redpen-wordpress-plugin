@@ -22,7 +22,7 @@ function add_redpen_to_edit_form() {
 			</div>
 			<div class="postbox closed">
 				<button type="button" class="handlediv button-link"><span class="toggle-indicator"></span></button>
-				<h2 class="redpen-settings-toggle hndle" onclick="jQuery(\'.redpen-settings\').closest(\'postbox\').toggleClass(\'closed\')">
+				<h2 class="redpen-settings-toggle hndle">
 					<span class="redpen-red">Red</span>Pen Settings
 				</h2>
 				<div class="inside redpen-settings">
