@@ -1,4 +1,6 @@
 <?php
+require_once '../vendor/autoload.php';
+
 class RedPenProxyTest extends PHPUnit_Framework_TestCase {
     public function testBaseUrlIsDefinedInConfigPhp() {
         include dirname(__FILE__) . '/../config.php';
