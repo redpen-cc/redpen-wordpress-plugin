@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/redpen-cc/redpen-wordpress-plugin.svg?branch=master)](https://travis-ci.org/redpen-cc/redpen-wordpress-plugin)
 
-# A plugin that integrates RedPen validation into Wordpress (in development)
+# WordPress plugin that integrates RedPen text validation into the editor
 
 ## Prerequisites
 
@@ -9,16 +9,18 @@ Please refer to [RedPen Server documentation](http://redpen.cc/docs/latest/index
 
 ## Installation
 
-* To install the plugin, either link or copy this directory to *wordpress/wp-content/plugins*.
-* Then activate the plugin in the Admin console -> Plugins -> Installed plugins.
+Before installing make sure that your WordPress is up and running properly.
+
+* Either link or copy this directory to *wordpress/wp-content/plugins*, e.g.
+    ```ln -s redpen-wordpress-plugin wordpress/wp-content/plugins```
+
 * Make sure the correct RedPen server URL is defined in *config.php*.
+* Install PHP cURL library if you don't already have it, e.g. on Ubuntu
+    ```sudo apt-get install php5-curl```
 
-## Dependencies
+* Activate the plugin in WordPress Admin console -> Plugins -> Installed plugins.
 
-* Obviously, you will need PHP
-* php-curl is required for proxy.php, you can install it on Ubuntu with
-  
-    ```sudo apt-get install php5-curl``` 
+## For developers
 
 ### Running the tests
 
