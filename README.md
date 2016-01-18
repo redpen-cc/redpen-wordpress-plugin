@@ -33,3 +33,15 @@ Before installing make sure that your WordPress is up and running properly.
     ```npm test```
     
 JavaScript tests will be run in PhantomJS by default. You can change the browser in *tests-js/karma.conf.js*.
+
+### Configuring IntelliJ IDEA
+
+To make development easier, we recommend using the IntelliJ IDEA or PHPStorm, install the following plugins:
+
+* PHP
+* Karma
+
+Then in Settings:
+
+* Configure location of PHP interpreter
+* Set the location of PHPUnit to *node_modules/phpunit.phar*
