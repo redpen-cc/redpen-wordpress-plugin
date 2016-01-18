@@ -15,8 +15,10 @@ function add_redpen_to_edit_form() {
 		<script src="' . $redpen_proxy_url . 'js/redpen.js"></script>
 		<script src="' . plugins_url('js/plugin.js', __FILE__) . '"></script>
 		<link rel="stylesheet" type="text/css" href="' . plugins_url('css/redpen.css', __FILE__) . '">
-		<h2 class="redpen-title"></h2>
-		<ol class="redpen-error-list"></ol>
+		<div class="postbox">
+			<h2 class="redpen-title"></h2>
+			<ol class="redpen-error-list"></ol>
+		</div>
 		<div class="postbox closed">
 			<button type="button" class="handlediv button-link"><span class="toggle-indicator"></span></button>
 			<h2 class="redpen-settings-toggle hndle" onclick="jQuery(\'.redpen-settings\').closest(\'postbox\').toggleClass(\'closed\')">
