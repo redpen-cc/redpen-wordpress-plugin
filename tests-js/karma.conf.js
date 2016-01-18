@@ -12,7 +12,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'https://code.jquery.com/jquery-2.2.0.min.js',
+      'http://code.jquery.com/jquery-2.2.0.min.js',
       'http://localhost:8080/js/redpen.js',
       'js/*.js',
       'tests-js/*.js'
