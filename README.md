@@ -24,12 +24,12 @@ Before installing make sure that your WordPress is up and running properly.
 
 ### Running the tests
 
-* PHP unit tests are run using **[phpunit](https://phpunit.de/manual/current/en/installation.html)**, it can also be installed with *apt-get*
+* Install all required dependencies using npm (Karma, Jasmine, PHPUnit):
 
-    ```phpunit tests-php```
+    ```npm install```
+
+* All unit tests (JavaScript and PHP) can then be run with
+
+    ```npm test```
     
-* JavaScript unit tests are run using Karma.
- 
-    ```npm install && npm test``` will run Karma using PhantomJS
-
-See .travis.yml for an example how tests are run on a Continuous Integration server.
+JavaScript tests will be run in PhantomJS by default. You can change the browser in *tests-js/karma.conf.js*.
