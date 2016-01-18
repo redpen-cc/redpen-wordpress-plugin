@@ -30,13 +30,17 @@ function add_redpen_to_edit_form() {
 				</div>
 			</div>
 		</div>
-		<script>jQuery(".redpen-container").appendTo("#normal-sortables")</script>
+		<script>
+		jQuery(function($) {
+			$(".redpen-container").appendTo("#normal-sortables");
+			window.redpenPlugin = new RedPenPlugin(\'' . $redpen_proxy_url .'\').startValidation(\'#content\');
+		});
+		</script>
 	';
 }
 
 function start_redpen_on_tinymce_init($settings) {
-	global $redpen_proxy_url;
-	$settings['setup'] = "function(editor) {new RedPenPlugin('$redpen_proxy_url', '#content', editor).startValidation()}";
+	$settings['setup'] = "function(editor) {redpenPlugin.startValidation(editor)}";
 	return $settings;
 }
 

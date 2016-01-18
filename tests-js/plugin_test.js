@@ -201,12 +201,13 @@ describe('RedpenPlugin', function() {
     });
 
     it('can be started', function() {
-      redpenPlugin.startValidation();
+      var instance = redpenPlugin.startValidation(textarea);
       expect(redpenPlugin.validate).toHaveBeenCalled();
+      expect(instance).toBe(redpenPlugin);
     });
 
     it('of plain text only if text has changed', function() {
-      redpenPlugin.startValidation();
+      redpenPlugin.startValidation(textarea);
       expect(redpenPlugin.validate).toHaveBeenCalledTimes(1);
 
       textarea.trigger('keyup');
@@ -228,7 +229,7 @@ describe('RedpenPlugin', function() {
         return timeoutId++;
       });
 
-      redpenPlugin.startValidation();
+      redpenPlugin.startValidation(textarea);
       expect(window.clearTimeout).toHaveBeenCalledWith(undefined);
       expect(window.setTimeout).toHaveBeenCalledTimes(1);
 
@@ -248,7 +249,7 @@ describe('RedpenPlugin', function() {
       editor.getBody = function() {return $(editorContent)[0]};
       editor.onKeyUp = jasmine.createSpyObj('onKeyUp', ['add']);
 
-      redpenPlugin.startValidation();
+      redpenPlugin.startValidation(editor);
       expect(redpenPlugin.validate).toHaveBeenCalledTimes(1);
 
       editor.getBody = function() {return $(editorContent.replace('Hello', 'Hallo'))[0]};

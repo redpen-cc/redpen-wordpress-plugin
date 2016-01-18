@@ -46,7 +46,7 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
     });
   };
 
-  pub.startValidation = function() {
+  pub.startValidation = function(what) {
     var lastText, lastKeyUp;
 
     function validateOnKeyUp() {
@@ -60,12 +60,17 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
       }, 500);
     }
 
-    textarea.on('keyup', validateOnKeyUp);
-
-    if (editor && editor.onKeyUp)
+    if (what.onKeyUp) {
+      editor = what;
       editor.onKeyUp.add(validateOnKeyUp);
+    }
+    else {
+      textarea = $(what);
+      textarea.on('keyup', validateOnKeyUp);
+    }
 
     validateOnKeyUp();
+    return pub;
   };
 
   pub.displayValidators = function(config) {
