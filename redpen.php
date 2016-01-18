@@ -19,7 +19,7 @@ function add_redpen_to_edit_form() {
 		</div><ol class="redpen-error-list"></ol>
 		<a class="redpen-settings-toggle" href="javascript:jQuery(\'.redpen-settings\').toggle()">RedPen Settings</a>
 		<div class="redpen-settings" style="display:none">
-			<ul class="redpen-active-validators"></ul>
+			<ul class="redpen-validators"></ul>
 		</div>
 	';
 }

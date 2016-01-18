@@ -69,9 +69,15 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
   };
 
   pub.displayValidators = function(config) {
-    var validatorContainer = $('.redpen-active-validators').empty();
-    $.each(config.validators, function(name) {
-      validatorContainer.append('<li><input type="checkbox" checked disabled>' + name + '</li>');
+    var validatorContainer = $('.redpen-validators').empty();
+    $.each(config.validators, function(name, options) {
+      var element = $('<li><label><input type="checkbox" checked disabled>' + name + '</label></li>').appendTo(validatorContainer);
+      $.each(options.languages, function(i, lang) {
+        element.append('<i> ' + lang + '</i>');
+      });
+      $.each(options.properties, function(name, value) {
+        $('<div class="redpen-validator-properties"></div>').text(name + '=' + value).appendTo(element);
+      });
     });
   };
 

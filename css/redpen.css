@@ -19,3 +19,10 @@
   vertical-align: middle;
 }
 
+.redpen-validators i {
+  color: #1C6100;
+}
+
+.redpen-validator-properties {
+  float: right;
+}

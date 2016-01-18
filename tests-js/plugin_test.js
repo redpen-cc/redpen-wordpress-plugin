@@ -261,20 +261,22 @@ describe('RedpenPlugin', function() {
     var validatorContainer;
 
     beforeEach(function() {
-      validatorContainer = $('<div class="redpen-active-validators"></div>').appendTo('body');
+      validatorContainer = $('<div class="redpen-validators"></div>').appendTo('body');
     });
 
-    it('validators list', function() {
+    it('displays validator list', function() {
       var validators = {
-        "Spelling": {},
-        "ImpoliteCursing": {}
+        "Spelling": {languages:['en']},
+        "ImpoliteCursing": {properties:{max_impoliteness:0.5}}
       };
 
       redpenPlugin.displayValidators({validators: validators});
 
-      expect(validatorContainer.find('li').length).toBe(2);
-      expect(validatorContainer.find('li').eq(0).text()).toBe('Spelling');
-      expect(validatorContainer.find('li').eq(1).text()).toBe('ImpoliteCursing');
+      var validatorElements = validatorContainer.find('li');
+      expect(validatorElements.length).toBe(2);
+      expect(validatorElements.eq(0).text()).toBe('Spelling en');
+      expect(validatorElements.eq(1).find('label').text()).toBe('ImpoliteCursing');
+      expect(validatorElements.eq(1).find('.redpen-validator-properties').text()).toBe('max_impoliteness=0.5');
     });
   });
 });
