@@ -15,11 +15,16 @@ function add_redpen_to_edit_form() {
 		<script src="' . $redpen_proxy_url . 'js/redpen.js"></script>
 		<script src="' . plugins_url('js/plugin.js', __FILE__) . '"></script>
 		<link rel="stylesheet" type="text/css" href="' . plugins_url('css/redpen.css', __FILE__) . '">
-		<div class="redpen-title">
-		</div><ol class="redpen-error-list"></ol>
-		<a class="redpen-settings-toggle" href="javascript:jQuery(\'.redpen-settings\').toggle()">RedPen Settings</a>
-		<div class="redpen-settings" style="display:none">
-			<ul class="redpen-validators"></ul>
+		<h2 class="redpen-title"></h2>
+		<ol class="redpen-error-list"></ol>
+		<div class="postbox closed">
+			<button type="button" class="handlediv button-link"><span class="toggle-indicator"></span></button>
+			<h2 class="redpen-settings-toggle hndle" onclick="jQuery(\'.redpen-settings\').closest(\'postbox\').toggleClass(\'closed\')">
+				<span class="redpen-red">Red</span>Pen Settings
+			</h2>
+			<div class="inside redpen-settings">
+				<ul class="redpen-validators"></ul>
+			</div>
 		</div>
 	';
 }

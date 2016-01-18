@@ -26,3 +26,18 @@
 .redpen-validator-properties {
   float: right;
 }
+
+/* WordPress styles */
+
+.postbox .redpen-settings-toggle.hndle {
+  cursor: pointer;
+}
+
+.postbox .handlediv .toggle-indicator:before {
+  font: 400 20px/1 dashicons;
+  content: "\f142";
+}
+
+.postbox.closed .handlediv .toggle-indicator:before {
+  content: "\f140";
+}
