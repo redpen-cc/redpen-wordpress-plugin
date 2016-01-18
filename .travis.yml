@@ -5,6 +5,7 @@ php:
 
 before_script:
   - npm install
+  - ./composer.phar install
 
 script:
   - phpunit tests-php
