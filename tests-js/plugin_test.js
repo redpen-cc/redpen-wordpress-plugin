@@ -4,11 +4,9 @@ describe('RedpenPlugin', function() {
   var errorContainer, title;
   var proxyUrl = 'http://wordpress/proxy.php/';
 
-  var mockedRedPensResponse = {
-    redpens: {
-      'en': {},
-      'ja': {}
-    }
+  var redpens = {
+    'en': {lang:'en', validators:{}, symbols:{}},
+    'ja': {lang:'ja', validators:{}, symbols:{}}
   };
 
   beforeEach(function() {
@@ -23,7 +21,7 @@ describe('RedpenPlugin', function() {
     redpen = {
       setBaseUrl: function(url) {},
       getRedPens: function(callback) {
-        callback(mockedRedPensResponse);
+        callback({redpens: redpens});
       }
     };
 
@@ -49,7 +47,7 @@ describe('RedpenPlugin', function() {
     });
 
     it('loads default configurations', function() {
-      expect(redpenPlugin.redpens).toBe(mockedRedPensResponse.redpens);
+      expect(redpenPlugin.redpens).toBe(redpens);
     });
 
   });
@@ -81,6 +79,7 @@ describe('RedpenPlugin', function() {
     function mockValidateJSON(validationResult) {
       redpen.validateJSON = function (args, callback) {
         expect(args.config.lang).toBe('en');
+        expect(args.config.symbols).toBe(redpens.en.symbols);
         expect(args.format).toBe('json2');
         expect(args.document).toBe(redpenPlugin._getDocumentText());
         callback(validationResult);
@@ -116,6 +115,7 @@ describe('RedpenPlugin', function() {
       redpen.validateJSON = jasmine.createSpy().and.callFake(function(args) {
         expect(args.document).toBe(japaneseText);
         expect(args.config.lang).toBe('ja');
+        expect(args.config.symbols).toBe(redpens.ja.symbols);
       });
 
       redpenPlugin.validate();
