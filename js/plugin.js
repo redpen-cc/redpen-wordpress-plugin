@@ -17,7 +17,7 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
   }
 
   pub.validate = function() {
-    var container = $('.redpen-error-list').empty();
+    var container = $('.redpen-error-list');
     var text = getDocumentText();
 
     redpen.detectLanguage(text, function(lang) {
@@ -27,6 +27,8 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
       var args = {config:config, document:text, format:'json2'};
 
       redpen.validateJSON(args, function(result) {
+        container.empty();
+
         $.each(result.errors, function(i, error) {
 
           $.each(error.errors, function(j, suberror) {
