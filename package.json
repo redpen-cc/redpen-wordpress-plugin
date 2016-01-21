@@ -1,7 +1,7 @@
 {
   "name": "redpen-wordpress-plugin",
   "scripts": {
-    "postinstall": "curl -z node_modules/phpunit.phar -o node_modules/phpunit.phar https://phar.phpunit.de/phpunit.phar --silent",
+    "postinstall": "curl -z node_modules/phpunit.phar -o node_modules/phpunit.phar -L https://phar.phpunit.de/phpunit.phar",
     "test": "karma start tests-js/karma.conf.js && php node_modules/phpunit.phar tests-php"
   },
   "devDependencies": {
