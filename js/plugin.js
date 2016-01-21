@@ -101,21 +101,7 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
 
       $.each(options.properties, function(key, value) {
         $('<div class="redpen-validator-properties"></div>').text(key + '=' + value).appendTo(element)
-          .on('click', function() {
-            var keyvalue = prompt(name, $(this).text());
-            if (keyvalue === null) return;
-
-            keyvalue = keyvalue.trim();
-            var parts = keyvalue.split('=', 2);
-            if (parts.length != 2) {
-              alert('Invalid property value');
-            }
-            else {
-              options.properties[parts[0]] = parts[1];
-              $(this).text(keyvalue);
-              pub.validate();
-            }
-          });
+          .on('click', function() {editValidatorProperties(name, options, $(this))});
       });
     });
   };
@@ -146,6 +132,22 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
       return textarea.val();
     else
       return breakTagsIntoLines(editor.getBody());
+  }
+
+  function editValidatorProperties(name, options, propertyElement) {
+    var keyvalue = prompt(name, propertyElement.text());
+    if (keyvalue === null) return;
+
+    keyvalue = keyvalue.trim();
+    var parts = keyvalue.split('=', 2);
+    if (parts.length != 2) {
+      alert('Invalid property value');
+    }
+    else {
+      options.properties[parts[0]] = parts[1];
+      propertyElement.text(keyvalue);
+      pub.validate();
+    }
   }
 
   function calculateGlobalOffset(textarea, position) {
