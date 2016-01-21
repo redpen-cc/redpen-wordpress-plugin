@@ -33,7 +33,7 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
             var message = $('<li class="redpen-error-message"></li>').text(suberror.message)
               .appendTo(container)
               .data('error', suberror)
-              .on('click', function() {pub.showErrorInText(this);});
+              .on('click', function() {showErrorInText(this);});
 
             $('<div class="redpen-error-validator"></div>')
               .text(suberror.validator)
@@ -157,7 +157,7 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
     return offset;
   }
 
-  pub.showErrorInText = function(li) {
+  function showErrorInText(li) {
     var error = $(li).data('error');
 
     if (isPlainText()) {
@@ -178,5 +178,5 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
       if (scrollY > offset.top) scrollTo(offset.left, offset.top);
       editor.getBody().focus();
     }
-  };
+  }
 }
