@@ -281,5 +281,19 @@ describe('RedpenPlugin', function() {
       expect(validatorElements.eq(1).find('label').text()).toBe('ImpoliteCursing');
       expect(validatorElements.eq(1).find('.redpen-validator-properties').text()).toBe('max_impoliteness=0.5');
     });
+
+    it('requests only enabled validators', function() {
+      redpens.en.validators = {
+        "Spelling": {languages:['en']},
+        "ImpoliteCursing": {properties:{max_impoliteness:0.5}, disabled: true}
+      };
+
+      var config = redpenPlugin._getConfiguration('en');
+
+      expect(config.lang).toBe('en');
+      expect(config.symbols).toBe(redpens.en.symbols);
+      expect(config.validators["Spelling"]).toBe(redpens.en.validators["Spelling"]);
+      expect(config.validators["ImpoliteCursing"]).toBeUndefined();
+    });
   });
 });
