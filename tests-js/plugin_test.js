@@ -178,6 +178,7 @@ describe('RedpenPlugin', function() {
         getSel: function() {return selection},
         getRng: function() {return range}
       };
+      editor.container = document.documentElement;
 
       textarea.hide();
       redpenPlugin.validate();
