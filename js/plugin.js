@@ -33,7 +33,7 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
             var message = $('<li class="redpen-error-message"></li>').text(suberror.message)
               .appendTo(container)
               .data('error', suberror)
-              .on('click', function() {pub.showErrorInText(this, textarea);});
+              .on('click', function() {pub.showErrorInText(this);});
 
             $('<div class="redpen-error-validator"></div>')
               .text(suberror.validator)
@@ -157,7 +157,7 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
     return offset;
   }
 
-  pub.showErrorInText = function(li, textarea) {
+  pub.showErrorInText = function(li) {
     var error = $(li).data('error');
 
     if (isPlainText()) {
