@@ -11,6 +11,7 @@ describe('RedpenPlugin', function() {
 
   beforeEach(function() {
     $('body').empty();
+    localStorage.clear();
 
     errorContainer = $('<ol class="redpen-error-list"></ol>').appendTo('body');
     title = $('<div class="redpen-title"></div>').appendTo('body');
@@ -46,10 +47,20 @@ describe('RedpenPlugin', function() {
       expect(redpen.setBaseUrl).toHaveBeenCalledWith(proxyUrl)
     });
 
-    it('loads default configurations', function() {
+    it('loads default configuration from server', function() {
       expect(redpenPlugin.redpens).toBe(redpens);
     });
 
+    it('stores configuration for next visit', function() {
+      expect(localStorage.redpens).toBe(JSON.stringify(redpens));
+    });
+
+    it('loads previous configuration from localStorage', function() {
+      var redpens = {hello: 'world'};
+      localStorage.redpens = JSON.stringify(redpens);
+      redpenPlugin = new RedPenPlugin(proxyUrl, textarea, editor);
+      expect(redpenPlugin.redpens).toEqual(redpens);
+    });
   });
 
   describe('getDocumentText', function() {

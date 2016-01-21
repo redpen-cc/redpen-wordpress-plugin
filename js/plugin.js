@@ -4,11 +4,14 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
   textarea = $(textarea);
   var title = $('.redpen-title');
 
+  if (localStorage.redpens)
+    pub.redpens = JSON.parse(localStorage.redpens);
+
   if (window.redpen) {
     redpen.setBaseUrl(proxyUrl);
-    redpen.getRedPens(function (result) {
-      pub.redpens = result.redpens;
-    });
+
+    if (!pub.redpens)
+      loadDefaultConfiguration();
   }
   else {
     $.get(proxyUrl + 'redpen_base_url', function(redpenServerUrl) {
@@ -47,6 +50,17 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
       });
     });
   };
+
+  function loadDefaultConfiguration() {
+    redpen.getRedPens(function (result) {
+      pub.redpens = result.redpens;
+      onConfigurationChange();
+    });
+  }
+
+  function onConfigurationChange() {
+    localStorage.redpens = JSON.stringify(pub.redpens);
+  }
 
   pub._getConfiguration = getConfiguration;
   function getConfiguration(lang) {
@@ -93,6 +107,7 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
 
       var checkbox = element.find(':checkbox').on('change', function() {
         config.validators[name].disabled = !this.checked;
+        onConfigurationChange();
         pub.validate();
       });
       checkbox.attr('checked', !options.disabled);
@@ -154,6 +169,7 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
     else {
       options.properties[parts[0]] = parts[1];
       propertyElement.text(keyvalue);
+      onConfigurationChange();
       pub.validate();
     }
   }
