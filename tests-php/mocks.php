@@ -16,6 +16,6 @@ function add_filter($hook, $func) {
 }
 
 function plugins_url($resource_path) {
-    return 'http://localhost/wp-content/plugins/redpen/'.$resource_path;
+    return 'http://localhost/wp-content/plugins/redpen'.$resource_path;
 }
 ?>

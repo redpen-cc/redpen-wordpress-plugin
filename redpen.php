@@ -6,15 +6,15 @@ Description: Validates posts with RedPen while editing.
 Author: Anton Keks & Takahiko Ito
 Version: 0.1
 */
-
-$redpen_proxy_url = plugins_url('proxy.php', __FILE__) . '/';
+$redpen_proxy_url = plugins_url('/proxy.php/', __FILE__);
 
 function add_redpen_to_edit_form() {
 	global $redpen_proxy_url;
-	echo '
-		<script src="' . $redpen_proxy_url . 'js/redpen.js"></script>
-		<script src="' . plugins_url('js/plugin.js', __FILE__) . '"></script>
-		<link rel="stylesheet" type="text/css" href="' . plugins_url('css/redpen.css', __FILE__) . '">
+	$plugin_root = plugins_url('/', __FILE__);
+	echo <<< HTML
+		<script src="{$redpen_proxy_url}js/redpen.js"></script>
+		<script src="{$plugin_root}js/plugin.js"></script>
+		<link rel="stylesheet" type="text/css" href="{$plugin_root}css/redpen.css">
 		<div class="redpen-container">
 			<div class="postbox">
 				<h2 class="redpen-title"></h2>
@@ -33,10 +33,10 @@ function add_redpen_to_edit_form() {
 		<script>
 		jQuery(function($) {
 			$(".redpen-container").appendTo("#normal-sortables");
-			window.redpenPlugin = new RedPenPlugin(\'' . $redpen_proxy_url .'\').autoValidate(\'#content\');
+			window.redpenPlugin = new RedPenPlugin('$redpen_proxy_url').autoValidate('#content');
 		});
 		</script>
-	';
+HTML;
 }
 
 function start_redpen_on_tinymce_init($settings) {
