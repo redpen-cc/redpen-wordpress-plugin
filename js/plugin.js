@@ -171,6 +171,9 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
       range.setEnd(textNodes[error.position.end.line-1], error.position.end.offset);
       selection.removeAllRanges();
       selection.addRange(range);
+
+      var offset = $(editor.container).offset();
+      if (scrollY > offset.top) scrollTo(offset.left, offset.top);
       editor.getBody().focus();
     }
   };
