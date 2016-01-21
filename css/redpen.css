@@ -23,6 +23,10 @@
   color: #1C6100;
 }
 
+.redpen-validators li:hover {
+  background: #eee;
+}
+
 .redpen-validator-properties {
   cursor: pointer;
 }
