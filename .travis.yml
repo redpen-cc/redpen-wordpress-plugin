@@ -7,5 +7,4 @@ before_script:
   - npm install
 
 script:
-  - phpunit tests-php
   - npm test

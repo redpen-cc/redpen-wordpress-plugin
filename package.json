@@ -1,12 +1,12 @@
 {
   "name": "redpen-wordpress-plugin",
   "scripts": {
-    "test": "karma start tests-js/karma.conf.js --browsers PhantomJS"
+    "postinstall": "curl -z node_modules/phpunit.phar -o node_modules/phpunit.phar https://phar.phpunit.de/phpunit.phar --silent",
+    "test": "karma start tests-js/karma.conf.js && php node_modules/phpunit.phar tests-php"
   },
   "devDependencies": {
     "jasmine-core": "^2.2.0",
     "karma": "^0.13.19",
-    "karma-chrome-launcher": "^0.1.7",
     "karma-phantomjs-launcher": "^0.2.3",
     "karma-jasmine": "^0.3.5"
   }
