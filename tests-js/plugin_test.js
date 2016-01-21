@@ -80,7 +80,7 @@ describe('RedpenPlugin', function() {
 
     function mockValidateJSON(validationResult) {
       redpen.validateJSON = function (args, callback) {
-        expect(args.config).toBe(mockedRedPensResponse.redpens.en);
+        expect(args.config.lang).toBe('en');
         expect(args.format).toBe('json2');
         expect(args.document).toBe(redpenPlugin._getDocumentText());
         callback(validationResult);
@@ -107,17 +107,19 @@ describe('RedpenPlugin', function() {
     it('language is detected and the correct configuration is chosen', function() {
       var japaneseText = '本稿では,複数の計算機（クラスタ）でで動作する各サーバーを「インスタンス」と呼びまます。';
       textarea.val(japaneseText);
+
       redpen.detectLanguage = jasmine.createSpy().and.callFake(function(text, callback) {
         expect(text).toBe(japaneseText);
         callback('ja');
       });
-      redpen.validateJSON = jasmine.createSpy();
+
+      redpen.validateJSON = jasmine.createSpy().and.callFake(function(args) {
+        expect(args.document).toBe(japaneseText);
+        expect(args.config.lang).toBe('ja');
+      });
 
       redpenPlugin.validate();
-
-      expect(redpen.validateJSON).toHaveBeenCalledWith(
-        jasmine.objectContaining({config: mockedRedPensResponse.redpens.ja, document: japaneseText}),
-        jasmine.any(Function));
+      expect(redpen.validateJSON).toHaveBeenCalled();
     });
 
     it('displays nothing if no errors', function () {

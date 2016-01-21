@@ -21,10 +21,10 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
     var text = getDocumentText();
 
     redpen.detectLanguage(text, function(lang) {
-      var config = pub.redpens[lang];
-      pub.displayValidators(config);
+      pub.displayValidators(pub.redpens[lang]);
+      var config = getConfiguration(lang);
 
-      var args = {config:config, document:text, documenParser:'PLAIN', format:'json2'};
+      var args = {config:config, document:text, format:'json2'};
 
       redpen.validateJSON(args, function(result) {
         $.each(result.errors, function(i, error) {
@@ -45,6 +45,17 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
       });
     });
   };
+
+  pub._getConfiguration = getConfiguration;
+  function getConfiguration(lang) {
+    var validators = {};
+    $.each(pub.redpens[lang].validators, function(name, options) {
+      if (!options.disabled)
+        validators[name] = options;
+    });
+
+    return {lang: lang, validators: validators, symbols: pub.redpens[lang].symbols};
+  }
 
   pub.autoValidate = function(what) {
     var lastText, lastKeyUp;
@@ -76,10 +87,18 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
   pub.displayValidators = function(config) {
     var validatorContainer = $('.redpen-validators').empty();
     $.each(config.validators, function(name, options) {
-      var element = $('<li><label><input type="checkbox" checked disabled>' + name + '</label></li>').appendTo(validatorContainer);
+      var element = $('<li><label><input type="checkbox" value="' + name + '">' + name + '</label></li>').appendTo(validatorContainer);
+
+      var checkbox = element.find(':checkbox').on('change', function() {
+        config.validators[name].disabled = !this.checked;
+        pub.validate();
+      });
+      checkbox.attr('checked', !options.disabled);
+
       $.each(options.languages, function(i, lang) {
         element.append('<i> ' + lang + '</i>');
       });
+
       $.each(options.properties, function(name, value) {
         $('<div class="redpen-validator-properties"></div>').text(name + '=' + value).appendTo(element);
       });
