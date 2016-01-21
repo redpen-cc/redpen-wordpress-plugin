@@ -31,10 +31,10 @@ function add_redpen_to_edit_form() {
 			</div>
 		</div>
 		<script>
-		jQuery(function($) {
-			$(".redpen-container").appendTo("#normal-sortables");
-			window.redpenPlugin = new RedPenPlugin('$redpen_proxy_url').autoValidate('#content');
-		});
+			jQuery(function($) {
+				$('.redpen-container').appendTo('#normal-sortables');
+				window.redpenPlugin = new RedPenPlugin('$redpen_proxy_url').autoValidate('#content');
+			});
 		</script>
 HTML;
 }
