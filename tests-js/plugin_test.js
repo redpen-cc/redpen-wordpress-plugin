@@ -295,5 +295,23 @@ describe('RedpenPlugin', function() {
       expect(config.validators["Spelling"]).toBe(redpens.en.validators["Spelling"]);
       expect(config.validators["ImpoliteCursing"]).toBeUndefined();
     });
+
+    it('allows to change validator properties', function() {
+      var validators = {
+        "ImpoliteCursing": {properties:{max_impoliteness:0.5}}
+      };
+
+      redpenPlugin.displayValidators({validators: validators});
+
+      window.prompt = jasmine.createSpy().and.returnValue('max_impoliteness=0.2 ');
+      redpenPlugin.validate = jasmine.createSpy();
+
+      validatorContainer.find('.redpen-validator-properties').click();
+
+      expect(window.prompt).toHaveBeenCalledWith('ImpoliteCursing', 'max_impoliteness=0.5');
+      expect(validatorContainer.find('.redpen-validator-properties').text()).toBe('max_impoliteness=0.2');
+      expect(validators['ImpoliteCursing'].properties.max_impoliteness).toBe('0.2');
+      expect(redpenPlugin.validate).toHaveBeenCalled();
+    });
   });
 });

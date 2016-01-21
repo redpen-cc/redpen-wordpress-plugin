@@ -24,6 +24,10 @@
 }
 
 .redpen-validator-properties {
+  cursor: pointer;
+}
+
+.redpen-validator-properties {
   float: right;
 }
 

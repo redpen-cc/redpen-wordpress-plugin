@@ -99,8 +99,23 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
         element.append('<i> ' + lang + '</i>');
       });
 
-      $.each(options.properties, function(name, value) {
-        $('<div class="redpen-validator-properties"></div>').text(name + '=' + value).appendTo(element);
+      $.each(options.properties, function(key, value) {
+        $('<div class="redpen-validator-properties"></div>').text(key + '=' + value).appendTo(element)
+          .on('click', function() {
+            var keyvalue = prompt(name, $(this).text());
+            if (keyvalue === null) return;
+
+            keyvalue = keyvalue.trim();
+            var parts = keyvalue.split('=', 2);
+            if (parts.length != 2) {
+              alert('Invalid property value');
+            }
+            else {
+              options.properties[parts[0]] = parts[1];
+              $(this).text(keyvalue);
+              pub.validate();
+            }
+          });
       });
     });
   };
