@@ -266,6 +266,7 @@ describe('RedpenPlugin', function() {
 
     beforeEach(function() {
       validatorContainer = $('<div class="redpen-validators"></div>').appendTo('body');
+      redpenPlugin.validate = jasmine.createSpy();
     });
 
     it('displays validator list', function() {
@@ -278,7 +279,8 @@ describe('RedpenPlugin', function() {
 
       var validatorElements = validatorContainer.find('li');
       expect(validatorElements.length).toBe(2);
-      expect(validatorElements.eq(0).text()).toBe('Spelling en');
+      expect(validatorElements.eq(0).find('label').text()).toBe('Spelling');
+      expect(validatorElements.eq(0).find('i').text().trim()).toBe('en');
       expect(validatorElements.eq(1).find('label').text()).toBe('ImpoliteCursing');
       expect(validatorElements.eq(1).find('.redpen-validator-properties').text()).toBe('max_impoliteness=0.5');
     });
@@ -305,7 +307,6 @@ describe('RedpenPlugin', function() {
       redpenPlugin.displayValidators({validators: validators});
 
       window.prompt = jasmine.createSpy().and.returnValue('max_impoliteness=0.2 ');
-      redpenPlugin.validate = jasmine.createSpy();
 
       validatorContainer.find('.redpen-validator-properties').click();
 
@@ -313,6 +314,22 @@ describe('RedpenPlugin', function() {
       expect(validatorContainer.find('.redpen-validator-properties').text()).toBe('max_impoliteness=0.2');
       expect(validators['ImpoliteCursing'].properties.max_impoliteness).toBe('0.2');
       expect(redpenPlugin.validate).toHaveBeenCalled();
+    });
+
+    it('allows adding new validator properties', function() {
+      var validators = {
+        "ImpoliteCursing": {properties:{}}
+      };
+
+      redpenPlugin.displayValidators({validators: validators});
+      window.prompt = jasmine.createSpy().and.returnValue('hello=world');
+
+      expect(validatorContainer.find('.redpen-validator-properties').text()).toBe('+');
+      validatorContainer.find('.redpen-validator-properties').click();
+
+      expect(window.prompt).toHaveBeenCalledWith('ImpoliteCursing', '');
+      expect(validatorContainer.find('.redpen-validator-properties').text()).toBe('hello=world');
+      expect(validators['ImpoliteCursing'].properties.hello).toBe('world');
     });
   });
 });

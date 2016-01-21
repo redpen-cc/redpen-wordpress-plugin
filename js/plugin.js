@@ -100,9 +100,14 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
       });
 
       $.each(options.properties, function(key, value) {
-        $('<div class="redpen-validator-properties"></div>').text(key + '=' + value).appendTo(element)
-          .on('click', function() {editValidatorProperties(name, options, $(this))});
+        $('<div class="redpen-validator-properties"></div>').text(key + '=' + value).appendTo(element);
       });
+
+      if ($.isEmptyObject(options.properties)) {
+        $('<div class="redpen-validator-properties"></div>').text('+').appendTo(element);
+      }
+
+      element.find('.redpen-validator-properties').on('click', function() {editValidatorProperties(name, options, $(this))});
     });
   };
 
@@ -135,13 +140,14 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
   }
 
   function editValidatorProperties(name, options, propertyElement) {
-    var keyvalue = prompt(name, propertyElement.text());
+    var keyvalue = propertyElement.text();
+    keyvalue = prompt(name, keyvalue.indexOf('=') > 0 ? keyvalue : '');
     if (keyvalue === null) return;
 
     keyvalue = keyvalue.trim();
     var parts = keyvalue.split('=', 2);
     if (parts.length != 2) {
-      alert('Invalid property value');
+      alert(keyvalue + ': invalid property, must be in "key=value" form');
     }
     else {
       options.properties[parts[0]] = parts[1];
