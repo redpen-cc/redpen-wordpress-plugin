@@ -36,12 +36,11 @@ JavaScript tests will be run in PhantomJS by default. You can change the browser
 
 ### Configuring IntelliJ IDEA
 
-To make development easier, we recommend using the IntelliJ IDEA or PHPStorm, install the following plugins:
+To make development easier, preconfigured IntelliJ IDEA or PHPStorm project files are already in this repository.
 
-* PHP
+Install the following plugins:
+
+* PHP (if using IDEA)
 * Karma
 
-Then in Settings:
-
-* Configure location of PHP interpreter
-* Set the location of PHPUnit to *node_modules/phpunit.phar*
+Run configurations are also provided for running of unit tests.
