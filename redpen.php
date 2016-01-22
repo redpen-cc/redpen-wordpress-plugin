@@ -8,7 +8,7 @@ Version: 0.1
 */
 $redpen_proxy_url = plugins_url('/proxy.php/', __FILE__);
 
-function add_redpen_to_edit_form() {
+function redpen_init() {
 	global $redpen_proxy_url;
 	$plugin_root = plugins_url('/', __FILE__);
 	echo <<< HTML
@@ -48,13 +48,13 @@ function redpen_add_meta_boxes() {
 
 function redpen_errors_content($post) {
 	echo '<ol class="redpen-error-list"></ol>';
+	redpen_init();
 }
 
 function redpen_config_content($post) {
 	echo '<ul class="redpen-validators"></ul>';
 }
 
-add_action('edit_form_advanced', 'add_redpen_to_edit_form');
 add_filter('tiny_mce_before_init', 'start_redpen_on_tinymce_init');
 add_action('add_meta_boxes', 'redpen_add_meta_boxes');
 ?>
