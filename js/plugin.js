@@ -60,6 +60,7 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
 
   function onConfigurationChange() {
     localStorage.redpens = JSON.stringify(pub.redpens);
+    if (pub.validate) pub.validate();
   }
 
   pub._getConfiguration = getConfiguration;
@@ -72,6 +73,11 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
 
     return {lang: lang, validators: validators, symbols: pub.redpens[lang].symbols};
   }
+
+  pub.resetConfiguration = function() {
+    loadDefaultConfiguration();
+    pub.validate();
+  };
 
   pub.autoValidate = function(what) {
     var lastText, lastKeyUp;
@@ -110,7 +116,6 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
       var checkbox = element.find(':checkbox').on('change', function() {
         config.validators[name].disabled = !this.checked;
         onConfigurationChange();
-        pub.validate();
       });
       checkbox.attr('checked', !options.disabled);
 
@@ -172,7 +177,6 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
       options.properties[parts[0]] = parts[1];
       propertyElement.text(keyvalue);
       onConfigurationChange();
-      pub.validate();
     }
   }
 

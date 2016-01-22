@@ -52,7 +52,10 @@ function redpen_errors_content($post) {
 }
 
 function redpen_config_content($post) {
-	echo '<ul class="redpen-validators"></ul>';
+	echo <<< HTML
+		<ul class="redpen-validators"></ul>
+		<button type="button" class="button redpen-reset" onclick="redpenPlugin.resetConfiguration()">Reset to defaults</button>
+HTML;
 }
 
 add_filter('tiny_mce_before_init', 'start_redpen_on_tinymce_init');

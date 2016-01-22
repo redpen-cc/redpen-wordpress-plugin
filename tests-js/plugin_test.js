@@ -348,5 +348,12 @@ describe('RedpenPlugin', function() {
       expect(validatorContainer.find('.redpen-validator-properties').text()).toBe('hello=world');
       expect(validators['ImpoliteCursing'].properties.hello).toBe('world');
     });
+
+    it('can reset to default', function() {
+      redpenPlugin.redpens = {};
+      redpenPlugin.resetConfiguration();
+      expect(redpenPlugin.redpens).toBe(redpens);
+      expect(redpenPlugin.validate).toHaveBeenCalled();
+    });
   });
 });
