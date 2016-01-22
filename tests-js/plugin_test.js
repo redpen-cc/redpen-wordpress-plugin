@@ -308,7 +308,7 @@ describe('RedpenPlugin', function() {
         "ImpoliteCursing": {properties:{max_impoliteness:0.5}, disabled: true}
       };
 
-      var config = redpenPlugin._getConfiguration('en');
+      var config = redpenPlugin._prepareConfigForValidation('en');
 
       expect(config.lang).toBe('en');
       expect(config.symbols).toBe(redpens.en.symbols);
