@@ -21,7 +21,7 @@ function add_meta_box($id, $title, $callback, $screen, $context, $priority) {
     $registered_meta_boxes[$id] = func_get_args();
 }
 
-function plugins_url($resource_path) {
+function plugins_url($resource_path, $file) {
     return 'http://localhost/wp-content/plugins/redpen'.$resource_path;
 }
 ?>
