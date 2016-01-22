@@ -4,12 +4,14 @@
 
 ## Prerequisites
 
-To use the plugin, you need to have RedPen Server instance running on the same machine.
+To use the plugin, you need to have **RedPen Server** instance running on the same machine.
+Currently, still unreleased version from [master branch](https://github.com/redpen-cc/redpen) is required.
+
 Please refer to [RedPen Server documentation](http://redpen.cc/docs/latest/index.html#server) for more details.
 
 ## Installation
 
-Before installing make sure that your WordPress is up and running properly.
+Before installing make sure that both **WordPress** and **RedPen Server** are up and running properly.
 
 * Either link or copy this directory to *wordpress/wp-content/plugins*, e.g.
     ```ln -s redpen-wordpress-plugin wordpress/wp-content/plugins```
