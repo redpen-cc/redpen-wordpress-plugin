@@ -131,7 +131,7 @@ if ($url == 'redpen_base_url') {
 }
 
 if (empty($url)) {
-    die("No URL provided");
+    die("Bad request");
 } else if (strpos($url, ":/") !== strpos($url, "://")) {
     //Work around the fact that some web servers (e.g. IIS 8.5) change double slashes appearing in the URL to a single slash.
     //See https://github.com/joshdick/miniProxy/pull/14
