@@ -15,7 +15,7 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
   }
   else {
     $.get(proxyUrl + 'redpen_base_url', function(redpenServerUrl) {
-      title.html('<span class="redpen-red">Red</span>Pen server is not running on the same machine as WordPress at <strong>' + redpenServerUrl + '</strong>, you can change it in <strong>config.php</strong>');
+      title.html('server is not running on the same machine as WordPress at <strong>' + redpenServerUrl + '</strong>, you can change it in <strong>config.php</strong>');
     });
   }
 
@@ -46,7 +46,7 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
           });
         });
 
-        title.html('<span class="redpen-red">Red</span>Pen found ' + container.children().length + ' errors');
+        title.text('found ' + container.children().length + ' errors');
       });
     });
   };

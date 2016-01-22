@@ -40,7 +40,7 @@ describe('RedpenPlugin', function() {
         callback('http://localhost:8080/');
       });
       redpenPlugin = new RedPenPlugin(proxyUrl, textarea, editor);
-      expect(title.text()).toBe('RedPen server is not running on the same machine as WordPress at http://localhost:8080/, you can change it in config.php');
+      expect(title.text()).toBe('server is not running on the same machine as WordPress at http://localhost:8080/, you can change it in config.php');
     });
 
     it('passes baseUrl to redpen API', function() {
@@ -137,7 +137,7 @@ describe('RedpenPlugin', function() {
       mockValidateJSON({errors: []});
       redpenPlugin.validate();
       expect(errorContainer.find('li').length).toBe(0);
-      expect(title.text()).toBe('RedPen found 0 errors');
+      expect(title.text()).toBe('found 0 errors');
     });
 
     it('displays all errors', function () {
@@ -155,7 +155,7 @@ describe('RedpenPlugin', function() {
       expect(items.eq(1).text()).toMatch(/You cannot use !/);
       expect(items.eq(1).text()).toMatch(/WrongSymbol/);
 
-      expect(title.text()).toBe('RedPen found 2 errors');
+      expect(title.text()).toBe('found 2 errors');
     });
 
     it('highlights plain text when clicking on error message', function() {
