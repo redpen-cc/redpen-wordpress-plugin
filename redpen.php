@@ -15,26 +15,8 @@ function add_redpen_to_edit_form() {
 		<script src="{$redpen_proxy_url}js/redpen.js"></script>
 		<script src="{$plugin_root}js/plugin.js"></script>
 		<link rel="stylesheet" type="text/css" href="{$plugin_root}css/redpen.css">
-		<div class="redpen-container">
-			<div class="postbox">
-				<h2 class="redpen-title"></h2>
-				<ol class="redpen-error-list"></ol>
-			</div>
-			<div class="postbox closed">
-				<button type="button" class="handlediv button-link"><span class="toggle-indicator"></span></button>
-				<h2 class="redpen-settings-toggle hndle">
-					<span class="redpen-red">Red</span>Pen Settings
-				</h2>
-				<div class="inside redpen-settings">
-					<ul class="redpen-validators"></ul>
-				</div>
-			</div>
-		</div>
 		<script>
-			jQuery(function($) {
-				$('.redpen-container').appendTo('#normal-sortables');
-				window.redpenPlugin = new RedPenPlugin('$redpen_proxy_url').autoValidate('#content');
-			});
+		    var redpenPlugin = new RedPenPlugin('$redpen_proxy_url').autoValidate('#content');
 		</script>
 HTML;
 }
@@ -44,6 +26,35 @@ function start_redpen_on_tinymce_init($settings) {
 	return $settings;
 }
 
+function redpen_add_meta_boxes() {
+	add_meta_box(
+		'redpen-errors',
+		'<span class="redpen-red">Red</span>Pen <span class="redpen-title"></span>',
+		'redpen_errors_content',
+		array('post', 'page'),
+		'advanced',
+		'high'
+	);
+
+	add_meta_box(
+		'redpen-config',
+		'<span class="redpen-red">Red</span>Pen configuration',
+		'redpen_config_content',
+		array('post', 'page'),
+		'advanced',
+		'low'
+	);
+}
+
+function redpen_errors_content($post) {
+	echo '<ol class="redpen-error-list"></ol>';
+}
+
+function redpen_config_content($post) {
+	echo '<ul class="redpen-validators"></ul>';
+}
+
 add_action('edit_form_advanced', 'add_redpen_to_edit_form');
 add_filter('tiny_mce_before_init', 'start_redpen_on_tinymce_init');
+add_action('add_meta_boxes', 'redpen_add_meta_boxes');
 ?>
