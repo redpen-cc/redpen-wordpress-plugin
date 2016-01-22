@@ -282,7 +282,7 @@ describe('RedpenPlugin', function() {
     });
 
     it('displays detected language', function() {
-      redpenPlugin.displayValidators({lang: 'et', validators: {}});
+      redpenPlugin.renderConfiguration({lang: 'et', validators: {}});
       expect(langContainer.text()).toBe('et');
     });
 
@@ -292,7 +292,7 @@ describe('RedpenPlugin', function() {
         "ImpoliteCursing": {properties:{max_impoliteness:0.5}}
       };
 
-      redpenPlugin.displayValidators({validators: validators});
+      redpenPlugin.renderConfiguration({validators: validators});
 
       var validatorElements = validatorContainer.find('li');
       expect(validatorElements.length).toBe(2);
@@ -321,7 +321,7 @@ describe('RedpenPlugin', function() {
         "ImpoliteCursing": {properties:{max_impoliteness:0.5}}
       };
 
-      redpenPlugin.displayValidators({validators: validators});
+      redpenPlugin.renderConfiguration({validators: validators});
 
       window.prompt = jasmine.createSpy().and.returnValue('max_impoliteness=0.2 ');
 
@@ -338,7 +338,7 @@ describe('RedpenPlugin', function() {
         "ImpoliteCursing": {properties:{}}
       };
 
-      redpenPlugin.displayValidators({validators: validators});
+      redpenPlugin.renderConfiguration({validators: validators});
       window.prompt = jasmine.createSpy().and.returnValue('hello=world');
 
       expect(validatorContainer.find('.redpen-validator-properties').text()).toBe('+');

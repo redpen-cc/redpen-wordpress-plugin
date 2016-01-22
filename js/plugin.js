@@ -24,7 +24,7 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
     var text = getDocumentText();
 
     redpen.detectLanguage(text, function(lang) {
-      pub.displayValidators(pub.redpens[lang]);
+      pub.renderConfiguration(pub.redpens[lang]);
       var config = getConfiguration(lang);
 
       var args = {config:config, document:text, format:'json2'};
@@ -106,7 +106,7 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
     return pub;
   };
 
-  pub.displayValidators = function(config) {
+  pub.renderConfiguration = function(config) {
     $('.redpen-lang').text(config.lang);
     var validatorContainer = $('.redpen-validators').empty();
 
