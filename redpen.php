@@ -38,7 +38,7 @@ function redpen_add_meta_boxes() {
 
 	add_meta_box(
 		'redpen-config',
-		'<span class="redpen-red">Red</span>Pen configuration',
+		'<span class="redpen-red">Red</span>Pen configuration (<span class="redpen-lang"></span>)',
 		'redpen_config_content',
 		array('post', 'page'),
 		'advanced',

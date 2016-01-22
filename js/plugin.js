@@ -101,7 +101,9 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
   };
 
   pub.displayValidators = function(config) {
+    $('.redpen-lang').text(config.lang);
     var validatorContainer = $('.redpen-validators').empty();
+
     $.each(config.validators, function(name, options) {
       var element = $('<li><label><input type="checkbox" value="' + name + '">' + name + '</label></li>').appendTo(validatorContainer);
 

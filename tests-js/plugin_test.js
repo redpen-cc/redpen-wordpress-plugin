@@ -273,11 +273,17 @@ describe('RedpenPlugin', function() {
   });
 
   describe('config', function() {
-    var validatorContainer;
+    var validatorContainer, langContainer;
 
     beforeEach(function() {
       validatorContainer = $('<div class="redpen-validators"></div>').appendTo('body');
+      langContainer = $('<div class="redpen-lang"></div>').appendTo('body');
       redpenPlugin.validate = jasmine.createSpy();
+    });
+
+    it('displays detected language', function() {
+      redpenPlugin.displayValidators({lang: 'et', validators: {}});
+      expect(langContainer.text()).toBe('et');
     });
 
     it('displays validator list', function() {
