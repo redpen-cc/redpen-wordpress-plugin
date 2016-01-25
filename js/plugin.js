@@ -41,7 +41,7 @@ function RedPenPlugin(proxyUrl) {
 
             var message = $('<li class="redpen-error-message"></li>').text(suberror.message)
               .appendTo(container)
-              .on('click', function() {showErrorInText(suberror, errorNode);});
+              .on('click', function() {ed.showErrorInText(suberror, errorNode);});
 
             $('<div class="redpen-error-validator"></div>')
               .text(suberror.validator)
@@ -154,32 +154,6 @@ function RedPenPlugin(proxyUrl) {
       options.properties[parts[0]] = parts[1];
       propertyElement.text(keyvalue);
       onConfigurationChange();
-    }
-  }
-
-  function calculateGlobalOffset(textarea, position) {
-    var lines = textarea.val().split('\n');
-    var offset = position.offset;
-    for (var i = 0; i < position.line - 1; i++) offset += lines[i].length + 1;
-    return offset;
-  }
-
-  function showErrorInText(error, node) {
-    if (ed.isPlainText()) {
-      var start = calculateGlobalOffset(textarea, error.position.start);
-      var end = calculateGlobalOffset(textarea, error.position.end);
-      textarea[0].setSelectionRange(start, end);
-    }
-    else {
-      var selection = editor.selection.getSel();
-      var range = editor.selection.getRng();
-      range.selectNode(node);
-      selection.removeAllRanges();
-      selection.addRange(range);
-
-      var offset = $(editor.container).offset();
-      if (scrollY > offset.top) scrollTo(offset.left, offset.top);
-      editor.getBody().focus();
     }
   }
 
