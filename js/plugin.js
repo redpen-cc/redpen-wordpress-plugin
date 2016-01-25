@@ -1,7 +1,6 @@
 function RedPenPlugin(proxyUrl) {
   var pub = this;
   var $ = jQuery;
-  var editor;
   var ed = new RedPenEditor();
   var title = $('.redpen-title');
 
@@ -23,7 +22,6 @@ function RedPenPlugin(proxyUrl) {
   pub.validate = function() {
     var container = $('.redpen-error-list');
     var text = ed.getDocumentText();
-    var textNodes = ed.isPlainText() ? null : ed.findTextNodes(editor.getBody());
 
     redpen.detectLanguage(text, function(lang) {
       pub.renderConfiguration(pub.redpens[lang]);
@@ -37,7 +35,7 @@ function RedPenPlugin(proxyUrl) {
         $.each(result.errors, function(i, error) {
 
           $.each(error.errors, function(j, suberror) {
-            var errorNode = ed.isPlainText() ? null : ed.highlightError(suberror, textNodes);
+            var errorNode = ed.highlightError(suberror);
 
             var message = $('<li class="redpen-error-message"></li>').text(suberror.message)
               .appendTo(container)
@@ -98,7 +96,6 @@ function RedPenPlugin(proxyUrl) {
 
     ed.initFor(what);
     ed.onKeyUp(validateOnKeyUp);
-    if (!ed.isPlainText()) editor = what;
 
     validateOnKeyUp();
     return pub;

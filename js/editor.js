@@ -44,6 +44,8 @@ function RedPenPlainEditor(pub, $, textarea) {
 }
 
 function RedPenVisualEditor(pub, $, editor) {
+  var textNodes;
+
   pub.isPlainText = function() {
     return false;
   };
@@ -57,7 +59,7 @@ function RedPenVisualEditor(pub, $, editor) {
     editor.onKeyUp.add(handler);
   };
 
-  pub.highlightError = function(error, textNodes) {
+  pub.highlightError = function(error) {
     var node = textNodes[error.position.start.line-1];
     var textWithError = node.data.substring(error.position.start.offset, error.position.end.offset);
 
@@ -81,7 +83,6 @@ function RedPenVisualEditor(pub, $, editor) {
     editor.getBody().focus();
   };
 
-  pub.findTextNodes = findTextNodes;
   function findTextNodes(node) {
     var textNodes = [];
     function recurse(i, node) {
@@ -94,7 +95,7 @@ function RedPenVisualEditor(pub, $, editor) {
   }
 
   function breakTagsIntoLines(node) {
-    var textNodes = findTextNodes(node);
+    textNodes = findTextNodes(node);
     return textNodes.map(function(node) {return node.textContent}).join('\n');
   }
 
