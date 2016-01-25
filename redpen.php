@@ -7,14 +7,14 @@ Author: Anton Keks & Takahiko Ito
 Version: 0.1
 */
 $redpen_proxy_url = plugins_url('/proxy.php/', __FILE__);
+$redpen_plugin_root = plugins_url('/', __FILE__);
 
 function redpen_init() {
-	global $redpen_proxy_url;
-	$plugin_root = plugins_url('/', __FILE__);
+	global $redpen_proxy_url, $redpen_plugin_root;
 	echo <<< HTML
 		<script src="{$redpen_proxy_url}js/redpen.js"></script>
-		<script src="{$plugin_root}js/plugin.js"></script>
-		<link rel="stylesheet" type="text/css" href="{$plugin_root}css/redpen.css">
+		<script src="{$redpen_plugin_root}js/plugin.js"></script>
+		<link rel="stylesheet" type="text/css" href="{$redpen_plugin_root}css/redpen.css">
 		<script>
 		    var redpenPlugin = new RedPenPlugin('$redpen_proxy_url').autoValidate('#content');
 		</script>
@@ -22,7 +22,9 @@ HTML;
 }
 
 function start_redpen_on_tinymce_init($settings) {
+	global $redpen_plugin_root;
 	$settings['setup'] = "function(editor) {redpenPlugin.autoValidate(editor)}";
+	$settings['content_style'] = "@import url('{$redpen_plugin_root}css/redpen.css');";
 	return $settings;
 }
 

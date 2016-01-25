@@ -10,6 +10,10 @@
   color: #a70c00;
 }
 
+.redpen-error {
+  border-bottom: 1px dotted #a70c00;
+}
+
 .redpen-error-validator {
   display: inline-block;
   padding: 1px;
