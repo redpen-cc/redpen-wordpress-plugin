@@ -1,7 +1,8 @@
-function RedPenPlugin(proxyUrl, textarea, editor) {
+function RedPenPlugin(proxyUrl) {
   var pub = this;
   var $ = jQuery;
-  textarea = $(textarea);
+  var textarea, editor;
+  var ed = new RedPenEditor();
   var title = $('.redpen-title');
 
   if (localStorage.redpens)
@@ -21,9 +22,8 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
 
   pub.validate = function() {
     var container = $('.redpen-error-list');
-    var plainText = isPlainText();
-    var text = getDocumentText();
-    var textNodes = plainText ? null : findTextNodes(editor.getBody());
+    var text = ed.getDocumentText();
+    var textNodes = ed.isPlainText() ? null : ed.findTextNodes(editor.getBody());
 
     redpen.detectLanguage(text, function(lang) {
       pub.renderConfiguration(pub.redpens[lang]);
@@ -37,7 +37,7 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
         $.each(result.errors, function(i, error) {
 
           $.each(error.errors, function(j, suberror) {
-            var errorNode = plainText ? null : highlightErrorInEditor(suberror, textNodes);
+            var errorNode = ed.isPlainText() ? null : highlightErrorInEditor(suberror, textNodes);
 
             var message = $('<li class="redpen-error-message"></li>').text(suberror.message)
               .appendTo(container)
@@ -88,13 +88,15 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
     function validateOnKeyUp() {
       clearTimeout(lastKeyUp);
       lastKeyUp = setTimeout(function() {
-        var text = getDocumentText();
+        var text = ed.getDocumentText();
         if (text != lastText) {
           pub.validate();
           lastText = text;
         }
       }, 500);
     }
+
+    ed.initFor(what);
 
     if (what.onKeyUp) {
       editor = what;
@@ -138,37 +140,6 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
     });
   };
 
-  function isPlainText() {
-    return textarea.is(':visible');
-  }
-
-  function findTextNodes(node) {
-    var textNodes = [];
-    function recurse(i, node) {
-      if (node.nodeType == node.TEXT_NODE)
-        textNodes.push(node);
-      $.each(node.childNodes, recurse);
-    }
-    recurse(0, node);
-    return textNodes;
-  }
-
-  function breakTagsIntoLines(node) {
-    var textNodes = findTextNodes(node);
-    return textNodes.map(function(node) {return node.textContent}).join('\n');
-  }
-
-  pub._getDocumentText = getDocumentText;
-  function getDocumentText() {
-    if (isPlainText()) {
-      return textarea.val();
-    }
-    else {
-      clearEditorErrors();
-      return breakTagsIntoLines(editor.getBody());
-    }
-  }
-
   function editValidatorProperties(name, options, propertyElement) {
     var keyvalue = propertyElement.text();
     keyvalue = prompt(name, keyvalue.indexOf('=') > 0 ? keyvalue : '');
@@ -194,7 +165,7 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
   }
 
   function showErrorInText(error, node) {
-    if (isPlainText()) {
+    if (ed.isPlainText()) {
       var start = calculateGlobalOffset(textarea, error.position.start);
       var end = calculateGlobalOffset(textarea, error.position.end);
       textarea[0].setSelectionRange(start, end);
@@ -210,13 +181,6 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
       if (scrollY > offset.top) scrollTo(offset.left, offset.top);
       editor.getBody().focus();
     }
-  }
-
-  function clearEditorErrors() {
-    $(editor.getBody()).find('.redpen-error').each(function (i, node) {
-      $(node).replaceWith(node.childNodes);
-    });
-    editor.getBody().normalize();
   }
 
   function highlightErrorInEditor(error, textNodes) {

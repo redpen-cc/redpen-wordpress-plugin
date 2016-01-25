@@ -13,6 +13,7 @@ function redpen_init() {
 	global $redpen_proxy_url, $redpen_plugin_root;
 	echo <<< HTML
 		<script src="{$redpen_proxy_url}js/redpen.js"></script>
+		<script src="{$redpen_plugin_root}js/editor.js"></script>
 		<script src="{$redpen_plugin_root}js/plugin.js"></script>
 		<link rel="stylesheet" type="text/css" href="{$redpen_plugin_root}css/redpen.css">
 		<script>
