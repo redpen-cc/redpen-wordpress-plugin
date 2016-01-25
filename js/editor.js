@@ -13,10 +13,6 @@ function RedPenEditor() {
 function RedPenPlainEditor(pub, $, textarea) {
   textarea = $(textarea);
 
-  pub.isPlainText = function() {
-    return true;
-  };
-
   pub.getDocumentText = function() {
     return textarea.val();
   };
@@ -45,10 +41,6 @@ function RedPenPlainEditor(pub, $, textarea) {
 
 function RedPenVisualEditor(pub, $, editor) {
   var textNodes;
-
-  pub.isPlainText = function() {
-    return false;
-  };
 
   pub.getDocumentText = function() {
     clearEditorErrors();
