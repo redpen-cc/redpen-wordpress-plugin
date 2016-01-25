@@ -1,7 +1,7 @@
 function RedPenPlugin(proxyUrl) {
   var pub = this;
   var $ = jQuery;
-  var ed = new RedPenEditor();
+  var ed = pub.editor = new RedPenEditor();
   var title = $('.redpen-title');
 
   if (localStorage.redpens)

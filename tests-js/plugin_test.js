@@ -27,8 +27,8 @@ describe('RedPenPlugin', function() {
 
     spyOn(redpen, 'setBaseUrl');
 
-    textarea.show();
-    redpenPlugin = new RedPenPlugin(proxyUrl, textarea, editor);
+    redpenPlugin = new RedPenPlugin(proxyUrl);
+    redpenPlugin.editor.switchTo(textarea);
   });
 
   describe('creation', function() {
@@ -38,7 +38,7 @@ describe('RedPenPlugin', function() {
         expect(url).toBe(proxyUrl + 'redpen_base_url');
         callback('http://localhost:8080/');
       });
-      redpenPlugin = new RedPenPlugin(proxyUrl, textarea, editor);
+      redpenPlugin = new RedPenPlugin(proxyUrl);
       expect(title.text()).toBe('server is not running on the same machine as WordPress at http://localhost:8080/, you can change it in config.php');
     });
 
@@ -57,7 +57,7 @@ describe('RedPenPlugin', function() {
     it('loads previous configuration from localStorage', function() {
       var redpens = {hello: 'world'};
       localStorage.redpens = JSON.stringify(redpens);
-      redpenPlugin = new RedPenPlugin(proxyUrl, textarea, editor);
+      redpenPlugin = new RedPenPlugin(proxyUrl);
       expect(redpenPlugin.redpens).toEqual(redpens);
     });
   });
@@ -77,7 +77,7 @@ describe('RedPenPlugin', function() {
         expect(args.config.lang).toBe('en');
         expect(args.config.symbols).toBe(redpens.en.symbols);
         expect(args.format).toBe('json2');
-        expect(args.document).toBe(redpenPlugin._getDocumentText());
+        expect(args.document).toBe(redpenPlugin.editor.getDocumentText());
         callback(validationResult);
       };
     }
@@ -175,8 +175,8 @@ describe('RedPenPlugin', function() {
         getRng: function() {return range}
       };
       editor.container = document.documentElement;
+      redpenPlugin.editor.switchTo(editor);
 
-      textarea.hide();
       redpenPlugin.validate();
       errorContainer.find('.redpen-error-message').eq(0).click();
 
@@ -241,8 +241,6 @@ describe('RedPenPlugin', function() {
     });
 
     it('in visual editor', function() {
-      textarea.hide();
-
       var editorContent = '<div><p>Hello <strong>WordPress</strong></p><p>and the World!</p></div>';
       editor.getBody = function() {return $(editorContent)[0]};
       editor.onKeyUp = jasmine.createSpyObj('onKeyUp', ['add']);
