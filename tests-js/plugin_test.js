@@ -143,49 +143,20 @@ describe('RedPenPlugin', function() {
       expect(title.text()).toBe('found 2 errors');
     });
 
-    it('highlights plain text when clicking on error message', function() {
-      mockedValidateResponse.errors[0].errors[0].position = {
-        start: {offset: 3, line: 2}, end: {offset: 5, line: 2}
-      };
+    it('highlights error in text when clicking on error message', function() {
       mockValidateJSON(mockedValidateResponse);
 
-      textarea.val('Hello\nWorld!');
-      spyOn(textarea[0], 'setSelectionRange');
+      var errorNode = {};
+      spyOn(redpenPlugin.editor, 'highlightError').and.returnValue(errorNode);
+      spyOn(redpenPlugin.editor, 'showErrorInText');
 
       redpenPlugin.validate();
 
       errorContainer.find('.redpen-error-message').eq(0).click();
 
-      expect(textarea[0].setSelectionRange).toHaveBeenCalledWith(9, 11);
+      expect(redpenPlugin.editor.highlightError).toHaveBeenCalledTimes(2);
+      expect(redpenPlugin.editor.showErrorInText).toHaveBeenCalledWith(mockedValidateResponse.errors[0].errors[0], errorNode);
     });
-
-    it('highlights text in visual editor when clicking on error message', function() {
-      $.each(mockedValidateResponse.errors[0].errors, function() {
-        this.position = {start: {offset: 1, line: 2}, end: {offset: 4, line: 2}};
-      });
-      mockValidateJSON(mockedValidateResponse);
-
-      var editorContent = '<div><p>Hello <strong>WordPress</strong></p><p>and the World!</p></div>';
-      var selection = jasmine.createSpyObj('selection', ['removeAllRanges', 'addRange']);
-      var range = jasmine.createSpyObj('range', ['selectNode']);
-
-      editor.getBody = function() {return $(editorContent)[0]};
-      editor.selection = {
-        getSel: function() {return selection},
-        getRng: function() {return range}
-      };
-      editor.container = document.documentElement;
-      redpenPlugin.editor.switchTo(editor);
-
-      redpenPlugin.validate();
-      errorContainer.find('.redpen-error-message').eq(0).click();
-
-      expect(range.selectNode).toHaveBeenCalledWith(jasmine.objectContaining({className: 'redpen-error'}));
-
-      expect(selection.removeAllRanges).toHaveBeenCalled();
-      expect(selection.addRange).toHaveBeenCalledWith(range);
-    });
-
   });
 
   describe('automatic validation', function() {

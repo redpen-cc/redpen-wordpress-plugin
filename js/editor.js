@@ -32,7 +32,7 @@ function RedPenPlainEditor(pub, $, textarea) {
   };
 
   function calculateGlobalOffset(position) {
-    var lines = textarea.val().split('\n');
+    var lines = pub.getDocumentText().split('\n');
     var offset = position.offset;
     for (var i = 0; i < position.line - 1; i++) offset += lines[i].length + 1;
     return offset;
