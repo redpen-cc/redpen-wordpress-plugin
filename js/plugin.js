@@ -21,7 +21,9 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
 
   pub.validate = function() {
     var container = $('.redpen-error-list');
+    var plainText = isPlainText();
     var text = getDocumentText();
+    var textNodes = plainText ? null : findTextNodes(editor.getBody());
 
     redpen.detectLanguage(text, function(lang) {
       pub.renderConfiguration(pub.redpens[lang]);
@@ -32,16 +34,14 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
       redpen.validateJSON(args, function(result) {
         container.empty();
 
-        var textNodes = findTextNodes(editor.getBody());
-
         $.each(result.errors, function(i, error) {
 
           $.each(error.errors, function(j, suberror) {
-            var errorNode = highlightErrorInEditor(textNodes, suberror);
+            var errorNode = plainText ? null : highlightErrorInEditor(suberror, textNodes);
 
             var message = $('<li class="redpen-error-message"></li>').text(suberror.message)
               .appendTo(container)
-              .on('click', function() {showErrorInText(errorNode, suberror);});
+              .on('click', function() {showErrorInText(suberror, errorNode);});
 
             $('<div class="redpen-error-validator"></div>')
               .text(suberror.validator)
@@ -193,7 +193,7 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
     return offset;
   }
 
-  function showErrorInText(node, error) {
+  function showErrorInText(error, node) {
     if (isPlainText()) {
       var start = calculateGlobalOffset(textarea, error.position.start);
       var end = calculateGlobalOffset(textarea, error.position.end);
@@ -219,9 +219,7 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
     editor.getBody().normalize();
   }
 
-  function highlightErrorInEditor(textNodes, error) {
-    if (isPlainText()) return;
-
+  function highlightErrorInEditor(error, textNodes) {
     var node = textNodes[error.position.start.line-1];
     var text = node.data.substring(error.position.start.offset, error.position.end.offset);
 
