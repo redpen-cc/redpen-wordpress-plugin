@@ -32,12 +32,16 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
       redpen.validateJSON(args, function(result) {
         container.empty();
 
+        var textNodes = findTextNodes(editor.getBody());
+
         $.each(result.errors, function(i, error) {
 
           $.each(error.errors, function(j, suberror) {
             var message = $('<li class="redpen-error-message"></li>').text(suberror.message)
               .appendTo(container)
               .on('click', function() {showErrorInText(suberror);});
+
+            highlightErrorInEditor(textNodes, suberror);
 
             $('<div class="redpen-error-validator"></div>')
               .text(suberror.validator)
@@ -156,10 +160,13 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
 
   pub._getDocumentText = getDocumentText;
   function getDocumentText() {
-    if (isPlainText())
+    if (isPlainText()) {
       return textarea.val();
-    else
+    }
+    else {
+      clearEditorErrors();
       return breakTagsIntoLines(editor.getBody());
+    }
   }
 
   function editValidatorProperties(name, options, propertyElement) {
@@ -205,5 +212,30 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
       if (scrollY > offset.top) scrollTo(offset.left, offset.top);
       editor.getBody().focus();
     }
+  }
+
+  function clearEditorErrors() {
+    $(editor.getBody()).find('.redpen-error').each(function (i, node) {
+      $(node).replaceWith(node.childNodes);
+    });
+    editor.getBody().normalize();
+  }
+
+  function highlightErrorInEditor(textNodes, error) {
+    if (isPlainText()) return;
+
+    var node = textNodes[error.position.start.line-1];
+    var text = node.data.substring(error.position.start.offset, error.position.end.offset);
+
+    var newNode = node.splitText(error.position.start.offset);
+
+    var span = editor.getDoc().createElement('span');
+    span.className = "redpen-error";
+    span.setAttribute('data-mce-bogus', 1);
+    span.setAttribute('title', error.message);
+    span.appendChild(editor.getDoc().createTextNode(text));
+
+    node.parentNode.insertBefore(span, newNode);
+    newNode.data = newNode.data.substring(text.length);
   }
 }
