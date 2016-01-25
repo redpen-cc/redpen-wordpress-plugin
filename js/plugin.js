@@ -1,7 +1,7 @@
 function RedPenPlugin(proxyUrl) {
   var pub = this;
   var $ = jQuery;
-  var textarea, editor;
+  var editor;
   var ed = new RedPenEditor();
   var title = $('.redpen-title');
 
@@ -97,15 +97,8 @@ function RedPenPlugin(proxyUrl) {
     }
 
     ed.initFor(what);
-
-    if (what.onKeyUp) {
-      editor = what;
-      editor.onKeyUp.add(validateOnKeyUp);
-    }
-    else {
-      textarea = $(what);
-      textarea.on('keyup', validateOnKeyUp);
-    }
+    ed.onKeyUp(validateOnKeyUp);
+    if (!ed.isPlainText()) editor = what;
 
     validateOnKeyUp();
     return pub;

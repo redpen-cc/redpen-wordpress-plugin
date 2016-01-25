@@ -21,6 +21,10 @@ function RedPenPlainEditor(pub, $, textarea) {
     return textarea.val();
   };
 
+  pub.onKeyUp = function(handler) {
+    textarea.on('keyup', handler);
+  };
+
   pub.showErrorInText = function(error, node) {
     var start = calculateGlobalOffset(error.position.start);
     var end = calculateGlobalOffset(error.position.end);
@@ -43,6 +47,10 @@ function RedPenVisualEditor(pub, $, editor) {
   pub.getDocumentText = function() {
     clearEditorErrors();
     return breakTagsIntoLines(editor.getBody());
+  };
+
+  pub.onKeyUp = function(handler) {
+    editor.onKeyUp.add(handler);
   };
 
   pub.showErrorInText = function(error, node) {
