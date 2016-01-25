@@ -2,8 +2,8 @@ function RedPenEditor() {
   var $ = jQuery;
   var pub = this;
 
-  pub.initFor = function(what) {
-    if (what.editorCommands)
+  pub.switchTo = function(what) {
+    if (what.getBody)
       RedPenVisualEditor(pub, $, what);
     else
       RedPenPlainEditor(pub, $, what);

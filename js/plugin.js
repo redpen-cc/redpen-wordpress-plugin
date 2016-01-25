@@ -94,7 +94,7 @@ function RedPenPlugin(proxyUrl) {
       }, 500);
     }
 
-    ed.initFor(what);
+    ed.switchTo(what);
     ed.onKeyUp(validateOnKeyUp);
 
     validateOnKeyUp();

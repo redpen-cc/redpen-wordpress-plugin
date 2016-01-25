@@ -1,5 +1,4 @@
-describe('RedpenPlugin', function() {
-
+describe('RedPenPlugin', function() {
   var textarea, editor, redpenPlugin;
   var errorContainer, title;
   var proxyUrl = 'http://wordpress/proxy.php/';
@@ -60,20 +59,6 @@ describe('RedpenPlugin', function() {
       localStorage.redpens = JSON.stringify(redpens);
       redpenPlugin = new RedPenPlugin(proxyUrl, textarea, editor);
       expect(redpenPlugin.redpens).toEqual(redpens);
-    });
-  });
-
-  describe('getDocumentText', function() {
-    it('for plain text', function() {
-      expect(redpenPlugin._getDocumentText()).toBe('Hello World!')
-    });
-
-    it('for visual editor (tinyMCE)', function() {
-      var editorContent = '<div><p>Hello <strong>WordPress</strong></p><p>and the World!</p></div>';
-      editor.getBody = function() {return $(editorContent)[0]};
-      textarea.hide();
-
-      expect(redpenPlugin._getDocumentText()).toBe('Hello \nWordPress\nand the World!')
     });
   });
 
