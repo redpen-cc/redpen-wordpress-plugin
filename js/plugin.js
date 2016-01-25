@@ -232,7 +232,7 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
     var span = editor.getDoc().createElement('span');
     span.className = "redpen-error";
     span.setAttribute('data-mce-bogus', 1);
-    span.setAttribute('title', error.message);
+    span.setAttribute('title', 'RedPen: ' + error.message);
     span.appendChild(editor.getDoc().createTextNode(text));
 
     node.parentNode.insertBefore(span, newNode);
