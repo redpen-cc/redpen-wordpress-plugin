@@ -37,11 +37,11 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
         $.each(result.errors, function(i, error) {
 
           $.each(error.errors, function(j, suberror) {
+            var errorNode = highlightErrorInEditor(textNodes, suberror);
+
             var message = $('<li class="redpen-error-message"></li>').text(suberror.message)
               .appendTo(container)
-              .on('click', function() {showErrorInText(suberror);});
-
-            highlightErrorInEditor(textNodes, suberror);
+              .on('click', function() {showErrorInText(errorNode, suberror);});
 
             $('<div class="redpen-error-validator"></div>')
               .text(suberror.validator)
@@ -193,7 +193,7 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
     return offset;
   }
 
-  function showErrorInText(error) {
+  function showErrorInText(node, error) {
     if (isPlainText()) {
       var start = calculateGlobalOffset(textarea, error.position.start);
       var end = calculateGlobalOffset(textarea, error.position.end);
@@ -202,9 +202,7 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
     else {
       var selection = editor.selection.getSel();
       var range = editor.selection.getRng();
-      var textNodes = findTextNodes(editor.getBody());
-      range.setStart(textNodes[error.position.start.line-1], error.position.start.offset);
-      range.setEnd(textNodes[error.position.end.line-1], error.position.end.offset);
+      range.selectNode(node);
       selection.removeAllRanges();
       selection.addRange(range);
 
@@ -237,5 +235,6 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
 
     node.parentNode.insertBefore(span, newNode);
     newNode.data = newNode.data.substring(text.length);
+    return span;
   }
 }
