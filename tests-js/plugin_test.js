@@ -175,14 +175,14 @@ describe('RedpenPlugin', function() {
     });
 
     it('highlights text in visual editor when clicking on error message', function() {
-      mockedValidateResponse.errors[0].errors[0].position = {
-        start: {offset: 1, line: 2}, end: {offset: 4, line: 2}
-      };
+      $.each(mockedValidateResponse.errors[0].errors, function() {
+        this.position = {start: {offset: 1, line: 2}, end: {offset: 4, line: 2}};
+      });
       mockValidateJSON(mockedValidateResponse);
 
       var editorContent = '<div><p>Hello <strong>WordPress</strong></p><p>and the World!</p></div>';
       var selection = jasmine.createSpyObj('selection', ['removeAllRanges', 'addRange']);
-      var range = jasmine.createSpyObj('range', ['setStart', 'setEnd']);
+      var range = jasmine.createSpyObj('range', ['selectNode']);
 
       editor.getBody = function() {return $(editorContent)[0]};
       editor.selection = {
@@ -195,8 +195,7 @@ describe('RedpenPlugin', function() {
       redpenPlugin.validate();
       errorContainer.find('.redpen-error-message').eq(0).click();
 
-      expect(range.setStart).toHaveBeenCalledWith(jasmine.objectContaining({textContent: 'WordPress'}), 1);
-      expect(range.setEnd).toHaveBeenCalledWith(jasmine.objectContaining({textContent: 'WordPress'}), 4);
+      expect(range.selectNode).toHaveBeenCalledWith(jasmine.objectContaining({className: 'redpen-error'}));
 
       expect(selection.removeAllRanges).toHaveBeenCalled();
       expect(selection.addRange).toHaveBeenCalledWith(range);

@@ -221,18 +221,13 @@ function RedPenPlugin(proxyUrl, textarea, editor) {
 
   function highlightErrorInEditor(error, textNodes) {
     var node = textNodes[error.position.start.line-1];
-    var text = node.data.substring(error.position.start.offset, error.position.end.offset);
+    var textWithError = node.data.substring(error.position.start.offset, error.position.end.offset);
 
-    var newNode = node.splitText(error.position.start.offset);
+    var tailNode = node.splitText(error.position.start.offset);
+    tailNode.data = tailNode.data.substring(textWithError.length);
 
-    var span = editor.getDoc().createElement('span');
-    span.className = "redpen-error";
-    span.setAttribute('data-mce-bogus', 1);
-    span.setAttribute('title', 'RedPen: ' + error.message);
-    span.appendChild(editor.getDoc().createTextNode(text));
-
-    node.parentNode.insertBefore(span, newNode);
-    newNode.data = newNode.data.substring(text.length);
-    return span;
+    return $('<span class="redpen-error" data-mce-bogus="1"></span>')
+      .attr('title', 'RedPen: ' + error.message).text(textWithError)
+      .insertBefore(tailNode)[0];
   }
 }
