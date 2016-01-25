@@ -37,7 +37,7 @@ function RedPenPlugin(proxyUrl) {
         $.each(result.errors, function(i, error) {
 
           $.each(error.errors, function(j, suberror) {
-            var errorNode = ed.isPlainText() ? null : highlightErrorInEditor(suberror, textNodes);
+            var errorNode = ed.isPlainText() ? null : ed.highlightError(suberror, textNodes);
 
             var message = $('<li class="redpen-error-message"></li>').text(suberror.message)
               .appendTo(container)
@@ -148,17 +148,5 @@ function RedPenPlugin(proxyUrl) {
       propertyElement.text(keyvalue);
       onConfigurationChange();
     }
-  }
-
-  function highlightErrorInEditor(error, textNodes) {
-    var node = textNodes[error.position.start.line-1];
-    var textWithError = node.data.substring(error.position.start.offset, error.position.end.offset);
-
-    var tailNode = node.splitText(error.position.start.offset);
-    tailNode.data = tailNode.data.substring(textWithError.length);
-
-    return $('<span class="redpen-error" data-mce-bogus="1"></span>')
-      .attr('title', 'RedPen: ' + error.message).text(textWithError)
-      .insertBefore(tailNode)[0];
   }
 }
