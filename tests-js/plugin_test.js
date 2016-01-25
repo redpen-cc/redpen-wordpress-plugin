@@ -101,7 +101,7 @@ describe('RedPenPlugin', function() {
 
     it('language is detected and the correct configuration is chosen', function() {
       var japaneseText = '本稿では,複数の計算機（クラスタ）でで動作する各サーバーを「インスタンス」と呼びまます。';
-      textarea.val(japaneseText);
+      spyOn(redpenPlugin.editor, 'getDocumentText').and.returnValue(japaneseText);
 
       redpen.detectLanguage = jasmine.createSpy().and.callFake(function(text, callback) {
         expect(text).toBe(japaneseText);
