@@ -100,11 +100,6 @@ function RedPenVisualEditor(pub, $, editor) {
   pub.setCursorPos = function(pos) {
     var textNodes = findTextNodes();
     var res = findNode(textNodes, pos);
-    if (!res) {
-      console.warn('Cannot restore cursor pos', pos, textNodes);
-      return;
-    }
-
     var range = editor.selection.getRng();
     var selection = editor.selection.getSel();
     range.setStart(res.node, res.offset);
@@ -125,13 +120,13 @@ function RedPenVisualEditor(pub, $, editor) {
   }
 
   function findNode(textNodes, pos) {
+    var node;
     for (var i = 0; i < textNodes.length; i++) {
-      var node = textNodes[i];
+      node = textNodes[i];
       if (pos > node.data.length) pos -= node.data.length;
-      else {
-        return {node:node, offset:pos};
-      }
+      else break;
     }
+    return {node:node, offset:pos};
   }
 
   function joinNodesIntoOneLine(textNodes) {
