@@ -43,13 +43,13 @@ describe('RedPenEditor', function() {
       var editorContent = '<div><p>Hello <strong>WordPress</strong></p><p>and the World!</p></div>';
       editor.getBody = function() {return $(editorContent)[0]};
 
-      expect(ed.getDocumentText()).toBe('Hello \nWordPress\nand the World!')
+      expect(ed.getDocumentText()).toBe('Hello WordPress and the World!')
     });
 
     it('showErrorInText() uses Range inside of editor\'s body', function() {
       var editorContent = '<div><p>Hello <strong>WordPress</strong></p><p>and the World!</p></div>';
       var selection = jasmine.createSpyObj('selection', ['removeAllRanges', 'addRange']);
-      var range = jasmine.createSpyObj('range', ['selectNode']);
+      var range = jasmine.createSpyObj('range', ['selectNode', 'setStart', 'setEnd']);
 
       editor.getBody = function() {return $(editorContent)[0]};
       editor.selection = {
@@ -59,11 +59,11 @@ describe('RedPenEditor', function() {
       editor.container = document.documentElement;
 
       ed.getDocumentText();
-      var error = {position: {start: {offset: 1, line: 2}, end: {offset: 4, line: 2}}};
+      var error = {position: {start: {offset: 23, line: 1}, end: {offset: 28, line: 1}}};
       var node = ed.highlightError(error);
       ed.showErrorInText(error, node);
 
-      expect(node.textContent).toBe('ord');
+      expect(node.textContent).toBe('World');
       expect(node.className).toBe('redpen-error');
       expect(range.selectNode).toHaveBeenCalledWith(node);
       expect(selection.removeAllRanges).toHaveBeenCalled();

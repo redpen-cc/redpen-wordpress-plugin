@@ -40,12 +40,10 @@ function RedPenPlainEditor(pub, $, textarea) {
 }
 
 function RedPenVisualEditor(pub, $, editor) {
-  var originalTextNodes;
-
   pub.getDocumentText = function() {
     clearEditorErrors();
-    originalTextNodes = findTextNodes();
-    return breakTagsIntoLines(originalTextNodes);
+    var textNodes = findTextNodes();
+    return joinNodesIntoOneLine(textNodes);
   };
 
   pub.onKeyUp = function(handler) {
@@ -54,11 +52,14 @@ function RedPenVisualEditor(pub, $, editor) {
 
   pub.highlightError = function(error) {
     var cursorPos = pub.getCursorPos();
+    var textNodes = findTextNodes();
     try {
-      var node = originalTextNodes[error.position.start.line - 1];
-      var textWithError = node.data.substring(error.position.start.offset, error.position.end.offset);
+      var start = findNode(textNodes, error.position.start.offset);
+      var end = findNode(textNodes, error.position.end.offset);
+      var node = start.node;
+      var textWithError = node.data.substring(start.offset, end.offset);
 
-      var tailNode = node.splitText(error.position.start.offset);
+      var tailNode = node.splitText(start.offset);
       tailNode.data = tailNode.data.substring(textWithError.length);
 
       return $('<span class="redpen-error" data-mce-bogus="1"></span>')
@@ -67,7 +68,7 @@ function RedPenVisualEditor(pub, $, editor) {
     }
     catch (e) {
       // do not highlight error if text has been changed already
-      console.warn(error, originalTextNodes, e);
+      console.warn(error, textNodes, e);
     }
     finally {
       pub.setCursorPos(cursorPos);
@@ -97,18 +98,15 @@ function RedPenVisualEditor(pub, $, editor) {
   };
 
   pub.setCursorPos = function(pos) {
-    $.each(findTextNodes(), function(i, node) {
-      if (pos > node.data.length) pos -= node.data.length;
-      else {
-        var range = editor.selection.getRng();
-        var selection = editor.selection.getSel();
-        range.setStart(node, pos);
-        range.setEnd(node, pos);
-        selection.removeAllRanges();
-        selection.addRange(range);
-        return false;
-      }
-    });
+    var res = findNode(findTextNodes(), pos);
+    if (!res) return;
+
+    var range = editor.selection.getRng();
+    var selection = editor.selection.getSel();
+    range.setStart(res.node, res.offset);
+    range.setEnd(res.node, res.offset);
+    selection.removeAllRanges();
+    selection.addRange(range);
   };
 
   function findTextNodes() {
@@ -122,8 +120,18 @@ function RedPenVisualEditor(pub, $, editor) {
     return textNodes;
   }
 
-  function breakTagsIntoLines(textNodes) {
-    return textNodes.map(function(node) {return node.textContent}).join('\n');
+  function findNode(textNodes, pos) {
+    for (var i = 0; i < textNodes.length; i++) {
+      var node = textNodes[i];
+      if (pos > node.data.length) pos -= node.data.length;
+      else {
+        return {node:node, offset:pos};
+      }
+    }
+  }
+
+  function joinNodesIntoOneLine(textNodes) {
+    return textNodes.map(function(node) {return node.textContent.trim()}).join(' ');
   }
 
   function clearEditorErrors() {
