@@ -67,6 +67,7 @@ function RedPenVisualEditor(pub, $, editor) {
       var start = findNode(textNodes, error.position.start.offset);
       var end = findNode(textNodes, error.position.end.offset);
       var node = start.node;
+      if (end.node != node) return end.node;
       var textWithError = node.data.substring(start.offset, end.offset);
 
       var tailNode = node.splitText(start.offset);
