@@ -31,9 +31,6 @@ function RedPenPlainEditor(pub, $, textarea) {
     textarea[0].setSelectionRange(start, end);
   };
 
-  pub.beforeValidate = function() {};
-  pub.afterValidate = function() {};
-
   function calculateGlobalOffset(position) {
     var lines = pub.getDocumentText().split('\n');
     var offset = position.offset;
@@ -43,7 +40,7 @@ function RedPenPlainEditor(pub, $, textarea) {
 }
 
 function RedPenVisualEditor(pub, $, editor) {
-  var textNodes, cursorPos;
+  var textNodes;
 
   pub.getDocumentText = function() {
     clearEditorErrors();
@@ -55,6 +52,7 @@ function RedPenVisualEditor(pub, $, editor) {
   };
 
   pub.highlightError = function(error) {
+    var cursorPos = pub.getCursorPos();
     try {
       var node = textNodes[error.position.start.line - 1];
       var textWithError = node.data.substring(error.position.start.offset, error.position.end.offset);
@@ -70,6 +68,9 @@ function RedPenVisualEditor(pub, $, editor) {
       // do not highlight error if text has been changed already
       console.warn(error, e);
     }
+    finally {
+      pub.setCursorPos(cursorPos);
+    }
   };
 
   pub.showErrorInText = function(error, node) {
@@ -82,17 +83,6 @@ function RedPenVisualEditor(pub, $, editor) {
     var offset = $(editor.container).offset();
     if (scrollY > offset.top) scrollTo(offset.left, offset.top);
     editor.getBody().focus();
-  };
-
-  pub.beforeValidate = function() {
-    cursorPos = pub.getCursorPos();
-    console.log('getCursorPos ' + cursorPos);
-  };
-
-  pub.afterValidate = function() {
-    pub.setCursorPos(cursorPos);
-    console.log('setCursorPos ' + cursorPos);
-    console.log('cursorPos ' + pub.getCursorPos());
   };
 
   pub.getCursorPos = function() {

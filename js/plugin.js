@@ -31,7 +31,6 @@ function RedPenPlugin(proxyUrl) {
 
       redpen.validateJSON(args, function(result) {
         container.empty();
-        ed.beforeValidate();
 
         $.each(result.errors, function(i, error) {
 
@@ -48,7 +47,6 @@ function RedPenPlugin(proxyUrl) {
           });
         });
 
-        ed.afterValidate();
         title.text('found ' + container.children().length + ' errors');
       });
     });
