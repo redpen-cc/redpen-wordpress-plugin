@@ -20,8 +20,9 @@ function RedPenPlugin(proxyUrl) {
   }
 
   pub.validate = function() {
-    var container = $('.redpen-error-list');
+    ed.clearErrors();
     var text = ed.getDocumentText();
+    var container = $('.redpen-error-list');
 
     redpen.detectLanguage(text, function(lang) {
       pub.renderConfiguration(pub.redpens[lang]);

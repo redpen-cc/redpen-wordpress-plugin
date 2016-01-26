@@ -21,6 +21,8 @@ function RedPenPlainEditor(pub, $, textarea) {
     textarea.on('keyup', handler);
   };
 
+  pub.clearErrors = function() {};
+
   pub.highlightError = function(error) {
     // not supported yet
   };
@@ -41,13 +43,21 @@ function RedPenPlainEditor(pub, $, textarea) {
 
 function RedPenVisualEditor(pub, $, editor) {
   pub.getDocumentText = function() {
-    clearEditorErrors();
     var textNodes = findTextNodes();
     return joinNodesIntoOneLine(textNodes);
   };
 
   pub.onKeyUp = function(handler) {
     editor.onKeyUp.add(handler);
+  };
+
+  pub.clearErrors = function() {
+    var cursorPos = pub.getCursorPos();
+    $(editor.getBody()).find('.redpen-error').each(function(i, node) {
+      $(node).replaceWith(node.childNodes);
+    });
+    editor.getBody().normalize();
+    pub.setCursorPos(cursorPos);
   };
 
   pub.highlightError = function(error) {
@@ -136,14 +146,5 @@ function RedPenVisualEditor(pub, $, editor) {
 
   function joinNodesIntoOneLine(textNodes) {
     return textNodes.map(function(node) {return node.textContent.trim()}).join(' ');
-  }
-
-  function clearEditorErrors() {
-    var cursorPos = pub.getCursorPos();
-    $(editor.getBody()).find('.redpen-error').each(function(i, node) {
-      $(node).replaceWith(node.childNodes);
-    });
-    editor.getBody().normalize();
-    pub.setCursorPos(cursorPos);
   }
 }
