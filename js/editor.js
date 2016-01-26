@@ -31,6 +31,9 @@ function RedPenPlainEditor(pub, $, textarea) {
     textarea[0].setSelectionRange(start, end);
   };
 
+  pub.beforeValidate = function() {};
+  pub.afterValidate = function() {};
+
   function calculateGlobalOffset(position) {
     var lines = pub.getDocumentText().split('\n');
     var offset = position.offset;
@@ -40,11 +43,11 @@ function RedPenPlainEditor(pub, $, textarea) {
 }
 
 function RedPenVisualEditor(pub, $, editor) {
-  var textNodes;
+  var textNodes, cursorPos;
 
   pub.getDocumentText = function() {
     clearEditorErrors();
-    return breakTagsIntoLines(editor.getBody());
+    return breakTagsIntoLines();
   };
 
   pub.onKeyUp = function(handler) {
@@ -52,15 +55,21 @@ function RedPenVisualEditor(pub, $, editor) {
   };
 
   pub.highlightError = function(error) {
-    var node = textNodes[error.position.start.line-1];
-    var textWithError = node.data.substring(error.position.start.offset, error.position.end.offset);
+    try {
+      var node = textNodes[error.position.start.line - 1];
+      var textWithError = node.data.substring(error.position.start.offset, error.position.end.offset);
 
-    var tailNode = node.splitText(error.position.start.offset);
-    tailNode.data = tailNode.data.substring(textWithError.length);
+      var tailNode = node.splitText(error.position.start.offset);
+      tailNode.data = tailNode.data.substring(textWithError.length);
 
-    return $('<span class="redpen-error" data-mce-bogus="1"></span>')
-      .attr('title', 'RedPen: ' + error.message).text(textWithError)
-      .insertBefore(tailNode)[0];
+      return $('<span class="redpen-error" data-mce-bogus="1"></span>')
+        .attr('title', 'RedPen: ' + error.message).text(textWithError)
+        .insertBefore(tailNode)[0];
+    }
+    catch (e) {
+      // do not highlight error if text has been changed already
+      console.warn(error, e);
+    }
   };
 
   pub.showErrorInText = function(error, node) {
@@ -75,19 +84,57 @@ function RedPenVisualEditor(pub, $, editor) {
     editor.getBody().focus();
   };
 
-  function findTextNodes(node) {
+  pub.beforeValidate = function() {
+    cursorPos = pub.getCursorPos();
+    console.log('getCursorPos ' + cursorPos);
+  };
+
+  pub.afterValidate = function() {
+    pub.setCursorPos(cursorPos);
+    console.log('setCursorPos ' + cursorPos);
+    console.log('cursorPos ' + pub.getCursorPos());
+  };
+
+  pub.getCursorPos = function() {
+    if (!textNodes) textNodes = findTextNodes();
+    var range = editor.selection.getRng();
+    var pos = range.startOffset;
+    $.each(textNodes, function(i, node) {
+      if (node != range.startContainer) pos += node.data.length;
+      else return false;
+    });
+    return pos;
+  };
+
+  pub.setCursorPos = function(pos) {
+    textNodes = findTextNodes();
+    $.each(textNodes, function(i, node) {
+      if (pos > node.data.length) pos -= node.data.length;
+      else {
+        var range = editor.selection.getRng();
+        var selection = editor.selection.getSel();
+        range.setStart(node, pos);
+        range.setEnd(node, pos);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        return false;
+      }
+    });
+  };
+
+  function findTextNodes() {
     var textNodes = [];
     function recurse(i, node) {
       if (node.nodeType == node.TEXT_NODE)
         textNodes.push(node);
       $.each(node.childNodes, recurse);
     }
-    recurse(0, node);
+    recurse(0, editor.getBody());
     return textNodes;
   }
 
-  function breakTagsIntoLines(node) {
-    textNodes = findTextNodes(node);
+  function breakTagsIntoLines() {
+    textNodes = findTextNodes();
     return textNodes.map(function(node) {return node.textContent}).join('\n');
   }
 
