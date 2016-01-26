@@ -82,10 +82,14 @@ function RedPenVisualEditor(pub, $, editor) {
     selection.removeAllRanges();
     selection.addRange(range);
 
-    var offset = $(editor.container).offset();
-    if (scrollY > offset.top) scrollTo(offset.left, offset.top);
+    scrollToEditor();
     editor.getBody().focus();
   };
+
+  function scrollToEditor() {
+    var offset = $(editor.container).offset();
+    if (scrollY > offset.top) scrollTo(offset.left, offset.top);
+  }
 
   pub.getCursorPos = function(textNodes) {
     if (!textNodes) textNodes = findTextNodes();
