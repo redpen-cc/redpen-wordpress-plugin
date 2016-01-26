@@ -40,11 +40,12 @@ function RedPenPlainEditor(pub, $, textarea) {
 }
 
 function RedPenVisualEditor(pub, $, editor) {
-  var textNodes;
+  var originalTextNodes;
 
   pub.getDocumentText = function() {
     clearEditorErrors();
-    return breakTagsIntoLines();
+    originalTextNodes = findTextNodes();
+    return breakTagsIntoLines(originalTextNodes);
   };
 
   pub.onKeyUp = function(handler) {
@@ -54,7 +55,7 @@ function RedPenVisualEditor(pub, $, editor) {
   pub.highlightError = function(error) {
     var cursorPos = pub.getCursorPos();
     try {
-      var node = textNodes[error.position.start.line - 1];
+      var node = originalTextNodes[error.position.start.line - 1];
       var textWithError = node.data.substring(error.position.start.offset, error.position.end.offset);
 
       var tailNode = node.splitText(error.position.start.offset);
@@ -66,7 +67,7 @@ function RedPenVisualEditor(pub, $, editor) {
     }
     catch (e) {
       // do not highlight error if text has been changed already
-      console.warn(error, e);
+      console.warn(error, originalTextNodes, e);
     }
     finally {
       pub.setCursorPos(cursorPos);
@@ -86,10 +87,9 @@ function RedPenVisualEditor(pub, $, editor) {
   };
 
   pub.getCursorPos = function() {
-    if (!textNodes) textNodes = findTextNodes();
     var range = editor.selection.getRng();
     var pos = range.startOffset;
-    $.each(textNodes, function(i, node) {
+    $.each(findTextNodes(), function(i, node) {
       if (node != range.startContainer) pos += node.data.length;
       else return false;
     });
@@ -97,8 +97,7 @@ function RedPenVisualEditor(pub, $, editor) {
   };
 
   pub.setCursorPos = function(pos) {
-    textNodes = findTextNodes();
-    $.each(textNodes, function(i, node) {
+    $.each(findTextNodes(), function(i, node) {
       if (pos > node.data.length) pos -= node.data.length;
       else {
         var range = editor.selection.getRng();
@@ -123,13 +122,12 @@ function RedPenVisualEditor(pub, $, editor) {
     return textNodes;
   }
 
-  function breakTagsIntoLines() {
-    textNodes = findTextNodes();
+  function breakTagsIntoLines(textNodes) {
     return textNodes.map(function(node) {return node.textContent}).join('\n');
   }
 
   function clearEditorErrors() {
-    $(editor.getBody()).find('.redpen-error').each(function (i, node) {
+    $(editor.getBody()).find('.redpen-error').each(function(i, node) {
       $(node).replaceWith(node.childNodes);
     });
     editor.getBody().normalize();
