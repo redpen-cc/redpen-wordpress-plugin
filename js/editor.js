@@ -51,8 +51,8 @@ function RedPenVisualEditor(pub, $, editor) {
   };
 
   pub.highlightError = function(error) {
-    var cursorPos = pub.getCursorPos();
     var textNodes = findTextNodes();
+    var cursorPos = pub.getCursorPos(textNodes);
     try {
       var start = findNode(textNodes, error.position.start.offset);
       var end = findNode(textNodes, error.position.end.offset);
@@ -87,10 +87,11 @@ function RedPenVisualEditor(pub, $, editor) {
     editor.getBody().focus();
   };
 
-  pub.getCursorPos = function() {
+  pub.getCursorPos = function(textNodes) {
+    if (!textNodes) textNodes = findTextNodes();
     var range = editor.selection.getRng();
     var pos = range.startOffset;
-    $.each(findTextNodes(), function(i, node) {
+    $.each(textNodes, function(i, node) {
       if (node != range.startContainer) pos += node.data.length;
       else return false;
     });
