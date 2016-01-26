@@ -135,9 +135,11 @@ function RedPenVisualEditor(pub, $, editor) {
   }
 
   function clearEditorErrors() {
+    var cursorPos = pub.getCursorPos();
     $(editor.getBody()).find('.redpen-error').each(function(i, node) {
       $(node).replaceWith(node.childNodes);
     });
     editor.getBody().normalize();
+    pub.setCursorPos(cursorPos);
   }
 }
