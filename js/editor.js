@@ -98,8 +98,12 @@ function RedPenVisualEditor(pub, $, editor) {
   };
 
   pub.setCursorPos = function(pos) {
-    var res = findNode(findTextNodes(), pos);
-    if (!res) return;
+    var textNodes = findTextNodes();
+    var res = findNode(textNodes, pos);
+    if (!res) {
+      console.warn('Cannot restore cursor pos', pos, textNodes);
+      return;
+    }
 
     var range = editor.selection.getRng();
     var selection = editor.selection.getSel();
