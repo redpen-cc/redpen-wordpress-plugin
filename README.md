@@ -4,9 +4,7 @@
 
 ## Prerequisites
 
-To use the plugin, you need to have **RedPen Server** instance running on the same machine.
-Currently, still unreleased version from [master branch](https://github.com/redpen-cc/redpen) is required.
-
+To use the plugin, you need to have **RedPen Server** v1.4.3 or newer running on the same machine.
 Please refer to [RedPen Server documentation](http://redpen.cc/docs/latest/index.html#server) for more details.
 
 ## Installation
@@ -16,7 +14,7 @@ Before installing make sure that both **WordPress** and **RedPen Server** are up
 * Either link or copy this directory to *wordpress/wp-content/plugins*, e.g.
     ```ln -s redpen-wordpress-plugin wordpress/wp-content/plugins```
 
-* Make sure the correct RedPen server URL is defined in *config.php*.
+* Make sure the correct RedPen server URL is defined in *config.php*. By default it is http://localhost:8080.
 * Install PHP cURL library if you don't already have it, e.g. on Ubuntu
     ```sudo apt-get install php5-curl```
 
