@@ -31,6 +31,12 @@ function RedPenPlainEditor(pub, $, textarea) {
     var start = calculateGlobalOffset(error.position.start);
     var end = calculateGlobalOffset(error.position.end);
     textarea[0].setSelectionRange(start, end);
+    pub.scrollToEditor();
+  };
+
+  pub.scrollToEditor = function() {
+    var offset = textarea.parent().offset();
+    if (scrollY > offset.top) scrollTo(offset.left, offset.top);
   };
 
   function calculateGlobalOffset(position) {
@@ -98,14 +104,14 @@ function RedPenVisualEditor(pub, $, editor) {
       selection.addRange(range);
     }
 
-    scrollToEditor();
+    pub.scrollToEditor();
     editor.getBody().focus();
   };
 
-  function scrollToEditor() {
+  pub.scrollToEditor = function() {
     var offset = $(editor.container).offset();
     if (scrollY > offset.top) scrollTo(offset.left, offset.top);
-  }
+  };
 
   pub.getCursorPos = function(textNodes) {
     if (!textNodes) textNodes = findTextNodes();
