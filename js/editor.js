@@ -43,8 +43,7 @@ function RedPenPlainEditor(pub, $, textarea) {
 
 function RedPenVisualEditor(pub, $, editor) {
   pub.getDocumentText = function() {
-    var textNodes = findTextNodes();
-    return joinNodesIntoOneLine(textNodes);
+    return editor.getBody().textContent.replace(/[\n\u00A0]/g, ' ');
   };
 
   pub.onKeyUp = function(handler) {
@@ -143,9 +142,5 @@ function RedPenVisualEditor(pub, $, editor) {
       else break;
     }
     return {node:node, offset:pos};
-  }
-
-  function joinNodesIntoOneLine(textNodes) {
-    return textNodes.map(function(node) {return node.textContent.trim()}).join(' ');
   }
 }

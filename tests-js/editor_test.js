@@ -40,10 +40,10 @@ describe('RedPenEditor', function() {
     });
 
     it('getDocumentText() returns text nodes separated by newlines', function() {
-      var editorContent = '<div><p>Hello <strong>WordPress</strong></p><p>and the World!</p></div>';
+      var editorContent = '<div><p>Hello <i>the\u00A0great</i> <strong>WordPress</strong></p>\n<p>and the World!</p></div>';
       editor.getBody = function() {return $(editorContent)[0]};
 
-      expect(ed.getDocumentText()).toBe('Hello WordPress and the World!')
+      expect(ed.getDocumentText()).toBe('Hello the great WordPress and the World!')
     });
 
     it('showErrorInText() uses Range inside of editor\'s body', function() {
