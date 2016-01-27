@@ -39,7 +39,7 @@ describe('RedPenEditor', function() {
       ed.switchTo(editor);
     });
 
-    it('getDocumentText() returns text nodes separated by newlines', function() {
+    it('getDocumentText() returns text as a single line', function() {
       var editorContent = '<div><p>Hello <i>the\u00A0great</i> <strong>WordPress</strong></p>\n<p>and the World!</p></div>';
       editor.getBody = function() {return $(editorContent)[0]};
 
