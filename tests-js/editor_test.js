@@ -61,6 +61,7 @@ describe('RedPenEditor', function() {
       editorContent = '<p>Hello World!</p>';
       var errorNode = ed.highlightError({position: {start: {offset: 0}, end: {offset: 5}}});
       expect(errorNode.className).toBe('redpen-error');
+      expect(errorNode.getAttribute('data-mce-bogus')).toBe('1');
       expect(errorNode.textContent).toBe('Hello');
     });
 
