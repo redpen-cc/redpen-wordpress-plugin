@@ -147,7 +147,11 @@ describe('RedPenPlugin', function() {
       mockValidateJSON(mockedValidateResponse);
 
       var errorNode = {};
-      spyOn(redpenPlugin.editor, 'highlightError').and.returnValue(errorNode);
+      var index = 0;
+      spyOn(redpenPlugin.editor, 'highlightError').and.callFake(function(error) {
+        expect(error.index).toBe(++index);
+        return errorNode;
+      });
       spyOn(redpenPlugin.editor, 'showErrorInText');
 
       redpenPlugin.validate();

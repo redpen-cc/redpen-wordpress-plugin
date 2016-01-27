@@ -74,7 +74,7 @@ function RedPenVisualEditor(pub, $, editor) {
       tailNode.data = tailNode.data.substring(textWithError.length);
 
       return $('<span class="redpen-error" data-mce-bogus="1"></span>')
-        .attr('title', 'RedPen: ' + error.message).text(textWithError)
+        .attr('title', 'RedPen ' + error.index + ': ' + error.message).text(textWithError)
         .insertBefore(tailNode)[0];
     }
     catch (e) {

@@ -32,10 +32,12 @@ function RedPenPlugin(proxyUrl) {
 
       redpen.validateJSON(args, function(result) {
         container.empty();
+        var index = 0;
 
         $.each(result.errors, function(i, error) {
 
           $.each(error.errors, function(j, suberror) {
+            suberror.index = ++index;
             var errorNode = ed.highlightError(suberror);
 
             var message = $('<li class="redpen-error-message"></li>').text(suberror.message)

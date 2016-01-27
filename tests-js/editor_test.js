@@ -59,10 +59,10 @@ describe('RedPenEditor', function() {
 
     it('highlightError() wraps the text in a span', function() {
       editorContent = '<p>Hello World!</p>';
-      var errorNode = ed.highlightError({position: {start: {offset: 0}, end: {offset: 5}}, message: 'Error message'});
+      var errorNode = ed.highlightError({position: {start: {offset: 0}, end: {offset: 5}}, message: 'Error message', index: 5});
       expect(errorNode.className).toBe('redpen-error');
       expect(errorNode.getAttribute('data-mce-bogus')).toBe('1');
-      expect(errorNode.getAttribute('title')).toBe('RedPen: Error message');
+      expect(errorNode.getAttribute('title')).toBe('RedPen 5: Error message');
       expect(errorNode.textContent).toBe('Hello');
     });
 
