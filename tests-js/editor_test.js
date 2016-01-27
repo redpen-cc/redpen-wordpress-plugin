@@ -31,8 +31,15 @@ describe('RedPenEditor', function() {
   });
 
   describe('visual (tinyMCE)', function() {
+    var editorContent;
+    var selection, range;
     var editor = {
-      getBody: function() {}
+      getBody: function() {return $(editorContent)[0]},
+      container: document.documentElement,
+      selection: {
+        getSel: function() {return selection = jasmine.createSpyObj('selection', ['removeAllRanges', 'addRange'])},
+        getRng: function() {return range = jasmine.createSpyObj('range', ['selectNode', 'setStart', 'setEnd'])}
+      }
     };
 
     beforeEach(function() {
@@ -40,32 +47,32 @@ describe('RedPenEditor', function() {
     });
 
     it('getDocumentText() returns text as a single line', function() {
-      var editorContent = '<div><p>Hello <i>the\u00A0great</i> <strong>WordPress</strong></p>\n<p>and the World!</p></div>';
-      editor.getBody = function() {return $(editorContent)[0]};
-
+      editorContent = '<div><p>Hello <i>the\u00A0great</i> <strong>WordPress</strong></p>\n<p>and the World!</p></div>';
       expect(ed.getDocumentText()).toBe('Hello the great WordPress and the World!')
     });
 
+    it('highlightError() for zero-length errors does not create an empty node', function() {
+      editorContent = '<p>Hello World!</p>';
+      var errorNode = ed.highlightError({position: {start: {offset: 0}, end:{offset: 0}}});
+      expect(errorNode.textContent).toBe('Hello World!');
+    });
+
+    it('highlightError() wraps the text in a span', function() {
+      editorContent = '<p>Hello World!</p>';
+      var errorNode = ed.highlightError({position: {start: {offset: 0}, end: {offset: 5}}});
+      expect(errorNode.className).toBe('redpen-error');
+      expect(errorNode.textContent).toBe('Hello');
+    });
+
     it('showErrorInText() uses Range inside of editor\'s body', function() {
-      var editorContent = '<div><p>Hello <strong>WordPress</strong></p><p>and the World!</p></div>';
-      var selection = jasmine.createSpyObj('selection', ['removeAllRanges', 'addRange']);
-      var range = jasmine.createSpyObj('range', ['selectNode', 'setStart', 'setEnd']);
+      editorContent = '<div><p>Hello <strong>WordPress</strong></p><p>and the World!</p></div>';
 
-      editor.getBody = function() {return $(editorContent)[0]};
-      editor.selection = {
-        getSel: function() {return selection},
-        getRng: function() {return range}
-      };
-      editor.container = document.documentElement;
-
-      ed.getDocumentText();
       var error = {position: {start: {offset: 23, line: 1}, end: {offset: 28, line: 1}}};
-      var node = ed.highlightError(error);
-      ed.showErrorInText(error, node);
+      var errorNode = ed.highlightError(error);
+      ed.showErrorInText(error, errorNode);
 
-      expect(node.textContent).toBe('World');
-      expect(node.className).toBe('redpen-error');
-      expect(range.selectNode).toHaveBeenCalledWith(node);
+      expect(errorNode.textContent).toBe('World');
+      expect(range.selectNode).toHaveBeenCalledWith(errorNode);
       expect(selection.removeAllRanges).toHaveBeenCalled();
       expect(selection.addRange).toHaveBeenCalledWith(range);
     });
