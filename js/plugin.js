@@ -81,7 +81,7 @@ function RedPenPlugin(proxyUrl) {
     pub.validate();
   };
 
-  pub.autoValidate = function(what) {
+  pub.autoValidate = function(what, switchSelector) {
     var lastText, lastKeyUp;
 
     function validateOnKeyUp() {
@@ -97,8 +97,13 @@ function RedPenPlugin(proxyUrl) {
 
     ed.switchTo(what);
     ed.onKeyUp(validateOnKeyUp);
-
     validateOnKeyUp();
+
+    $(switchSelector).on('click', function() {
+      ed.switchTo(what);
+      pub.validate();
+    });
+
     return pub;
   };
 

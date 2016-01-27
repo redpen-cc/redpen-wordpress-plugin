@@ -223,6 +223,21 @@ describe('RedPenPlugin', function() {
       editor.onKeyUp.add.calls.first().args[0](); // simulate keyUp in editor
       expect(redpenPlugin.validate).toHaveBeenCalledTimes(2);
     });
+
+    it('listens to switches between editors', function() {
+      var switcher = $('<button class="wp-switch-editor">Text</button>').appendTo('body');
+      spyOn(redpenPlugin.editor, 'switchTo');
+
+      redpenPlugin.autoValidate(textarea, '.wp-switch-editor');
+
+      expect(redpenPlugin.editor.switchTo).toHaveBeenCalledWith(textarea);
+      redpenPlugin.editor.switchTo.calls.reset();
+      redpenPlugin.validate.calls.reset();
+
+      switcher.click();
+      expect(redpenPlugin.editor.switchTo).toHaveBeenCalledWith(textarea);
+      expect(redpenPlugin.validate).toHaveBeenCalled();
+    });
   });
 
   describe('config', function() {

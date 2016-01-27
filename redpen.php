@@ -17,14 +17,14 @@ function redpen_init() {
 		<script src="{$redpen_plugin_root}js/plugin.js"></script>
 		<link rel="stylesheet" type="text/css" href="{$redpen_plugin_root}css/redpen.css">
 		<script>
-		    var redpenPlugin = new RedPenPlugin('$redpen_proxy_url').autoValidate('#content');
+		    var redpenPlugin = new RedPenPlugin('$redpen_proxy_url').autoValidate('#content', '.wp-switch-editor.switch-html');
 		</script>
 HTML;
 }
 
 function start_redpen_on_tinymce_init($settings) {
 	global $redpen_plugin_root;
-	$settings['setup'] = "function(editor) {redpenPlugin.autoValidate(editor)}";
+	$settings['setup'] = "function(editor) {redpenPlugin.autoValidate(editor, '.wp-switch-editor.switch-tmce')}";
 	$settings['content_style'] = "@import url('{$redpen_plugin_root}css/redpen.css');";
 	return $settings;
 }
