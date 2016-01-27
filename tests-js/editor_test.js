@@ -78,5 +78,20 @@ describe('RedPenEditor', function() {
       expect(selection.removeAllRanges).toHaveBeenCalled();
       expect(selection.addRange).toHaveBeenCalledWith(range);
     });
+
+    it('showErrorInText() for zero-length error puts cursor to the correct offset', function() {
+      editorContent = '<p>Hello</p>';
+
+      var error = {position: {start: {offset: 2}, end: {offset: 2}}};
+      var errorNode = ed.highlightError(error);
+      ed.showErrorInText(error, errorNode);
+
+      expect(errorNode.textContent).toBe('Hello');
+      expect(range.selectNode).not.toHaveBeenCalled();
+      expect(range.setStart).toHaveBeenCalledWith(errorNode, 2);
+      expect(range.setEnd).toHaveBeenCalledWith(errorNode, 2);
+      expect(selection.removeAllRanges).toHaveBeenCalled();
+      expect(selection.addRange).toHaveBeenCalledWith(range);
+    });
   });
 });

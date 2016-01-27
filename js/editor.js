@@ -87,11 +87,16 @@ function RedPenVisualEditor(pub, $, editor) {
   };
 
   pub.showErrorInText = function(error, node) {
-    var selection = editor.selection.getSel();
-    var range = editor.selection.getRng();
-    range.selectNode(node);
-    selection.removeAllRanges();
-    selection.addRange(range);
+    if (error.position.end.offset - error.position.start.offset == 0) {
+      pub.setCursorPos(error.position.start.offset);
+    }
+    else {
+      var selection = editor.selection.getSel();
+      var range = editor.selection.getRng();
+      range.selectNode(node);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
 
     scrollToEditor();
     editor.getBody().focus();
