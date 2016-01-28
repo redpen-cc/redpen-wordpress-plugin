@@ -22,7 +22,7 @@ function redpen_init() {
 HTML;
 }
 
-function start_redpen_on_tinymce_init($settings) {
+function redpen_start_on_tinymce_init($settings) {
 	global $redpen_plugin_root;
 	$settings['setup'] = "function(editor) {redpenPlugin.autoValidate(editor, '.wp-switch-editor.switch-tmce')}";
 	$settings['content_style'] = "@import url('{$redpen_plugin_root}css/redpen.css');";
