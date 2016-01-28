@@ -57,8 +57,22 @@ HTML;
 
 function redpen_config_content($post) {
 	echo <<< HTML
+	<div class="redpen-config-column">
+		<b>Validators</b>
+		<b class="redpen-validator-properties">Properties</b>
 		<ul class="redpen-validators"></ul>
+	</div>
+	<div class="redpen-config-column">
+		<table class="redpen-symboltable">
+			<thead>
+				<tr><th>Symbols</th><th>Value</th><th>Invalid<br>Chars</th><th>Space<br>Before</th><th>Space<br>After</th></tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</div>
+	<div class="redpen-config-footer">
 		<button type="button" class="button redpen-reset" onclick="redpenPlugin.resetConfiguration()">Reset to defaults</button>
+	</div>
 HTML;
 }
 

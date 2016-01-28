@@ -112,6 +112,7 @@ function RedPenPlugin(proxyUrl) {
   pub.renderConfiguration = function(config) {
     $('.redpen-lang').text(config.lang);
     var validatorContainer = $('.redpen-validators').empty();
+    var symbolContainer = $('.redpen-symboltable tbody').empty();
 
     $.each(config.validators, function(name, options) {
       var element = $('<li><label><input type="checkbox" value="' + name + '">' + name + '</label></li>').appendTo(validatorContainer);
@@ -135,6 +136,15 @@ function RedPenPlugin(proxyUrl) {
       }
 
       element.find('.redpen-validator-properties').on('click', function() {editValidatorProperties(name, options, $(this))});
+    });
+
+    $.each(config.symbols, function(name, options) {
+      var row = $('<tr></tr>').appendTo(symbolContainer);
+      $('<td></td>').text(name).appendTo(row);
+      $('<td></td>').text(options.value).appendTo(row);
+      $('<td></td>').text(options.invalid_chars).appendTo(row);
+      $('<td><input type="checkbox" disabled ' + (options.before_space ? 'checked' : '') + '></td>').appendTo(row);
+      $('<td><input type="checkbox" disabled ' + (options.after_space ? 'checked' : '') + '></td>').appendTo(row);
     });
   };
 

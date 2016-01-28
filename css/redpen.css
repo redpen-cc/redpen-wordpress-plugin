@@ -23,11 +23,22 @@
   vertical-align: middle;
 }
 
+.redpen-config-column {
+  float: left;
+  width: 50%;
+  min-width: 400px;
+  box-sizing: border-box;
+}
+
+.redpen-config-footer {
+  clear: both;
+}
+
 .redpen-validators i {
   color: #1C6100;
 }
 
-.redpen-validators li:hover {
+.redpen-validators li:hover, .redpen-symboltable tbody tr:hover {
   background: #eee;
 }
 
@@ -37,4 +48,14 @@
 
 .redpen-validator-properties {
   float: right;
+  margin-right: 2em;
+}
+
+.redpen-symboltable {
+  width: 100%;
+}
+
+.redpen-symboltable th {
+  vertical-align: top;
+  text-align: left;
 }
