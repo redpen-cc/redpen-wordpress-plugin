@@ -245,10 +245,11 @@ describe('RedPenPlugin', function() {
   });
 
   describe('config', function() {
-    var validatorContainer, langContainer;
+    var validatorContainer, symbolContainer, langContainer;
 
     beforeEach(function() {
       validatorContainer = $('<div class="redpen-validators"></div>').appendTo('body');
+      symbolContainer = $('<table class="redpen-symboltable"><tbody></tbody></table>').appendTo('body');
       langContainer = $('<div class="redpen-lang"></div>').appendTo('body');
       redpenPlugin.validate = jasmine.createSpy();
     });
@@ -319,6 +320,22 @@ describe('RedPenPlugin', function() {
       expect(window.prompt).toHaveBeenCalledWith('ImpoliteCursing', '');
       expect(validatorContainer.find('.redpen-validator-properties').text()).toBe('hello=world');
       expect(validators['ImpoliteCursing'].properties.hello).toBe('world');
+    });
+
+    it('displays symbols', function() {
+      var symbols = {
+        "AMPERSAND": {value:'&', invalid_chars:'@$%', before_space:false, after_space:true},
+        "DOLLAR_SIGN": {value:'$'}
+      };
+
+      redpenPlugin.renderConfiguration({symbols: symbols});
+
+      var symbolRows = symbolContainer.find('tr');
+      expect(symbolRows.length).toBe(2);
+      expect(symbolRows.eq(0).find('td').eq(0).text()).toBe('AMPERSAND');
+      expect(symbolRows.eq(0).find('td').eq(1).text()).toBe('&');
+      expect(symbolRows.eq(0).find('td').eq(2).text()).toBe('@$%');
+      expect(symbolRows.eq(1).text()).toBe('DOLLAR_SIGN$');
     });
 
     it('can reset to default', function() {
