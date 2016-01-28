@@ -1,6 +1,7 @@
 <?php
 $registered_hooks = [];
 $registered_meta_boxes = [];
+$enqueued_resources = [];
 
 // These functions are normally provided by Wordpress
 
@@ -21,7 +22,17 @@ function add_meta_box($id, $title, $callback, $screen, $context, $priority) {
     $registered_meta_boxes[$id] = func_get_args();
 }
 
-function plugins_url($resource_path, $file) {
-    return 'http://localhost/wp-content/plugins/redpen'.$resource_path;
+function plugin_dir_url($file) {
+    return 'http://localhost/wp-content/plugins/redpen/';
+}
+
+function wp_enqueue_script($handle, $src, $deps, $ver) {
+    global $enqueued_resources;
+    $enqueued_resources[$handle] = $src;
+}
+
+function wp_enqueue_style($handle, $src, $deps, $ver) {
+    global $enqueued_resources;
+    $enqueued_resources[$handle] = $src;
 }
 ?>
