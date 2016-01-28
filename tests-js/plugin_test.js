@@ -335,7 +335,25 @@ describe('RedPenPlugin', function() {
       expect(symbolRows.eq(0).find('td').eq(0).text()).toBe('AMPERSAND');
       expect(symbolRows.eq(0).find('td').eq(1).text()).toBe('&');
       expect(symbolRows.eq(0).find('td').eq(2).text()).toBe('@$%');
+      expect(symbolRows.eq(0).find(':checkbox')[0].checked).toBe(false);
+      expect(symbolRows.eq(0).find(':checkbox')[1].checked).toBe(true);
       expect(symbolRows.eq(1).text()).toBe('DOLLAR_SIGN$');
+    });
+
+    it('allows enabling or disabling usage of space eiother before or after the symbol', function() {
+      var symbols = {
+        "AMPERSAND": {value:'&', before_space:false, after_space:true}
+      };
+
+      redpenPlugin.renderConfiguration({symbols: symbols});
+
+      expect(symbolContainer.find(':checkbox[value=before_space]').click()[0].checked).toBe(true);
+      expect(symbols["AMPERSAND"].before_space).toBe(true);
+
+      expect(symbolContainer.find(':checkbox[value=after_space]').click()[0].checked).toBe(false);
+      expect(symbols["AMPERSAND"].after_space).toBe(false);
+
+      expect(redpenPlugin.validate).toHaveBeenCalledTimes(2);
     });
 
     it('can reset to default', function() {

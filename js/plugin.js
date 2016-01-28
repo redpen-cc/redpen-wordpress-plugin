@@ -143,8 +143,13 @@ function RedPenPlugin(proxyUrl) {
       $('<td></td>').text(name).appendTo(row);
       $('<td></td>').text(options.value).appendTo(row);
       $('<td></td>').text(options.invalid_chars).appendTo(row);
-      $('<td><input type="checkbox" disabled ' + (options.before_space ? 'checked' : '') + '></td>').appendTo(row);
-      $('<td><input type="checkbox" disabled ' + (options.after_space ? 'checked' : '') + '></td>').appendTo(row);
+      $('<td><input type="checkbox" name="' + name + '" value="before_space" ' + (options.before_space ? 'checked' : '') + '></td>').appendTo(row);
+      $('<td><input type="checkbox" name="' + name + '" value="after_space" ' + (options.after_space ? 'checked' : '') + '></td>').appendTo(row);
+
+      row.find(':checkbox').on('change', function() {
+        config.symbols[name][this.value] = this.checked;
+        onConfigurationChange();
+      });
     });
   };
 
