@@ -1,5 +1,11 @@
 <?php
 /*
+This file is not loaded with the plugin, but used to access RedPen Server's API using Ajax calls.
+(Otherwise, browser's cross-domain restrictions and/or firewall would prevent the access)
+Configure the URL of RedPen server in config.php.
+*/
+
+/*
 miniProxy - A simple PHP web proxy. <https://github.com/joshdick/miniProxy>
 Written and maintained by Joshua Dick <http://joshdick.net>.
 miniProxy is licensed under the GNU GPL v3 <http://www.gnu.org/licenses/gpl.html>.
