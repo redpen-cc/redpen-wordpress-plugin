@@ -42,7 +42,7 @@
   background: #eee;
 }
 
-.redpen-validator-properties {
+.redpen-validator-properties, .redpen-symbol-value, .redpen-symbol-invalid {
   cursor: pointer;
 }
 

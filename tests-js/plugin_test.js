@@ -341,9 +341,7 @@ describe('RedPenPlugin', function() {
     });
 
     it('allows enabling or disabling usage of space eiother before or after the symbol', function() {
-      var symbols = {
-        "AMPERSAND": {value:'&', before_space:false, after_space:true}
-      };
+      var symbols = {"AMPERSAND": {value:'&', before_space:false, after_space:true}};
 
       redpenPlugin.renderConfiguration({symbols: symbols});
 
@@ -354,6 +352,25 @@ describe('RedPenPlugin', function() {
       expect(symbols["AMPERSAND"].after_space).toBe(false);
 
       expect(redpenPlugin.validate).toHaveBeenCalledTimes(2);
+    });
+
+    it('allows changing symbols', function() {
+      var symbols = {"AMPERSAND": {value:'&', invalid_chars:'#'}};
+
+      redpenPlugin.renderConfiguration({symbols: symbols});
+      window.prompt = jasmine.createSpy().and.returnValue(' % ');
+
+      symbolContainer.find('.redpen-symbol-value').click();
+
+      expect(window.prompt).toHaveBeenCalledWith('AMPERSAND', '&');
+      expect(symbols["AMPERSAND"].value).toBe('%');
+      expect(redpenPlugin.validate).toHaveBeenCalled();
+
+      symbolContainer.find('.redpen-symbol-invalid').click();
+
+      expect(window.prompt).toHaveBeenCalledWith('AMPERSAND', '#');
+      expect(symbols["AMPERSAND"].invalid_chars).toBe('%');
+      expect(redpenPlugin.validate).toHaveBeenCalled();
     });
 
     it('can reset to default', function() {

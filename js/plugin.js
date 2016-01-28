@@ -141,8 +141,8 @@ function RedPenPlugin(proxyUrl) {
     $.each(config.symbols, function(name, options) {
       var row = $('<tr></tr>').appendTo(symbolContainer);
       $('<td></td>').text(name).appendTo(row);
-      $('<td></td>').text(options.value).appendTo(row);
-      $('<td></td>').text(options.invalid_chars).appendTo(row);
+      $('<td class="redpen-symbol-value"></td>').text(options.value).appendTo(row);
+      $('<td class="redpen-symbol-invalid"></td>').text(options.invalid_chars).appendTo(row);
       $('<td><input type="checkbox" name="' + name + '" value="before_space" ' + (options.before_space ? 'checked' : '') + '></td>').appendTo(row);
       $('<td><input type="checkbox" name="' + name + '" value="after_space" ' + (options.after_space ? 'checked' : '') + '></td>').appendTo(row);
 
@@ -150,6 +150,9 @@ function RedPenPlugin(proxyUrl) {
         config.symbols[name][this.value] = this.checked;
         onConfigurationChange();
       });
+
+      row.find('.redpen-symbol-value').on('click', function() {editSymbol(name, 'value', options, $(this))});
+      row.find('.redpen-symbol-invalid').on('click', function() {editSymbol(name, 'invalid_chars', options, $(this))});
     });
   };
 
@@ -168,5 +171,16 @@ function RedPenPlugin(proxyUrl) {
       propertyElement.text(keyvalue);
       onConfigurationChange();
     }
+  }
+
+  function editSymbol(name, key, options, propertyElement) {
+    var value = propertyElement.text();
+    value = prompt(name, value);
+    if (value === null) return;
+
+    value = value.trim();
+    options[key] = value;
+    propertyElement.text(value);
+    onConfigurationChange();
   }
 }
