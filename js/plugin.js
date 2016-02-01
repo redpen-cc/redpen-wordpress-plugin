@@ -3,6 +3,7 @@ function RedPenPlugin(proxyUrl) {
   var $ = jQuery;
   var ed = pub.editor = new RedPenEditor();
   var title = $('.redpen-title');
+  var manualLanguage;
 
   if (localStorage.redpens)
     pub.redpens = JSON.parse(localStorage.redpens);
@@ -26,7 +27,7 @@ function RedPenPlugin(proxyUrl) {
     var text = ed.getDocumentText();
     var container = $('.redpen-error-list');
 
-    redpen.detectLanguage(text, function(lang) {
+    chooseLanguage(text, function(lang) {
       pub.renderConfiguration(pub.redpens[lang]);
       var config = prepareConfigForValidation(lang);
 
@@ -57,6 +58,11 @@ function RedPenPlugin(proxyUrl) {
     });
   };
 
+  function chooseLanguage(text, callback) {
+    if (manualLanguage) callback(manualLanguage);
+    else redpen.detectLanguage(text, callback);
+  }
+
   function loadDefaultConfiguration() {
     redpen.getRedPens(function (result) {
       pub.redpens = result.redpens;
@@ -73,6 +79,10 @@ function RedPenPlugin(proxyUrl) {
     var select = $('#redpen-language').empty();
     $.each(pub.redpens, function(lang) {
       select.append('<option>' + lang + '</option>');
+    });
+    select.on('change', function() {
+      manualLanguage = select.val();
+      onConfigurationChange();
     });
   }
 
@@ -119,7 +129,7 @@ function RedPenPlugin(proxyUrl) {
   };
 
   pub.renderConfiguration = function(config) {
-    $('#redpen-language').val(config.lang);
+    if (!manualLanguage) $('#redpen-language').val(config.lang);
     var validatorContainer = $('.redpen-validators').empty();
     var symbolContainer = $('.redpen-symboltable tbody').empty();
 

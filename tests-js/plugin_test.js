@@ -1,6 +1,6 @@
 describe('RedPenPlugin', function() {
   var textarea, editor, redpenPlugin;
-  var errorContainer, title;
+  var errorContainer, title, langSelect;
   var proxyUrl = 'http://wordpress/proxy.php/';
 
   var redpens = {
@@ -14,6 +14,7 @@ describe('RedPenPlugin', function() {
 
     errorContainer = $('<ol class="redpen-error-list"></ol>').appendTo('body');
     title = $('<div class="redpen-title"></div>').appendTo('body');
+    langSelect = $('<select id="redpen-language"></select>').appendTo('body');
 
     textarea = $('<textarea></textarea>').val('Hello World!').appendTo('body');
     editor = {};
@@ -116,6 +117,24 @@ describe('RedPenPlugin', function() {
 
       redpenPlugin.validate();
       expect(redpen.validateJSON).toHaveBeenCalled();
+    });
+
+    it('language can be chosen manually', function() {
+      var englishText = 'Hello there!';
+      spyOn(redpenPlugin.editor, 'getDocumentText').and.returnValue(englishText);
+
+      redpen.detectLanguage = jasmine.createSpy();
+      redpen.validateJSON = jasmine.createSpy();
+
+      langSelect.val('ja').trigger('change');
+
+      expect(redpen.detectLanguage).not.toHaveBeenCalled();
+      expect(redpen.validateJSON).toHaveBeenCalled();
+
+      redpenPlugin.validate();
+
+      expect(redpen.detectLanguage).not.toHaveBeenCalled();
+      expect(langSelect.val()).toBe('ja');
     });
 
     it('displays nothing if no errors', function () {
@@ -245,26 +264,23 @@ describe('RedPenPlugin', function() {
   });
 
   describe('config', function() {
-    var validatorContainer, symbolContainer, langSelect;
+    var validatorContainer, symbolContainer;
 
     beforeEach(function() {
       validatorContainer = $('<div class="redpen-validators"></div>').appendTo('body');
       symbolContainer = $('<table class="redpen-symboltable"><tbody></tbody></table>').appendTo('body');
-      langSelect = $('<select id="redpen-language"></select>').appendTo('body');
       redpenPlugin.validate = jasmine.createSpy();
     });
 
     it('displays all available configurations', function() {
-      redpenPlugin = new RedPenPlugin(proxyUrl);
       var options = langSelect.find('option');
       expect(options.eq(0).text()).toBe('en');
       expect(options.eq(1).text()).toBe('ja');
     });
 
     it('selects detected language', function() {
-      langSelect.append('<option>en</option>').append('<option>et</option>');
-      redpenPlugin.renderConfiguration({lang: 'et', validators: {}});
-      expect(langSelect.val()).toBe('et');
+      redpenPlugin.renderConfiguration({lang: 'ja', validators: {}});
+      expect(langSelect.val()).toBe('ja');
     });
 
     it('displays validator list', function() {
