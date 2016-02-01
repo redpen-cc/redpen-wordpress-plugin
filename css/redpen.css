@@ -14,6 +14,10 @@
   border-bottom: 1px dotted #a70c00;
 }
 
+.redpen-clear {
+  clear: both;
+}
+
 .redpen-error-validator {
   display: inline-block;
   padding: 1px;
@@ -30,8 +34,17 @@
   box-sizing: border-box;
 }
 
-.redpen-config-footer {
-  clear: both;
+.redpen-config-global {
+  padding-bottom: 2em;
+  margin-right: 2em
+}
+
+#redpen-language {
+  margin-left: 0.5em;
+}
+
+.redpen-reset {
+  float: right;
 }
 
 .redpen-validators i {

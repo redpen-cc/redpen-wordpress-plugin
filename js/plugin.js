@@ -12,6 +12,8 @@ function RedPenPlugin(proxyUrl) {
 
     if (!pub.redpens)
       loadDefaultConfiguration();
+
+    populateLanguages();
   }
   else {
     $.get(proxyUrl + 'redpen_base_url', function(redpenServerUrl) {
@@ -67,6 +69,13 @@ function RedPenPlugin(proxyUrl) {
     if (pub.validate) pub.validate();
   }
 
+  function populateLanguages() {
+    var select = $('#redpen-language').empty();
+    $.each(pub.redpens, function(lang) {
+      select.append('<option>' + lang + '</option>');
+    });
+  }
+
   pub._prepareConfigForValidation = prepareConfigForValidation;
   function prepareConfigForValidation(lang) {
     var validators = {};
@@ -110,7 +119,7 @@ function RedPenPlugin(proxyUrl) {
   };
 
   pub.renderConfiguration = function(config) {
-    $('.redpen-lang').text(config.lang);
+    $('#redpen-language').val(config.lang);
     var validatorContainer = $('.redpen-validators').empty();
     var symbolContainer = $('.redpen-symboltable tbody').empty();
 

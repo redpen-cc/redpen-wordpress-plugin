@@ -245,18 +245,26 @@ describe('RedPenPlugin', function() {
   });
 
   describe('config', function() {
-    var validatorContainer, symbolContainer, langContainer;
+    var validatorContainer, symbolContainer, langSelect;
 
     beforeEach(function() {
       validatorContainer = $('<div class="redpen-validators"></div>').appendTo('body');
       symbolContainer = $('<table class="redpen-symboltable"><tbody></tbody></table>').appendTo('body');
-      langContainer = $('<div class="redpen-lang"></div>').appendTo('body');
+      langSelect = $('<select id="redpen-language"></select>').appendTo('body');
       redpenPlugin.validate = jasmine.createSpy();
     });
 
-    it('displays detected language', function() {
+    it('displays all available configurations', function() {
+      redpenPlugin = new RedPenPlugin(proxyUrl);
+      var options = langSelect.find('option');
+      expect(options.eq(0).text()).toBe('en');
+      expect(options.eq(1).text()).toBe('ja');
+    });
+
+    it('selects detected language', function() {
+      langSelect.append('<option>en</option>').append('<option>et</option>');
       redpenPlugin.renderConfiguration({lang: 'et', validators: {}});
-      expect(langContainer.text()).toBe('et');
+      expect(langSelect.val()).toBe('et');
     });
 
     it('displays validator list', function() {

@@ -39,7 +39,7 @@ function redpen_add_meta_boxes() {
 
 	add_meta_box(
 		'redpen-config',
-		'<span class="redpen-red">Red</span>Pen configuration (<span class="redpen-lang"></span>)',
+		'<span class="redpen-red">Red</span>Pen configuration',
 		'redpen_config_content',
 		array('post', 'page'),
 		'advanced',
@@ -48,16 +48,20 @@ function redpen_add_meta_boxes() {
 }
 
 function redpen_errors_content($post) {
-	global $redpen_proxy_url;
-	echo <<< HTML
-		<ol class="redpen-error-list"></ol>
-		<script>var redpenPlugin = new RedPenPlugin('$redpen_proxy_url').autoValidate('#content', '.wp-switch-editor.switch-html');</script>
-HTML;
+	echo '<ol class="redpen-error-list"></ol>';
 }
 
 function redpen_config_content($post) {
+	global $redpen_proxy_url;
 	echo <<< HTML
 	<div class="redpen-config-column">
+		<div class="redpen-config-global">
+			<label>
+				<b>Language and Variant</b>
+				<select id="redpen-language"></select>
+			</label>
+			<button type="button" class="button redpen-reset" onclick="redpenPlugin.resetConfiguration()">Reset to defaults</button>
+		</div>
 		<b>Validators</b>
 		<b class="redpen-validator-properties">Properties</b>
 		<ul class="redpen-validators"></ul>
@@ -70,9 +74,8 @@ function redpen_config_content($post) {
 			<tbody></tbody>
 		</table>
 	</div>
-	<div class="redpen-config-footer">
-		<button type="button" class="button redpen-reset" onclick="redpenPlugin.resetConfiguration()">Reset to defaults</button>
-	</div>
+	<div class="redpen-clear"></div>
+	<script>var redpenPlugin = new RedPenPlugin('$redpen_proxy_url').autoValidate('#content', '.wp-switch-editor.switch-html');</script>
 HTML;
 }
 
