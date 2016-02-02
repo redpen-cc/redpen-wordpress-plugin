@@ -27,9 +27,9 @@ function RedPenPlugin(proxyUrl) {
     var text = ed.getDocumentText();
     var container = $('.redpen-error-list');
 
-    chooseLanguage(text, function(lang) {
-      pub.renderConfiguration(pub.redpens[lang]);
-      var config = prepareConfigForValidation(lang);
+    chooseLanguage(text, function(langKey) {
+      pub.renderConfiguration(pub.redpens[langKey]);
+      var config = prepareConfigForValidation(langKey);
 
       var args = {config:config, document:text, format:'json2'};
 
@@ -87,14 +87,14 @@ function RedPenPlugin(proxyUrl) {
   }
 
   pub._prepareConfigForValidation = prepareConfigForValidation;
-  function prepareConfigForValidation(lang) {
+  function prepareConfigForValidation(langKey) {
     var validators = {};
-    $.each(pub.redpens[lang].validators, function(name, options) {
+    var config = pub.redpens[langKey];
+    $.each(config.validators, function(name, options) {
       if (!options.disabled)
         validators[name] = options;
     });
-
-    return {lang: lang, validators: validators, symbols: pub.redpens[lang].symbols};
+    return {lang: config.lang, validators: validators, symbols: config.symbols};
   }
 
   pub.resetConfiguration = function() {
