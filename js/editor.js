@@ -72,21 +72,27 @@ function RedPenVisualEditor(pub, $, editor) {
   };
 
   pub.highlightError = function(error) {
-    var textNodes = findTextNodes();
-    try {
-      var start = findNode(textNodes, error.position.start.offset);
-      var end = findNode(textNodes, error.position.end.offset);
-      var node = start.node;
-      if (end.node != node) return end.node;
-      if (end.offset - start.offset == 0) return node;
-      var textWithError = node.data.substring(start.offset, end.offset);
+    function wrapError(node, start, end) {
+      var textWithError = node.data.substring(start, end);
 
-      var tailNode = node.splitText(start.offset);
+      var tailNode = node.splitText(start);
       tailNode.data = tailNode.data.substring(textWithError.length);
 
       return $('<span class="redpen-error" data-mce-bogus="1"></span>')
         .attr('title', 'RedPen ' + error.index + ': ' + error.message).text(textWithError)
         .insertBefore(tailNode)[0];
+    }
+
+    try {
+      var textNodes = findTextNodes();
+      var start = findNode(textNodes, error.position.start.offset);
+      var end = findNode(textNodes, error.position.end.offset);
+      if (end.node == start.node && end.offset == start.offset) return start.node;
+      if (end.node != start.node) {
+        wrapError(end.node, 0, end.offset);
+        end.offset = start.node.data.length;
+      }
+      return wrapError(start.node, start.offset, end.offset);
     }
     catch (e) {
       // do not highlight error if text has been changed already

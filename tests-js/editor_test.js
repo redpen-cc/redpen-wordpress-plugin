@@ -66,6 +66,13 @@ describe('RedPenEditor', function() {
       expect(errorNode.textContent).toBe('Hello');
     });
 
+    it('highlightError() when error spans multiple nodes', function() {
+      editorContent = '<p><b>Hel</b>lo <i>World</i>!</p>';
+      var errorNode = ed.highlightError({position: {start: {offset: 0}, end: {offset: 5}}});
+      expect(errorNode.className).toBe('redpen-error');
+      expect(errorNode.textContent).toBe('Hel');
+    });
+
     it('showErrorInText() uses Range inside of editor\'s body', function() {
       editorContent = '<div><p>Hello <strong>WordPress</strong></p><p>and the World!</p></div>';
 
