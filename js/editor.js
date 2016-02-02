@@ -54,6 +54,9 @@ function RedPenVisualEditor(pub, $, editor) {
 
   pub.onKeyUp = function(handler) {
     editor.onKeyUp.add(handler);
+    editor.onPaste.add(function() {
+      setTimeout(handler, 0);
+    });
   };
 
   pub.clearErrors = function() {
@@ -116,7 +119,7 @@ function RedPenVisualEditor(pub, $, editor) {
   pub.getCursorPos = function(textNodes) {
     if (!textNodes) textNodes = findTextNodes();
     var range = editor.selection.getRng();
-    var pos = range.startOffset;
+    var pos = range.startContainer.nodeType == range.startContainer.TEXT_NODE ? range.startOffset : 0;
     $.each(textNodes, function(i, node) {
       if (node != range.startContainer) pos += node.data.length;
       else return false;
