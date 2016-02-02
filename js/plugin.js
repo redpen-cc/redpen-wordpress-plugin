@@ -22,6 +22,14 @@ function RedPenPlugin(proxyUrl) {
     });
   }
 
+  var lastXhr;
+  $(document).ajaxSend(function(event, jqxhr, settings) {
+    if (settings.url.indexOf(proxyUrl) == 0) {
+      if (lastXhr) lastXhr.abort();
+      lastXhr = jqxhr;
+    }
+  });
+
   pub.validate = function() {
     ed.clearErrors();
     var text = ed.getDocumentText();
