@@ -115,14 +115,13 @@ function RedPenVisualEditor(pub, $, editor) {
     if (pageYOffset > offset.top) scrollTo(offset.left, offset.top);
   };
 
-  pub.getCursorPos = function(textNodes) {
-    if (!textNodes) textNodes = findTextNodes();
+  pub.getCursorPos = function() {
+    var cursorNode = editor.dom.doc.createTextNode('\u200B\u200B\u200B');
     var range = editor.selection.getRng();
-    var pos = range.startContainer.nodeType == range.startContainer.TEXT_NODE ? range.startOffset : 0;
-    $.each(textNodes, function(i, node) {
-      if (node != range.startContainer) pos += node.data.length;
-      else return false;
-    });
+    range.insertNode(cursorNode);
+    var pos = pub.getDocumentText().indexOf(cursorNode.data);
+    $(cursorNode).remove();
+    editor.getBody().normalize();
     return pos;
   };
 
