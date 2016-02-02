@@ -11,7 +11,7 @@ $redpen_plugin_root = plugin_dir_url(__FILE__);
 $redpen_proxy_url = $redpen_plugin_root . 'proxy.php/';
 
 function redpen_head($page) {
-	if ($page != 'post.php') return;
+	if (strpos($page, 'post') !== 0) return;
 
 	global $redpen_plugin_ver, $redpen_plugin_root, $redpen_proxy_url;
 	wp_enqueue_script('redpen-api', $redpen_proxy_url . 'js/redpen.js', false, $redpen_plugin_ver);
