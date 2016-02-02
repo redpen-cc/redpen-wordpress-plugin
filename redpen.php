@@ -57,7 +57,7 @@ function redpen_config_content($post) {
 	<div class="redpen-config-column">
 		<div class="redpen-config-global">
 			<label>
-				<b>Language and Variant</b>
+				<b>Language</b>
 				<select id="redpen-language"></select>
 			</label>
 			<button type="button" class="button redpen-reset" onclick="redpenPlugin.resetConfiguration()">Reset to defaults</button>
