@@ -239,7 +239,7 @@ describe('RedPenPlugin', function() {
     it('in visual editor', function() {
       var editorContent = '<div><p>Hello <strong>WordPress</strong></p><p>and the World!</p></div>';
       editor.getBody = function() {return $(editorContent)[0]};
-      editor.onKeyUp = jasmine.createSpyObj('onKeyUp', ['add']);
+      editor.onKeyUp = editor.onPaste = jasmine.createSpyObj('onKeyUp', ['add']);
 
       redpenPlugin.autoValidate(editor);
       expect(redpenPlugin.validate).toHaveBeenCalledTimes(1);
