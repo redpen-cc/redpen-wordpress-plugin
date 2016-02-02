@@ -28,6 +28,7 @@ function RedPenPlugin(proxyUrl) {
     var container = $('.redpen-error-list');
 
     chooseLanguage(text, function(langKey) {
+      if (!manualLanguage) $('#redpen-language').val(langKey);
       pub.renderConfiguration(pub.redpens[langKey]);
       var config = prepareConfigForValidation(langKey);
 
@@ -129,7 +130,6 @@ function RedPenPlugin(proxyUrl) {
   };
 
   pub.renderConfiguration = function(config) {
-    if (!manualLanguage) $('#redpen-language').val(config.lang);
     var validatorContainer = $('.redpen-validators').empty();
     var symbolContainer = $('.redpen-symboltable tbody').empty();
 

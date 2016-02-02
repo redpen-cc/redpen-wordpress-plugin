@@ -116,6 +116,8 @@ describe('RedPenPlugin', function() {
       });
 
       redpenPlugin.validate();
+
+      expect(langSelect.val()).toBe('ja');
       expect(redpen.validateJSON).toHaveBeenCalled();
     });
 
@@ -276,11 +278,6 @@ describe('RedPenPlugin', function() {
       var options = langSelect.find('option');
       expect(options.eq(0).text()).toBe('en');
       expect(options.eq(1).text()).toBe('ja');
-    });
-
-    it('selects detected language', function() {
-      redpenPlugin.renderConfiguration({lang: 'ja', validators: {}});
-      expect(langSelect.val()).toBe('ja');
     });
 
     it('displays validator list', function() {
