@@ -36,7 +36,7 @@ function RedPenPlainEditor(pub, $, textarea) {
 
   pub.scrollToEditor = function() {
     var offset = textarea.parent().offset();
-    if (scrollY > offset.top) scrollTo(offset.left, offset.top);
+    if (pageYOffset > offset.top) scrollTo(offset.left, offset.top);
   };
 
   function calculateGlobalOffset(position) {
@@ -110,7 +110,7 @@ function RedPenVisualEditor(pub, $, editor) {
 
   pub.scrollToEditor = function() {
     var offset = $(editor.container).offset();
-    if (scrollY > offset.top) scrollTo(offset.left, offset.top);
+    if (pageYOffset > offset.top) scrollTo(offset.left, offset.top);
   };
 
   pub.getCursorPos = function(textNodes) {
