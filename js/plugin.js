@@ -37,6 +37,7 @@ function RedPenPlugin(proxyUrl) {
       redpen.validateJSON(args, function(result) {
         container.empty();
         var index = 0;
+        var cursorPos = ed.getCursorPos();
 
         $.each(result.errors, function(i, error) {
 
@@ -54,6 +55,7 @@ function RedPenPlugin(proxyUrl) {
           });
         });
 
+        ed.setCursorPos(cursorPos);
         title.text('found ' + container.children().length + ' errors');
       });
     });

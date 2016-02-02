@@ -27,6 +27,9 @@ function RedPenPlainEditor(pub, $, textarea) {
     // not supported yet
   };
 
+  pub.getCursorPos = function() {};
+  pub.setCursorPos = function() {};
+
   pub.showErrorInText = function(error) {
     var start = calculateGlobalOffset(error.position.start);
     var end = calculateGlobalOffset(error.position.end);
@@ -70,7 +73,6 @@ function RedPenVisualEditor(pub, $, editor) {
 
   pub.highlightError = function(error) {
     var textNodes = findTextNodes();
-    var cursorPos = pub.getCursorPos(textNodes);
     try {
       var start = findNode(textNodes, error.position.start.offset);
       var end = findNode(textNodes, error.position.end.offset);
@@ -89,9 +91,6 @@ function RedPenVisualEditor(pub, $, editor) {
     catch (e) {
       // do not highlight error if text has been changed already
       console.warn(error, textNodes, e);
-    }
-    finally {
-      pub.setCursorPos(cursorPos);
     }
   };
 
