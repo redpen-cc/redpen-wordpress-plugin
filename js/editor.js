@@ -58,7 +58,7 @@ function RedPenVisualEditor(pub, $, editor) {
   pub.onKeyUp = function(handler) {
     editor.onKeyUp.add(handler);
     editor.onPaste.add(function() {
-      setTimeout(handler, 0);
+      setTimeout(handler, 500);
     });
   };
 
