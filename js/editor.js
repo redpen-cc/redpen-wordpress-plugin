@@ -73,14 +73,19 @@ function RedPenVisualEditor(pub, $, editor) {
 
   pub.highlightError = function(error) {
     function wrapError(node, start, end) {
+      var wrapper = $('<span class="redpen-error" data-mce-bogus="1"></span>')
+                    .attr('title', 'RedPen ' + error.index + ': ' + error.message);
+
+      var fromStart = start == 0;
+      var tillEnd = end == node.data.length;
+
       var textWithError = node.data.substring(start, end);
 
-      var tailNode = node.splitText(start);
-      tailNode.data = tailNode.data.substring(textWithError.length);
+      var tailNode = fromStart ? node : node.splitText(start);
+      if (tillEnd) return $(tailNode).wrap(wrapper)[0].parentNode;
 
-      return $('<span class="redpen-error" data-mce-bogus="1"></span>')
-        .attr('title', 'RedPen ' + error.index + ': ' + error.message).text(textWithError)
-        .insertBefore(tailNode)[0];
+      tailNode.data = tailNode.data.substring(textWithError.length);
+      return wrapper.text(textWithError).insertBefore(tailNode)[0];
     }
 
     try {
