@@ -78,10 +78,10 @@ describe('RedPenEditor', function() {
     });
 
     it('highlightError() wraps the existing node fully', function() {
-      editorContent = '<p><b>Hel</b>lo</p>';
-      var errorNode = ed.highlightError({position: {start: {offset: 0}, end: {offset: 3}}})[0].parentNode;
+      editorContent = '<p>Hello <b>is</b> world</p>';
+      var errorNode = ed.highlightError({position: {start: {offset: 6}, end: {offset: 8}}})[0].parentNode;
       expect(errorNode.className).toBe('redpen-error');
-      expect(errorNode.textContent).toBe('Hel');
+      expect(errorNode.textContent).toBe('is');
       expect(errorNode.parentNode.childNodes.length).toBe(1);
     });
 
@@ -99,6 +99,12 @@ describe('RedPenEditor', function() {
       expect(errorNode.className).toBe('redpen-error');
       expect(errorNode.textContent).toBe('He');
       expect(errorNode.parentNode.childNodes.length).toBe(2);
+    });
+
+    it('highlightError() zero width-error at the end', function() {
+      editorContent = '<p><b>A</b>B</p>';
+      var errorNode = ed.highlightError({position: {start: {offset: 2}, end: {offset: 2}}})[0];
+      expect(errorNode.textContent).toBe('B');
     });
 
     it('showErrorInText() selects single node', function() {

@@ -165,7 +165,7 @@ function RedPenVisualEditor(pub, $, editor) {
     for (var i in textNodes) {
       var node = textNodes[i];
 
-      if (posStart <= node.data.length)
+      if (i == textNodes.length-1 || posStart < node.data.length)
         nodes.push({node: node, start: 0, end: node.data.length});
       else if (nodes.length == 0)
         posStart -= node.data.length;
