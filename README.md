@@ -11,13 +11,10 @@ Please refer to [RedPen Server documentation](http://redpen.cc/docs/latest/index
 
 Before installing make sure that both **WordPress** and **RedPen Server** are up and running properly.
 
-* Either link or copy this directory to *wordpress/wp-content/plugins*, e.g.
-    ```ln -s redpen-wordpress-plugin wordpress/wp-content/plugins```
-
+* [Download](https://github.com/redpen-cc/redpen-wordpress-plugin/archive/master.zip) and extract plugin to *wordpress/wp-content/plugins*.
 * Make sure the correct RedPen server URL is defined in *config.php*. By default it is http://localhost:8080.
 * Install PHP cURL library if you don't already have it, e.g. on Ubuntu
     ```sudo apt-get install php5-curl```
-
 * Activate the plugin in WordPress Admin console -> Plugins -> Installed plugins.
 
 ## For developers
