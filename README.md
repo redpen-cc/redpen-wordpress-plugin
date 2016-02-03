@@ -1,6 +1,20 @@
-[![Build Status](https://travis-ci.org/redpen-cc/redpen-wordpress-plugin.svg?branch=master)](https://travis-ci.org/redpen-cc/redpen-wordpress-plugin)
+# RedPen WordPress plugin
 
-# WordPress plugin that integrates RedPen text validation into the editor
+## About
+
+This plugin integrates [RedPen](http://redpen.cc) text validation into the WordPress editor.
+
+### Features
+
+* Validates text with RedPen as you type
+* Supports both Visual and Text WordPress editors
+* Validation errors are marked in Visual editor in-place
+* Validation error messages are also listed below and highlighted in the editor on click
+* Autodetection of supported languages and variants (currently, English or Japanese)
+* RedPen [validators](http://redpen.cc/docs/latest/index.html#validator) and [symbols](http://redpen.cc/docs/latest/index.html#setting-symbols) can be configured directly in WordPress panel below the editor
+* Configuration is stored for next visit with the same browser
+
+![alt text](screenshot.png "Screenshot")
 
 ## Prerequisites
 
@@ -17,7 +31,7 @@ Before installing make sure that both **WordPress** and **RedPen Server** are up
     ```sudo apt-get install php5-curl```
 * Activate the plugin in WordPress Admin console -> Plugins -> Installed plugins.
 
-## For developers
+## For developers [![Build Status](https://travis-ci.org/redpen-cc/redpen-wordpress-plugin.svg?branch=master)](https://travis-ci.org/redpen-cc/redpen-wordpress-plugin)
 
 ### Running the tests
 
