@@ -162,22 +162,24 @@ function RedPenVisualEditor(pub, $, editor) {
     return textNodes;
   }
 
-  function findNodes(textNodes, posStart, posEnd) {
+  function findNodes(textNodes, start, end) {
     var result = [];
+    var last = textNodes.length-1;
+
     for (var i in textNodes) {
       var node = textNodes[i];
+      var len = node.data.length;
 
-      if (i == textNodes.length-1 || posStart < node.data.length)
-        result.push({node: node, start: 0, end: node.data.length});
-      else if (result.length == 0)
-        posStart -= node.data.length;
+      if (i == last || start < len)
+        result.push({node: node, start: 0, end: len});
+      else if (result.length == 0) start -= len;
 
-      if (posEnd >= node.data.length) posEnd -= node.data.length;
+      if (i != last && end >= len) end -= len;
       else break;
     }
 
-    result[0].start = posStart;
-    result[result.length-1].end = posEnd;
+    result[0].start = start;
+    result[result.length-1].end = end;
 
     return result;
   }

@@ -104,11 +104,13 @@ describe('RedPenEditor', function() {
     it('highlightError() zero width-error at the end', function() {
       editorContent = '<p><b>A</b>B</p>';
 
-      var errorNode = ed.highlightError({position: {start: {offset: 1}, end: {offset: 1}}})[0];
-      expect(errorNode.textContent).toBe('B');
+      var error = {position: {start: {offset: 1}, end: {offset: 1}}};
+      var errorNodes = ed.highlightError(error);
+      expect(errorNodes[0].textContent).toBe('B');
 
-      errorNode = ed.highlightError({position: {start: {offset: 2}, end: {offset: 2}}})[0];
-      expect(errorNode.textContent).toBe('B');
+      error = {position: {start: {offset: 2}, end: {offset: 2}}};
+      errorNodes = ed.highlightError(error);
+      expect(errorNodes[0].textContent).toBe('B');
     });
 
     it('showErrorInText() selects single node', function() {
@@ -149,6 +151,13 @@ describe('RedPenEditor', function() {
       expect(range.setEnd).toHaveBeenCalledWith(errorNodes[0], 2);
       expect(selection.removeAllRanges).toHaveBeenCalled();
       expect(selection.addRange).toHaveBeenCalledWith(range);
+    });
+
+    it('setCursorPos() at the end of text', function() {
+      editorContent = '<p><b>ABC</b>DE</p>';
+      ed.setCursorPos(5);
+      expect(range.setStart).toHaveBeenCalledWith(jasmine.objectContaining({data:'DE'}), 2);
+      expect(range.setEnd).toHaveBeenCalledWith(jasmine.objectContaining({data:'DE'}), 2);
     });
   });
 });
