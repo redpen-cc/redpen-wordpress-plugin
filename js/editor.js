@@ -161,22 +161,22 @@ function RedPenVisualEditor(pub, $, editor) {
   }
 
   function findNodes(textNodes, posStart, posEnd) {
-    var nodes = [];
+    var result = [];
     for (var i in textNodes) {
       var node = textNodes[i];
 
       if (i == textNodes.length-1 || posStart < node.data.length)
-        nodes.push({node: node, start: 0, end: node.data.length});
-      else if (nodes.length == 0)
+        result.push({node: node, start: 0, end: node.data.length});
+      else if (result.length == 0)
         posStart -= node.data.length;
 
-      if (posEnd > node.data.length) posEnd -= node.data.length;
+      if (posEnd >= node.data.length) posEnd -= node.data.length;
       else break;
     }
 
-    nodes[0].start = posStart;
-    nodes[nodes.length-1].end = posEnd;
+    result[0].start = posStart;
+    result[result.length-1].end = posEnd;
 
-    return nodes;
+    return result;
   }
 }

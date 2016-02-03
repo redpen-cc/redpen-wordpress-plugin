@@ -103,7 +103,11 @@ describe('RedPenEditor', function() {
 
     it('highlightError() zero width-error at the end', function() {
       editorContent = '<p><b>A</b>B</p>';
-      var errorNode = ed.highlightError({position: {start: {offset: 2}, end: {offset: 2}}})[0];
+
+      var errorNode = ed.highlightError({position: {start: {offset: 1}, end: {offset: 1}}})[0];
+      expect(errorNode.textContent).toBe('B');
+
+      errorNode = ed.highlightError({position: {start: {offset: 2}, end: {offset: 2}}})[0];
       expect(errorNode.textContent).toBe('B');
     });
 
