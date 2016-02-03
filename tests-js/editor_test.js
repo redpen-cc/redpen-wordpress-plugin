@@ -38,7 +38,7 @@ describe('RedPenEditor', function() {
       container: document.documentElement,
       selection: {
         getSel: function() {return selection = jasmine.createSpyObj('selection', ['removeAllRanges', 'addRange'])},
-        getRng: function() {return range = jasmine.createSpyObj('range', ['selectNode', 'setStart', 'setEnd'])}
+        getRng: function() {return range = jasmine.createSpyObj('range', ['setStart', 'setEnd'])}
       }
     };
 
@@ -77,7 +77,7 @@ describe('RedPenEditor', function() {
       expect(errorNodes[2].textContent).toBe('Wo');
     });
 
-    it('showErrorInText() uses Range inside of editor\'s body', function() {
+    it('showErrorInText() selects single node', function() {
       editorContent = '<div><p>Hello <strong>WordPress</strong></p><p>and the World!</p></div>';
 
       var error = {position: {start: {offset: 23, line: 1}, end: {offset: 28, line: 1}}};
@@ -85,7 +85,20 @@ describe('RedPenEditor', function() {
       ed.showErrorInText(error, errorNodes);
 
       expect(errorNodes[0].textContent).toBe('World');
-      expect(range.selectNode).toHaveBeenCalledWith(errorNodes[0]);
+      expect(range.setStart).toHaveBeenCalledWith(errorNodes[0], 0);
+      expect(range.setEnd).toHaveBeenCalledWith(errorNodes[0], 5);
+      expect(selection.removeAllRanges).toHaveBeenCalled();
+      expect(selection.addRange).toHaveBeenCalledWith(range);
+    });
+
+    it('showErrorInText() selects a range of nodes', function() {
+      var error = {position: {start: {offset: 3}, end: {offset: 28}}};
+      var errorNodes = [jasmine.createSpy(), jasmine.createSpy()];
+      errorNodes[1].textContent = 'World';
+      ed.showErrorInText(error, errorNodes);
+
+      expect(range.setStart).toHaveBeenCalledWith(errorNodes[0], 0);
+      expect(range.setEnd).toHaveBeenCalledWith(errorNodes[1], 5);
       expect(selection.removeAllRanges).toHaveBeenCalled();
       expect(selection.addRange).toHaveBeenCalledWith(range);
     });
@@ -98,7 +111,6 @@ describe('RedPenEditor', function() {
       ed.showErrorInText(error, errorNodes);
 
       expect(errorNodes[0].textContent).toBe('Hello');
-      expect(range.selectNode).not.toHaveBeenCalled();
       expect(range.setStart).toHaveBeenCalledWith(errorNodes[0], 2);
       expect(range.setEnd).toHaveBeenCalledWith(errorNodes[0], 2);
       expect(selection.removeAllRanges).toHaveBeenCalled();

@@ -103,17 +103,11 @@ function RedPenVisualEditor(pub, $, editor) {
   };
 
   pub.showErrorInText = function(error, nodes) {
-    // TODO: remove node parameter and calculate offsets, so it will work even if highlighting fails
-    var node = nodes[0];
-    if (error.position.end.offset - error.position.start.offset == 0) {
+    if (error.position.end.offset == error.position.start.offset) {
       pub.setCursorPos(error.position.start.offset);
     }
     else {
-      var selection = editor.selection.getSel();
-      var range = editor.selection.getRng();
-      range.selectNode(node);
-      selection.removeAllRanges();
-      selection.addRange(range);
+      setSelection(nodes[0], 0, nodes[nodes.length-1], nodes[nodes.length-1].textContent.length);
     }
 
     pub.scrollToEditor();
@@ -138,13 +132,17 @@ function RedPenVisualEditor(pub, $, editor) {
   pub.setCursorPos = function(pos) {
     var textNodes = findTextNodes();
     var res = findNode(textNodes, pos);
-    var range = editor.selection.getRng();
+    setSelection(res.node, res.offset, res.node, res.offset);
+  };
+
+  function setSelection(startNode, startOffset, endNode, endOffset) {
     var selection = editor.selection.getSel();
-    range.setStart(res.node, res.offset);
-    range.setEnd(res.node, res.offset);
+    var range = editor.selection.getRng();
+    range.setStart(startNode, startOffset);
+    range.setEnd(endNode, endOffset);
     selection.removeAllRanges();
     selection.addRange(range);
-  };
+  }
 
   function findTextNodes() {
     var textNodes = [];
