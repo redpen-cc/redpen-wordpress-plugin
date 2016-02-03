@@ -53,13 +53,13 @@ describe('RedPenEditor', function() {
 
     it('highlightError() for zero-length errors does not create an empty node', function() {
       editorContent = '<p>Hello World!</p>';
-      var errorNode = ed.highlightError({position: {start: {offset: 0}, end:{offset: 0}}});
+      var errorNode = ed.highlightError({position: {start: {offset: 0}, end:{offset: 0}}})[0];
       expect(errorNode.textContent).toBe('Hello World!');
     });
 
     it('highlightError() wraps the text in a span', function() {
       editorContent = '<p>Hello World!</p>';
-      var errorNode = ed.highlightError({position: {start: {offset: 0}, end: {offset: 5}}, message: 'Error message', index: 5});
+      var errorNode = ed.highlightError({position: {start: {offset: 0}, end: {offset: 5}}, message: 'Error message', index: 5})[0];
       expect(errorNode.className).toBe('redpen-error');
       expect(errorNode.getAttribute('data-mce-bogus')).toBe('1');
       expect(errorNode.getAttribute('title')).toBe('RedPen 5: Error message');
@@ -68,20 +68,24 @@ describe('RedPenEditor', function() {
 
     it('highlightError() when error spans multiple nodes', function() {
       editorContent = '<p><b>Hel</b>lo <i>World</i>!</p>';
-      var errorNode = ed.highlightError({position: {start: {offset: 0}, end: {offset: 5}}});
-      expect(errorNode.className).toBe('redpen-error');
-      expect(errorNode.textContent).toBe('Hel');
+      var errorNodes = ed.highlightError({position: {start: {offset: 0}, end: {offset: 8}}});
+      expect(errorNodes[0].className).toBe('redpen-error');
+      expect(errorNodes[0].textContent).toBe('Hel');
+      expect(errorNodes[1].className).toBe('redpen-error');
+      expect(errorNodes[1].textContent).toBe('lo ');
+      expect(errorNodes[2].className).toBe('redpen-error');
+      expect(errorNodes[2].textContent).toBe('Wo');
     });
 
     it('showErrorInText() uses Range inside of editor\'s body', function() {
       editorContent = '<div><p>Hello <strong>WordPress</strong></p><p>and the World!</p></div>';
 
       var error = {position: {start: {offset: 23, line: 1}, end: {offset: 28, line: 1}}};
-      var errorNode = ed.highlightError(error);
-      ed.showErrorInText(error, errorNode);
+      var errorNodes = ed.highlightError(error);
+      ed.showErrorInText(error, errorNodes);
 
-      expect(errorNode.textContent).toBe('World');
-      expect(range.selectNode).toHaveBeenCalledWith(errorNode);
+      expect(errorNodes[0].textContent).toBe('World');
+      expect(range.selectNode).toHaveBeenCalledWith(errorNodes[0]);
       expect(selection.removeAllRanges).toHaveBeenCalled();
       expect(selection.addRange).toHaveBeenCalledWith(range);
     });
@@ -90,13 +94,13 @@ describe('RedPenEditor', function() {
       editorContent = '<p>Hello</p>';
 
       var error = {position: {start: {offset: 2}, end: {offset: 2}}};
-      var errorNode = ed.highlightError(error);
-      ed.showErrorInText(error, errorNode);
+      var errorNodes = ed.highlightError(error);
+      ed.showErrorInText(error, errorNodes);
 
-      expect(errorNode.textContent).toBe('Hello');
+      expect(errorNodes[0].textContent).toBe('Hello');
       expect(range.selectNode).not.toHaveBeenCalled();
-      expect(range.setStart).toHaveBeenCalledWith(errorNode, 2);
-      expect(range.setEnd).toHaveBeenCalledWith(errorNode, 2);
+      expect(range.setStart).toHaveBeenCalledWith(errorNodes[0], 2);
+      expect(range.setEnd).toHaveBeenCalledWith(errorNodes[0], 2);
       expect(selection.removeAllRanges).toHaveBeenCalled();
       expect(selection.addRange).toHaveBeenCalledWith(range);
     });

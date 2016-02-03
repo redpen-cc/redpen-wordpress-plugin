@@ -85,14 +85,16 @@ function RedPenVisualEditor(pub, $, editor) {
 
     try {
       var textNodes = findTextNodes();
-      var start = findNode(textNodes, error.position.start.offset);
-      var end = findNode(textNodes, error.position.end.offset);
-      if (end.node == start.node && end.offset == start.offset) return start.node;
-      if (end.node != start.node) {
-        wrapError(end.node, 0, end.offset);
-        end.offset = start.node.data.length;
+      var errorNodes = findNodes(textNodes, error.position.start.offset, error.position.end.offset);
+
+      if (errorNodes.length == 1 && errorNodes[0].start == errorNodes[0].end) return [errorNodes[0].node];
+
+      var wrappedNodes = [];
+      for (var i in errorNodes) {
+        var errorNode = errorNodes[i];
+        wrappedNodes.push(wrapError(errorNode.node, errorNode.start, errorNode.end));
       }
-      return wrapError(start.node, start.offset, end.offset);
+      return wrappedNodes;
     }
     catch (e) {
       // do not highlight error if text has been changed already
@@ -100,7 +102,9 @@ function RedPenVisualEditor(pub, $, editor) {
     }
   };
 
-  pub.showErrorInText = function(error, node) {
+  pub.showErrorInText = function(error, nodes) {
+    // TODO: remove node parameter and calculate offsets, so it will work even if highlighting fails
+    var node = nodes[0];
     if (error.position.end.offset - error.position.start.offset == 0) {
       pub.setCursorPos(error.position.start.offset);
     }
@@ -161,5 +165,25 @@ function RedPenVisualEditor(pub, $, editor) {
       else break;
     }
     return {node:node, offset:pos};
+  }
+
+  function findNodes(textNodes, posStart, posEnd) {
+    var nodes = [];
+    for (var i in textNodes) {
+      var node = textNodes[i];
+
+      if (posStart <= node.data.length)
+        nodes.push({node: node, start: 0, end: node.data.length});
+      else if (nodes.length == 0)
+        posStart -= node.data.length;
+
+      if (posEnd > node.data.length) posEnd -= node.data.length;
+      else break;
+    }
+
+    nodes[0].start = posStart;
+    nodes[nodes.length-1].end = posEnd;
+
+    return nodes;
   }
 }
