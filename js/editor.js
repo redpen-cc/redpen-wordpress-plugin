@@ -94,12 +94,12 @@ function RedPenVisualEditor(pub, $, editor) {
 
       if (errorNodes.length == 1 && errorNodes[0].start == errorNodes[0].end) return [errorNodes[0].node];
 
-      var wrappedNodes = [];
+      var wrappedTextNodes = [];
       for (var i in errorNodes) {
         var errorNode = errorNodes[i];
-        wrappedNodes.push(wrapError(errorNode.node, errorNode.start, errorNode.end));
+        wrappedTextNodes.push(wrapError(errorNode.node, errorNode.start, errorNode.end).childNodes[0]);
       }
-      return wrappedNodes;
+      return wrappedTextNodes;
     }
     catch (e) {
       // do not highlight error if text has been changed already
@@ -107,12 +107,12 @@ function RedPenVisualEditor(pub, $, editor) {
     }
   };
 
-  pub.showErrorInText = function(error, nodes) {
+  pub.showErrorInText = function(error, textNodes) {
     if (error.position.end.offset == error.position.start.offset) {
       pub.setCursorPos(error.position.start.offset);
     }
     else {
-      setSelection(nodes[0], 0, nodes[nodes.length-1], nodes[nodes.length-1].textContent.length);
+      setSelection(textNodes[0], 0, textNodes[textNodes.length-1], textNodes[textNodes.length-1].textContent.length);
     }
 
     pub.scrollToEditor();

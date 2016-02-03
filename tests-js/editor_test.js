@@ -59,7 +59,7 @@ describe('RedPenEditor', function() {
 
     it('highlightError() wraps the text in a span', function() {
       editorContent = '<p>Hello World!</p>';
-      var errorNode = ed.highlightError({position: {start: {offset: 1}, end: {offset: 5}}, message: 'Error message', index: 5})[0];
+      var errorNode = ed.highlightError({position: {start: {offset: 1}, end: {offset: 5}}, message: 'Error message', index: 5})[0].parentNode;
       expect(errorNode.className).toBe('redpen-error');
       expect(errorNode.getAttribute('data-mce-bogus')).toBe('1');
       expect(errorNode.getAttribute('title')).toBe('RedPen 5: Error message');
@@ -69,36 +69,36 @@ describe('RedPenEditor', function() {
     it('highlightError() when error spans multiple nodes', function() {
       editorContent = '<p><b>Hel</b>lo <i>World</i>!</p>';
       var errorNodes = ed.highlightError({position: {start: {offset: 0}, end: {offset: 8}}});
-      expect(errorNodes[0].className).toBe('redpen-error');
+      expect(errorNodes[0].parentNode.className).toBe('redpen-error');
       expect(errorNodes[0].textContent).toBe('Hel');
-      expect(errorNodes[1].className).toBe('redpen-error');
+      expect(errorNodes[1].parentNode.className).toBe('redpen-error');
       expect(errorNodes[1].textContent).toBe('lo ');
-      expect(errorNodes[2].className).toBe('redpen-error');
+      expect(errorNodes[2].parentNode.className).toBe('redpen-error');
       expect(errorNodes[2].textContent).toBe('Wo');
     });
 
     it('highlightError() wraps the existing node fully', function() {
       editorContent = '<p><b>Hel</b>lo</p>';
-      var errorNodes = ed.highlightError({position: {start: {offset: 0}, end: {offset: 3}}});
-      expect(errorNodes[0].className).toBe('redpen-error');
-      expect(errorNodes[0].textContent).toBe('Hel');
-      expect(errorNodes[0].parentNode.childNodes.length).toBe(1);
+      var errorNode = ed.highlightError({position: {start: {offset: 0}, end: {offset: 3}}})[0].parentNode;
+      expect(errorNode.className).toBe('redpen-error');
+      expect(errorNode.textContent).toBe('Hel');
+      expect(errorNode.parentNode.childNodes.length).toBe(1);
     });
 
     it('highlightError() splits node and wraps tail', function() {
       editorContent = '<p><b>Hel</b>lo</p>';
-      var errorNodes = ed.highlightError({position: {start: {offset: 1}, end: {offset: 3}}});
-      expect(errorNodes[0].className).toBe('redpen-error');
-      expect(errorNodes[0].textContent).toBe('el');
-      expect(errorNodes[0].parentNode.childNodes.length).toBe(2);
+      var errorNode = ed.highlightError({position: {start: {offset: 1}, end: {offset: 3}}})[0].parentNode;
+      expect(errorNode.className).toBe('redpen-error');
+      expect(errorNode.textContent).toBe('el');
+      expect(errorNode.parentNode.childNodes.length).toBe(2);
     });
 
     it('highlightError() splits node and wraps head', function() {
       editorContent = '<p><b>Hel</b>lo</p>';
-      var errorNodes = ed.highlightError({position: {start: {offset: 0}, end: {offset: 2}}});
-      expect(errorNodes[0].className).toBe('redpen-error');
-      expect(errorNodes[0].textContent).toBe('He');
-      expect(errorNodes[0].parentNode.childNodes.length).toBe(2);
+      var errorNode = ed.highlightError({position: {start: {offset: 0}, end: {offset: 2}}})[0].parentNode;
+      expect(errorNode.className).toBe('redpen-error');
+      expect(errorNode.textContent).toBe('He');
+      expect(errorNode.parentNode.childNodes.length).toBe(2);
     });
 
     it('showErrorInText() selects single node', function() {
