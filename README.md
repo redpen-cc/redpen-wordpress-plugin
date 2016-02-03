@@ -14,7 +14,9 @@ This plugin integrates [RedPen](http://redpen.cc) text validation into the WordP
 * RedPen [validators](http://redpen.cc/docs/latest/index.html#validator) and [symbols](http://redpen.cc/docs/latest/index.html#setting-symbols) can be configured directly in WordPress panel below the editor
 * Configuration is stored for next visit with the same browser
 
-![alt text](screenshot.png "Screenshot")
+### Screenshot
+
+![screenshot](screenshot.png)
 
 ## Prerequisites
 
