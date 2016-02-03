@@ -131,8 +131,8 @@ function RedPenVisualEditor(pub, $, editor) {
 
   pub.setCursorPos = function(pos) {
     var textNodes = findTextNodes();
-    var res = findNode(textNodes, pos);
-    setSelection(res.node, res.offset, res.node, res.offset);
+    var res = findNodes(textNodes, pos, pos)[0];
+    setSelection(res.node, res.start, res.node, res.end);
   };
 
   function setSelection(startNode, startOffset, endNode, endOffset) {
@@ -153,16 +153,6 @@ function RedPenVisualEditor(pub, $, editor) {
     }
     recurse(0, editor.getBody());
     return textNodes;
-  }
-
-  function findNode(textNodes, pos) {
-    var node;
-    for (var i = 0; i < textNodes.length; i++) {
-      node = textNodes[i];
-      if (pos > node.data.length) pos -= node.data.length;
-      else break;
-    }
-    return {node:node, offset:pos};
   }
 
   function findNodes(textNodes, posStart, posEnd) {
