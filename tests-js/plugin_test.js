@@ -240,6 +240,8 @@ describe('RedPenPlugin', function() {
       var editorContent = '<div><p>Hello <strong>WordPress</strong></p><p>and the World!</p></div>';
       editor.getBody = function() {return $(editorContent)[0]};
       editor.onKeyUp = editor.onPaste = jasmine.createSpyObj('onKeyUp', ['add']);
+      editor.onInit = jasmine.createSpyObj('onInit', ['add']);
+      editor.onInit.add.and.callFake(function(handler) {handler()});
 
       redpenPlugin.autoValidate(editor);
       expect(redpenPlugin.validate).toHaveBeenCalledTimes(1);

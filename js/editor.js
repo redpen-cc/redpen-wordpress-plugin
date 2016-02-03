@@ -17,8 +17,9 @@ function RedPenPlainEditor(pub, $, textarea) {
     return textarea.val();
   };
 
-  pub.onKeyUp = function(handler) {
+  pub.onChange = function(handler) {
     textarea.on('keyup', handler);
+    handler();
   };
 
   pub.clearErrors = function() {};
@@ -55,11 +56,12 @@ function RedPenVisualEditor(pub, $, editor) {
     return editor.getBody().textContent.replace(/[\n\u00A0]/g, ' ');
   };
 
-  pub.onKeyUp = function(handler) {
+  pub.onChange = function(handler) {
     editor.onKeyUp.add(handler);
     editor.onPaste.add(function() {
       setTimeout(handler, 500);
     });
+    editor.onInit.add(handler);
   };
 
   pub.clearErrors = function() {

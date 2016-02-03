@@ -51,11 +51,11 @@ function RedPenPlugin(proxyUrl) {
 
           $.each(error.errors, function(j, suberror) {
             suberror.index = ++index;
-            var errorNode = ed.highlightError(suberror);
+            var errorNodes = ed.highlightError(suberror);
 
             var message = $('<li class="redpen-error-message"></li>').text(suberror.message)
               .appendTo(container)
-              .on('click', function() {ed.showErrorInText(suberror, errorNode);});
+              .on('click', function() {ed.showErrorInText(suberror, errorNodes);});
 
             $('<div class="redpen-error-validator"></div>')
               .text(suberror.validator)
@@ -128,8 +128,7 @@ function RedPenPlugin(proxyUrl) {
     }
 
     ed.switchTo(what);
-    ed.onKeyUp(validateOnKeyUp);
-    validateOnKeyUp();
+    ed.onChange(validateOnKeyUp);
 
     $(switchSelector).on('click', function() {
       ed.switchTo(what);
