@@ -110,7 +110,6 @@ function RedPenPlugin(proxyUrl) {
 
   pub.resetConfiguration = function() {
     loadDefaultConfiguration();
-    pub.validate();
   };
 
   pub.autoValidate = function(what, switchSelector) {
