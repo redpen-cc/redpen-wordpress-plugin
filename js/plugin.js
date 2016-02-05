@@ -24,7 +24,7 @@ function RedPenPlugin(proxyUrl) {
 
   var lastXhr;
   $(document).ajaxSend(function(event, jqxhr, settings) {
-    if (settings.url.indexOf(proxyUrl) == 0) {
+    if (settings.url == proxyUrl + 'rest/document/validate/json') {
       if (lastXhr) lastXhr.abort();
       lastXhr = jqxhr;
     }
