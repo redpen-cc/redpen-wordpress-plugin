@@ -82,4 +82,6 @@ HTML;
 add_action('admin_enqueue_scripts', 'redpen_head');
 add_filter('tiny_mce_before_init', 'redpen_start_on_tinymce_init');
 add_action('add_meta_boxes', 'redpen_add_meta_boxes');
+
+include 'settings.php';
 ?>
