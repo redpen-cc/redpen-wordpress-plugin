@@ -17,9 +17,7 @@ function RedPenPlugin(proxyUrl) {
     populateLanguages();
   }
   else {
-    $.get(proxyUrl + 'redpen_base_url', function(redpenServerUrl) {
-      title.html('server is not running on the same machine as WordPress at <strong>' + redpenServerUrl + '</strong>, you can change it in <strong>config.php</strong>');
-    });
+    title.text('Server is not available. Make sure the correct URL is configured in Settings > Writing > RedPen Server');
   }
 
   var lastXhr;

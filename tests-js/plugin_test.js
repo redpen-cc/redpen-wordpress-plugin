@@ -35,12 +35,8 @@ describe('RedPenPlugin', function() {
   describe('creation', function() {
     it('shows an error message if redpen server is not running', function() {
       window.redpen = undefined;
-      $.get = jasmine.createSpy().and.callFake(function(url, callback) {
-        expect(url).toBe(proxyUrl + 'redpen_base_url');
-        callback('http://localhost:8080/');
-      });
       redpenPlugin = new RedPenPlugin(proxyUrl);
-      expect(title.text()).toBe('server is not running on the same machine as WordPress at http://localhost:8080/, you can change it in config.php');
+      expect(title.text()).toBe('Server is not available. Make sure the correct URL is configured in Settings > Writing > RedPen Server');
     });
 
     it('passes baseUrl to redpen API', function() {
