@@ -11,13 +11,6 @@ Written and maintained by Joshua Dick <http://joshdick.net>.
 miniProxy is licensed under the GNU GPL v3 <http://www.gnu.org/licenses/gpl.html>.
 */
 
-/****************************** START CONFIGURATION ******************************/
-
-//To enable CORS (cross-origin resource sharing) for proxied sites, set $forceCORS to true.
-$forceCORS = false;
-
-/****************************** END CONFIGURATION ******************************/
-
 ob_start("ob_gzhandler");
 
 if (!function_exists("curl_init")) die ("This proxy requires PHP's cURL extension. Please install/enable it on your server and try again.");
@@ -171,31 +164,6 @@ foreach ($headerLines as $header) {
     if (!preg_match($header_blacklist_pattern, $header)) {
         set_header($header);
     }
-}
-
-if ($forceCORS) {
-    //This logic is based on code found at: http://stackoverflow.com/a/9866124/278810
-    //CORS headers sent below may conflict with CORS headers from the original response,
-    //so these headers are sent after the original response headers to ensure their values
-    //are the ones that actually end up getting sent to the browser.
-    //Explicit [ $replace = true ] is used for these headers even though this is PHP's default behavior.
-
-    //Allow access from any origin.
-    set_header("Access-Control-Allow-Origin: *", true);
-    set_header("Access-Control-Allow-Credentials: true", true);
-
-    //Handle CORS headers received during OPTIONS requests.
-    if ($_SERVER["REQUEST_METHOD"] == "OPTIONS") {
-        if (isset($_SERVER["HTTP_ACCESS_CONTROL_REQUEST_METHOD"])) {
-            set_header("Access-Control-Allow-Methods: GET, POST, OPTIONS", true);
-        }
-        if (isset($_SERVER["HTTP_ACCESS_CONTROL_REQUEST_HEADERS"])) {
-            set_header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}", true);
-        }
-        //No further action is needed for OPTIONS requests.
-        exit(0);
-    }
-
 }
 
 $contentType = "";
