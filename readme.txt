@@ -51,13 +51,14 @@ Then, define the correct RedPen server URL in **config.php**. By default, local 
 
 ## Frequently Asked Questions ##
 
-None yet.
+None yet
 
 ## Changelog
 
 ### 1.0
 
 * Added in-place highlighting and RedPen configuration
+* Use public RedPen Server installation by default for ease of installation
 
 ### 0.1
 
@@ -65,4 +66,4 @@ None yet.
 
 ## Upgrade Notice
 
-None.
+None
