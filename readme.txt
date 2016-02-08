@@ -1,5 +1,6 @@
 # RedPen WordPress plugin
 Contributors: redpen, takahi-i
+Donate link: https://donate.doctorswithoutborders.org/
 Tags: validation
 Requires at least: 4.0
 Tested up to: 4.4.1
