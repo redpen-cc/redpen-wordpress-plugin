@@ -131,11 +131,6 @@ function makeRequest($url) {
 global $url;
 $url = substr($_SERVER["REQUEST_URI"], strlen($_SERVER["SCRIPT_NAME"]) + 1);
 
-if ($url == 'redpen_base_url') {
-    echo $redpen_base_url;
-    return;
-}
-
 if (empty($url)) {
     die("Bad request");
 } else if (strpos($url, ":/") !== strpos($url, "://")) {
