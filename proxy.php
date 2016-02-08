@@ -31,20 +31,6 @@ function removeKeys(&$assoc, $keys2remove) {
     }
 }
 
-if (!function_exists("getallheaders")) {
-    //Adapted from http://www.php.net/manual/en/function.getallheaders.php#99814
-    function getallheaders() {
-        $result = array();
-        foreach($_SERVER as $key => $value) {
-            if (substr($key, 0, 5) == "HTTP_") {
-                $key = str_replace(" ", "-", ucwords(strtolower(str_replace("_", " ", substr($key, 5)))));
-                $result[$key] = $value;
-            }
-        }
-        return $result;
-    }
-}
-
 define("PROXY_PREFIX", "http" . (isset($_SERVER['HTTPS']) ? "s" : "") . "://" . $_SERVER["SERVER_NAME"] . ($_SERVER["SERVER_PORT"] != 80 ? ":" . $_SERVER["SERVER_PORT"] : "") . $_SERVER["SCRIPT_NAME"] . "/");
 
 //Makes an HTTP request via cURL, using request data that was passed directly to this script.
