@@ -47,7 +47,7 @@ If you are uncomfortable sending your text for validation to an external server,
 To use the plugin, you need to have **RedPen Server** v1.4.4 or newer running on the same machine as WordPress or accessible from it.
 Please refer to [RedPen Server documentation](http://redpen.cc/docs/latest/index.html#server) for more details on how to start it.
 
-Then, define the correct RedPen server URL in **config.php**. By default, local RedPen Server will respond at `http://localhost:8080/`.
+Then, go to WordPress Settings -> Writing and define a new RenPen Server URL. By default, local RedPen Server will respond at `http://localhost:8080/`.
 
 ## Frequently Asked Questions ##
 
