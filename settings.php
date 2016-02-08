@@ -12,6 +12,6 @@ function redpen_settings_section() {
 }
 
 function redpen_setting_field() {
-    echo '<input type="text" name="redpen_base_url" value="' . esc_attr(get_option('redpen_base_url')). '">';
+    echo '<input type="text" class="regular-text" name="redpen_base_url" value="' . esc_attr(get_option('redpen_base_url')). '">';
 }
 ?>
