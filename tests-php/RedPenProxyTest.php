@@ -3,7 +3,7 @@ class RedPenProxyTest extends PHPUnit_Framework_TestCase {
     public function testBaseUrlIsDefinedInConfigPhp() {
         include dirname(__FILE__) . '/../config.php';
         global $redpen_base_url;
-        $this->assertEquals('http://localhost:8080/', $redpen_base_url);
+        $this->assertEquals('https://redpen.herokuapp.com/', $redpen_base_url);
     }
 
     public function testProxyUsesBaseUrl() {
@@ -15,8 +15,8 @@ class RedPenProxyTest extends PHPUnit_Framework_TestCase {
         ob_end_clean();
 
         global $redpen_base_url, $url;
-        $this->assertEquals('http://localhost:8080/', $redpen_base_url);
-        $this->assertEquals('http://localhost:8080/js/redpen.js', $url);
+        $this->assertEquals('https://redpen.herokuapp.com/', $redpen_base_url);
+        $this->assertEquals('https://redpen.herokuapp.com/js/redpen.js', $url);
     }
 }
 ?>
