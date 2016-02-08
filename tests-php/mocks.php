@@ -2,6 +2,7 @@
 $registered_hooks = [];
 $registered_meta_boxes = [];
 $enqueued_resources = [];
+$options = [];
 
 // These functions are normally provided by Wordpress
 
@@ -34,5 +35,15 @@ function wp_enqueue_script($handle, $src, $deps, $ver) {
 function wp_enqueue_style($handle, $src, $deps, $ver) {
     global $enqueued_resources;
     $enqueued_resources[$handle] = $src;
+}
+
+function get_option($option) {
+    global $options;
+    return $options[$option];
+}
+
+function update_option($option, $value) {
+    global $options;
+    $options[$option] = $value;
 }
 ?>

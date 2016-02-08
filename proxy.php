@@ -13,9 +13,6 @@ miniProxy is licensed under the GNU GPL v3 <http://www.gnu.org/licenses/gpl.html
 
 /****************************** START CONFIGURATION ******************************/
 
-require 'config.php';
-global $redpen_base_url;
-
 //To enable CORS (cross-origin resource sharing) for proxied sites, set $forceCORS to true.
 $forceCORS = false;
 
@@ -139,7 +136,6 @@ if (empty($url)) {
     $pos = strpos($url, ":/");
     $url = substr_replace($url, "://", $pos, strlen(":/"));
 }
-$url = $redpen_base_url . $url;
 $scheme = parse_url($url, PHP_URL_SCHEME);
 if (empty($scheme)) {
     //Assume that any supplied URLs starting with // are HTTP URLs.

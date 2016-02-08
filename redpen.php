@@ -8,7 +8,17 @@ Version: 1.0
 */
 $redpen_plugin_ver = '0.2-dev';
 $redpen_plugin_root = plugin_dir_url(__FILE__);
-$redpen_proxy_url = $redpen_plugin_root . 'proxy.php/';
+$redpen_base_url = redpen_base_url();
+$redpen_proxy_url = $redpen_plugin_root . 'proxy.php/' . $redpen_base_url;
+
+function redpen_base_url() {
+	$url = get_option('redpen_base_url');
+	if (!$url) {
+		$url = 'https://redpen.herokuapp.com/';
+		update_option('redpen_base_url', $url);
+	}
+	return $url;
+}
 
 function redpen_head($page) {
 	if (strpos($page, 'post') !== 0) return;
