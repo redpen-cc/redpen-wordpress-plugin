@@ -25,8 +25,11 @@ class RedPenSettingsTest extends PHPUnit_Framework_TestCase {
         redpen_setting_field();
     }
 
-    public function testSlashIsAddedAutomatically() {
-        // TODO
+    public function testUrlIsSanitized() {
+        $this->assertEquals('http://redpen/', redpen_sanitize_url('http://redpen/'));
+        $this->assertEquals('http://redpen/', redpen_sanitize_url('http://redpen'));
+        $this->assertEquals('http://redpen/', redpen_sanitize_url('redpen'));
+        $this->assertEquals('http://localhost:8080/', redpen_sanitize_url('localhost:8080'));
     }
 }
 ?>
