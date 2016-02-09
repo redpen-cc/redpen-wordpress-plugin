@@ -1,7 +1,7 @@
 describe('RedPenPlugin', function() {
   var textarea, editor, redpenPlugin;
   var errorContainer, title, langSelect;
-  var proxyUrl = 'http://wordpress/proxy.php/';
+  var baseUrl = 'http://redpen/';
 
   var redpens = {
     'en': {lang:'en', validators:{}, symbols:{}},
@@ -28,19 +28,19 @@ describe('RedPenPlugin', function() {
 
     spyOn(redpen, 'setBaseUrl');
 
-    redpenPlugin = new RedPenPlugin(proxyUrl);
+    redpenPlugin = new RedPenPlugin(baseUrl);
     redpenPlugin.editor.switchTo(textarea);
   });
 
   describe('creation', function() {
     it('shows an error message if redpen server is not running', function() {
       window.redpen = undefined;
-      redpenPlugin = new RedPenPlugin(proxyUrl);
+      redpenPlugin = new RedPenPlugin(baseUrl);
       expect(title.text()).toBe('Server is not available. Make sure the correct URL is configured in Settings > Writing > RedPen Server');
     });
 
     it('passes baseUrl to redpen API', function() {
-      expect(redpen.setBaseUrl).toHaveBeenCalledWith(proxyUrl)
+      expect(redpen.setBaseUrl).toHaveBeenCalledWith(baseUrl)
     });
 
     it('loads default configuration from server', function() {
@@ -54,7 +54,7 @@ describe('RedPenPlugin', function() {
     it('loads previous configuration from localStorage', function() {
       var redpens = {hello: 'world'};
       localStorage.redpens = JSON.stringify(redpens);
-      redpenPlugin = new RedPenPlugin(proxyUrl);
+      redpenPlugin = new RedPenPlugin(baseUrl);
       expect(redpenPlugin.redpens).toEqual(redpens);
     });
   });
