@@ -3,6 +3,7 @@ $registered_hooks = [];
 $registered_meta_boxes = [];
 $enqueued_resources = [];
 $options = [];
+$registered_settings = [];
 
 // These functions are normally provided by Wordpress
 
@@ -45,5 +46,20 @@ function get_option($option) {
 function update_option($option, $value) {
     global $options;
     $options[$option] = $value;
+}
+
+function esc_attr($value) {
+    return $value;
+}
+
+function add_settings_section() {
+}
+
+function add_settings_field() {
+}
+
+function register_setting($option_group, $option_name, $sanitize_callback) {
+    global $registered_settings;
+    $registered_settings[$option_group] = $option_name;
 }
 ?>
