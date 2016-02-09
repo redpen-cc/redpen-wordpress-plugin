@@ -9,7 +9,6 @@ Version: 1.0
 $redpen_plugin_ver = '1.0';
 $redpen_plugin_root = plugin_dir_url(__FILE__);
 $redpen_base_url = redpen_base_url();
-$redpen_proxy_url = $redpen_plugin_root . 'proxy.php/' . $redpen_base_url;
 
 function redpen_base_url() {
 	$url = get_option('redpen_base_url');
@@ -23,8 +22,8 @@ function redpen_base_url() {
 function redpen_head($page) {
 	if (strpos($page, 'post') !== 0) return;
 
-	global $redpen_plugin_ver, $redpen_plugin_root, $redpen_proxy_url;
-	wp_enqueue_script('redpen-api', $redpen_proxy_url . 'js/redpen.js', false, $redpen_plugin_ver);
+	global $redpen_plugin_ver, $redpen_plugin_root, $redpen_base_url;
+	wp_enqueue_script('redpen-api', $redpen_base_url . 'js/redpen.js', false, $redpen_plugin_ver);
 	wp_enqueue_script('redpen-editor', $redpen_plugin_root . 'js/editor.js', false, $redpen_plugin_ver);
 	wp_enqueue_script('redpen-plugin', $redpen_plugin_root . 'js/plugin.js', false, $redpen_plugin_ver);
 	wp_enqueue_style('redpen-styles', $redpen_plugin_root . 'css/redpen.css', false, $redpen_plugin_ver);
@@ -62,7 +61,7 @@ function redpen_errors_content($post) {
 }
 
 function redpen_config_content($post) {
-	global $redpen_proxy_url;
+	global $redpen_base_url;
 	echo <<< HTML
 	<div class="redpen-config-column">
 		<div class="redpen-config-global">
@@ -85,7 +84,7 @@ function redpen_config_content($post) {
 		</table>
 	</div>
 	<div class="redpen-clear"></div>
-	<script>var redpenPlugin = new RedPenPlugin('$redpen_proxy_url').autoValidate('#content', '.wp-switch-editor.switch-html');</script>
+	<script>var redpenPlugin = new RedPenPlugin('$redpen_base_url').autoValidate('#content', '.wp-switch-editor.switch-html');</script>
 HTML;
 }
 
