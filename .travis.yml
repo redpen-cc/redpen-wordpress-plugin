@@ -1,10 +1,8 @@
 language: php
 
-php:
-  - 5.6
+php: 5.6
 
-before_script:
-  - npm install
+before_script: npm install
+script: npm test
 
-script:
-  - npm test
+deploy: ./publish.sh
