@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 # This script uploads the latest state to WordPress Plugin Subversion Repository
 # https://plugins.svn.wordpress.org/redpen/
 
