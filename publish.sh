@@ -22,6 +22,11 @@ else
   svn update
 fi
 
+if ! svn diff redpen.php | fgrep "+Version: "; then
+  echo "Version haven't changed, not publishing to $SVN_REPO"
+  exit 0
+fi
+
 GIT_REV=`git rev-parse --short HEAD`
 UNTRACKED_IN_SVN=`svn status | grep '^\?' | sed 's/^\?       //'`
 
