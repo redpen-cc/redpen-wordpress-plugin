@@ -1,13 +1,14 @@
 language: php
-sudo: required
-
 php: 5.6
 
+sudo: required
+dist: trusty
+
 before_script:
-  - sudo apt-add-repository --yes ppa:dominik-stadler/subversion-1.8 && sudo apt-get update && sudo apt-get install subversion
   - npm install
 script:
   - npm test
 
 after_success:
+  - svn --version
   - ./publish.sh
