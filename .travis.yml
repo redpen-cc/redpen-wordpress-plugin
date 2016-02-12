@@ -6,6 +6,3 @@ before_script:
   - npm install
 script:
   - npm test
-
-after_success:
-  - ./publish.sh
