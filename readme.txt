@@ -37,7 +37,8 @@ This plugin integrates text validation provided by [RedPen Server](http://redpen
 By default, the plugin will use public RedPen installation at https://redpen.herokuapp.com/ for validation. 
 See below if you want to use your own installation of [RedPen Server](http://redpen.cc/docs/latest/index.html#server). 
 
-* [Download](https://downloads.wordpress.org/plugin/redpen.zip) and upload it on the WordPress Plugin page.
+* The plugin is available in WordPress Plugin Directory, so you can install it directly form there.
+* Or you can [download redpen.zip](https://downloads.wordpress.org/plugin/redpen.zip) and upload it on the WordPress Plugins page.
   Alternatively, extract the zip file to WordPress subdirectory `/wp-content/plugins/`.
 * Activate the plugin in WordPress Admin console -> Plugins -> Installed plugins.
 
