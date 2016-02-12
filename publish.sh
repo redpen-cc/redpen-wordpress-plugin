@@ -1,6 +1,6 @@
 #!/bin/bash -e
 # This script publishes the latest state to WordPress Plugin Subversion Repository
-# Note: this script requires Subversion 1.8 or later
+# Note: this script requires Subversion 1.7 or later
 
 SVN_REPO=https://plugins.svn.wordpress.org/redpen/trunk/
 SVN_USER=redpen
