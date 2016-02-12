@@ -16,6 +16,8 @@ if [ ! -d .svn ]; then
   svn checkout $SVN_REPO svn
   mv svn/.svn .
   rm -fr svn
+else
+  svn update
 fi
 
 GIT_REV=`git rev-parse --short HEAD`
