@@ -2,6 +2,7 @@
 # This script publishes the latest state to WordPress Plugin Subversion Repository
 
 SVN_REPO=https://plugins.svn.wordpress.org/redpen/trunk/
+SVN_USER=redpen
 
 cd `dirname $0`
 
@@ -25,6 +26,6 @@ UNTRACKED_IN_SVN=`svn status | grep '^\?' | sed 's/^\?       //'`
 
 [ ! -z "$UNTRACKED_IN_SVN" ] && svn add "$UNTRACKED_IN_SVN"
 
-svn commit -m "git: $GIT_REV"
+svn commit --username $SVN_USER -m "git: $GIT_REV"
 
 echo "Changes synced to $SVN_REPO"
