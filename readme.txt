@@ -6,7 +6,7 @@ Requires at least: 4.0
 Tested up to: 4.4.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
-Stable tag: 1.1
+Stable tag: trunk
 
 This plugin integrates RedPen text validation into the WordPress editor.
 
