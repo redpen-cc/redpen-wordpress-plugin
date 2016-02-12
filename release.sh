@@ -9,6 +9,7 @@ if [ `git status --porcelain | wc -l` != 0 ]; then
 fi
 
 GIT_REV=`git rev-parse --short HEAD`
+UNTRACKED_IN_SVN=`svn status | grep '^\?' | sed 's/^\?       //'`
 
-svn add *
+[ ! -z "$UNTRACKED_IN_SVN" ] && svn add "$UNTRACKED_IN_SVN"
 svn commit -m "git: $GIT_REV"
