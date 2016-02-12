@@ -28,7 +28,9 @@ This plugin integrates text validation provided by [RedPen Server](http://redpen
 
 ## Screenshots
 
-![screenshot](screenshot.png)
+1. Here's a screenshot of it in action
+
+![screenshot](screenshot-1.png)
 
 ## Installation
 
