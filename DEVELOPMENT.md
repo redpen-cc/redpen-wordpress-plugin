@@ -22,3 +22,13 @@ Install the following plugins:
 * Karma
 
 Run configurations are also provided for running of unit tests.
+
+### Publishing new versions to WordPress Plugin Directory
+
+This plugin is published to [WordPress Plugin Directory](https://wordpress.org/plugins/redpen/), which hosts plugins in [Subversion repository](https://plugins.svn.wordpress.org/redpen/).
+
+[Travis](https://travis-ci.org/redpen-cc/redpen-wordpress-plugin) build is configured to try to publish the code to Subversion on every successful build.
+
+It will do so only if Version tag has changed in *redpen.php* file.
+
+To publish manually, you can use `publish.sh`. 
