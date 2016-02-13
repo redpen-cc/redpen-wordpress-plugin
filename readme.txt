@@ -1,7 +1,7 @@
 # RedPen WordPress plugin
 Contributors: redpen, takahi-i
 Donate link: https://donate.doctorswithoutborders.org/
-Tags: validation
+Tags: validation, proofreading, spelling, english, japanese
 Requires at least: 4.0
 Tested up to: 4.4.1
 License: GPLv3 or later
