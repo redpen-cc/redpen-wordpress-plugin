@@ -32,6 +32,6 @@ UNTRACKED_IN_SVN=`svn status | grep '^\?' | sed 's/^\?       //'`
 
 [ ! -z "$UNTRACKED_IN_SVN" ] && svn add "$UNTRACKED_IN_SVN"
 
-svn commit --username $SVN_USER --password "$SVN_PWD" -m "git: $GIT_REV"
+svn commit --username $SVN_USER --password "$SVN_PWD" --no-auth-cache -m "git: $GIT_REV"
 
 echo "Changes synced to $SVN_REPO"
