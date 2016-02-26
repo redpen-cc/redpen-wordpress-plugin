@@ -36,23 +36,17 @@ function redpen_start_on_tinymce_init($settings) {
 	return $settings;
 }
 
-function redpen_add_meta_boxes() {
+function redpen_add_meta_boxes($post_type, $post) {
 	add_meta_box(
 		'redpen-errors',
 		'<span class="redpen-red">Red</span>Pen <span class="redpen-title"></span>',
-		'redpen_errors_content',
-		array('post', 'page'),
-		'advanced',
-		'high'
+		'redpen_errors_content', null, 'advanced', 'high'
 	);
 
 	add_meta_box(
 		'redpen-config',
 		'<span class="redpen-red">Red</span>Pen configuration',
-		'redpen_config_content',
-		array('post', 'page'),
-		'advanced',
-		'low'
+		'redpen_config_content', null, 'advanced', 'low'
 	);
 }
 
