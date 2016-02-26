@@ -10,5 +10,6 @@ script:
   - npm test
 
 after_success:
+  - git branch
   - svn --version
   - ./publish.sh
