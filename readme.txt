@@ -62,6 +62,14 @@ None yet
 
 ## Changelog
 
+### 1.1.2
+
+* Add support for custom post types
+
+### 1.1.1
+
+* Add support for Multisite installation
+
 ### 1.1
 
 * More secure proxy-less communication with RedPen Server (1.4.5 or newer)

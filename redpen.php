@@ -4,9 +4,9 @@ Plugin Name: RedPen Text Validator
 Plugin URI: http://redpen.cc
 Description: Validates posts with RedPen while editing.
 Author: Anton Keks & Takahiko Ito
-Version: 1.1.1
+Version: 1.1.2
 */
-$redpen_plugin_ver = '1.1';
+$redpen_plugin_ver = '1.1.2';
 $redpen_plugin_root = plugin_dir_url(__FILE__);
 $redpen_base_url = redpen_base_url();
 
