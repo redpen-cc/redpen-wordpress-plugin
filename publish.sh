@@ -7,8 +7,10 @@ SVN_USER=redpen
 
 cd `dirname $0`
 
-GIT_BRANCH=`git rev-parse --abbrev-ref HEAD`
-if [ $GIT_BRANCH != master ]; then
+GIT_BRANCH=$TRAVIS_BRANCH
+[ ! "$GIT_BRANCH" ] && GIT_BRANCH=`git rev-parse --abbrev-ref HEAD`
+
+if [ "$TRAVIS_PULL_REQUEST" == true -o "$GIT_BRANCH" != master ]; then
   echo "Not publishing to svn from branch $GIT_BRANCH"
   exit 1
 fi
