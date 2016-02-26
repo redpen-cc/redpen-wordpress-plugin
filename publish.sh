@@ -7,10 +7,16 @@ SVN_USER=redpen
 
 cd `dirname $0`
 
+GIT_BRANCH=`git rev-parse --abbrev-ref HEAD`
+if [ $GIT_BRANCH != master ]; then
+  echo "Not publishing to svn from branch $GIT_BRANCH"
+  exit 1
+fi
+
 if [ `git status --porcelain | wc -l` != 0 ]; then
   git status
   echo "Please commit all the changes to git first"
-  exit 1
+  exit 2
 fi
 
 if [ ! -d .svn ]; then
@@ -34,4 +40,4 @@ UNTRACKED_IN_SVN=`svn status | grep '^\?' | sed 's/^\?       //'`
 
 svn commit --username $SVN_USER --password "$SVN_PWD" --no-auth-cache -m "git: $GIT_REV"
 
-echo "Changes synced to $SVN_REPO"
+echo "Changes published to $SVN_REPO"
