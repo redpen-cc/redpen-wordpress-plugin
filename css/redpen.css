@@ -51,6 +51,12 @@
   color: #1C6100;
 }
 
+.redpen-validators li:after {
+  content: '';
+  clear: both;
+  display: block;
+}
+
 .redpen-validators li:hover, .redpen-symboltable tbody tr:hover {
   background: #eee;
 }
@@ -62,6 +68,15 @@
 .redpen-validator-properties {
   float: right;
   margin-right: 2em;
+  font-size: 85%;
+  opacity: 0.8;
+}
+
+.redpen-validator-properties li {
+  float: right;
+  margin-left: 2em;
+  margin-top: 3px;
+  margin-bottom: 3px;
 }
 
 .redpen-symboltable {

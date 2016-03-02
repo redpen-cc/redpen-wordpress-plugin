@@ -152,15 +152,17 @@ function RedPenPlugin(proxyUrl) {
         element.append('<i> ' + lang + '</i>');
       });
 
+      var properties = $('<ul class="redpen-validator-properties"></ul>').appendTo(element);
+
       $.each(options.properties, function(key, value) {
-        $('<div class="redpen-validator-properties"></div>').text(key + '=' + value).appendTo(element);
+        $('<li></li>').text(key + '=' + value).appendTo(properties);
       });
 
       if ($.isEmptyObject(options.properties)) {
-        $('<div class="redpen-validator-properties"></div>').text('+').appendTo(element);
+        $('<li></li>').text('+').appendTo(properties);
       }
 
-      element.find('.redpen-validator-properties').on('click', function() {editValidatorProperties(name, options, $(this))});
+      properties.children().on('click', function() {editValidatorProperties(name, options, $(this))});
     });
 
     $.each(config.symbols, function(name, options) {
