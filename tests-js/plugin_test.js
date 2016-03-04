@@ -286,12 +286,12 @@ describe('RedPenPlugin', function() {
 
       redpenPlugin.renderConfiguration({validators: validators});
 
-      var validatorElements = validatorContainer.find('li');
+      var validatorElements = validatorContainer.children('li');
       expect(validatorElements.length).toBe(2);
       expect(validatorElements.eq(0).find('label').text()).toBe('Spelling');
       expect(validatorElements.eq(0).find('i').text().trim()).toBe('en');
       expect(validatorElements.eq(1).find('label').text()).toBe('ImpoliteCursing');
-      expect(validatorElements.eq(1).find('.redpen-validator-properties').text()).toBe('max_impoliteness=0.5');
+      expect(validatorElements.eq(1).find('.redpen-validator-properties li').text()).toBe('max_impoliteness=0.5');
     });
 
     it('requests only enabled validators', function() {
@@ -317,7 +317,7 @@ describe('RedPenPlugin', function() {
 
       window.prompt = jasmine.createSpy().and.returnValue('max_impoliteness=0.2 ');
 
-      validatorContainer.find('.redpen-validator-properties').click();
+      validatorContainer.find('.redpen-validator-properties li').click();
 
       expect(window.prompt).toHaveBeenCalledWith('ImpoliteCursing', 'max_impoliteness=0.5');
       expect(validatorContainer.find('.redpen-validator-properties').text()).toBe('max_impoliteness=0.2');
@@ -333,11 +333,11 @@ describe('RedPenPlugin', function() {
       redpenPlugin.renderConfiguration({validators: validators});
       window.prompt = jasmine.createSpy().and.returnValue('hello=world');
 
-      expect(validatorContainer.find('.redpen-validator-properties').text()).toBe('+');
-      validatorContainer.find('.redpen-validator-properties').click();
+      expect(validatorContainer.find('.redpen-validator-properties li').text()).toBe('+');
+      validatorContainer.find('.redpen-validator-properties li').click();
 
       expect(window.prompt).toHaveBeenCalledWith('ImpoliteCursing', '');
-      expect(validatorContainer.find('.redpen-validator-properties').text()).toBe('hello=world');
+      expect(validatorContainer.find('.redpen-validator-properties li').text()).toBe('hello=world');
       expect(validators['ImpoliteCursing'].properties.hello).toBe('world');
     });
 
