@@ -139,7 +139,7 @@ function RedPenPlugin(proxyUrl) {
     var validatorContainer = $('.redpen-validators').empty();
     var symbolContainer = $('.redpen-symboltable tbody').empty();
 
-    $.each(config.validators, function(name, options) {
+    $.each(config.validators || [], function(name, options) {
       var element = $('<li><label><input type="checkbox" value="' + name + '">' + name + '</label></li>').appendTo(validatorContainer);
 
       var checkbox = element.find(':checkbox').on('change', function() {
@@ -148,13 +148,13 @@ function RedPenPlugin(proxyUrl) {
       });
       checkbox.attr('checked', !options.disabled);
 
-      $.each(options.languages, function(i, lang) {
+      $.each(options.languages || [], function(i, lang) {
         element.append('<i> ' + lang + '</i>');
       });
 
       var properties = $('<ul class="redpen-validator-properties"></ul>').appendTo(element);
 
-      $.each(options.properties, function(key, value) {
+      $.each(options.properties || [], function(key, value) {
         $('<li></li>').text(key + '=' + value).appendTo(properties);
       });
 
@@ -165,7 +165,7 @@ function RedPenPlugin(proxyUrl) {
       properties.children().on('click', function() {editValidatorProperties(name, options, $(this))});
     });
 
-    $.each(config.symbols, function(name, options) {
+    $.each(config.symbols || [], function(name, options) {
       var row = $('<tr></tr>').appendTo(symbolContainer);
       $('<td></td>').text(name).appendTo(row);
       $('<td class="redpen-symbol-value"></td>').text(options.value).appendTo(row);
