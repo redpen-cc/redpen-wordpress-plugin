@@ -62,6 +62,10 @@ None yet
 
 ## Changelog
 
+### 1.1.3
+
+* Fixed js error on first usage of RedPen Plugin
+
 ### 1.1.2
 
 * Add support for custom post types
