@@ -57,6 +57,18 @@ describe('RedPenPlugin', function() {
       redpenPlugin = new RedPenPlugin(baseUrl);
       expect(redpenPlugin.redpens).toEqual(redpens);
     });
+
+    it('call populateLanguages only after getRedPens result is available', function() {
+      localStorage.clear();
+      var getRedPensLoaded;
+      redpen.getRedPens = function(callback) { getRedPensLoaded = callback; };
+      redpenPlugin = new RedPenPlugin(baseUrl);
+      spyOn(redpenPlugin, 'validate');
+
+      getRedPensLoaded({redpens: {'za': {}}});
+      expect(langSelect.find('option').eq(0).text()).toBe('za');
+      expect(redpenPlugin.validate).toHaveBeenCalled();
+    });
   });
 
   describe('validation', function() {

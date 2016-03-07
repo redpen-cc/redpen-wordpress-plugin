@@ -5,16 +5,9 @@ function RedPenPlugin(proxyUrl) {
   var title = $('.redpen-title');
   var manualLanguage;
 
-  if (localStorage.redpens)
-    pub.redpens = JSON.parse(localStorage.redpens);
-
   if (window.redpen) {
     redpen.setBaseUrl(proxyUrl);
-
-    if (!pub.redpens)
-      loadDefaultConfiguration();
-
-    populateLanguages();
+    initRedPens().then(populateLanguages);
   }
   else {
     title.text('Server is not available. Make sure the correct URL is configured in Settings > Writing > RedPen Server');
@@ -72,11 +65,24 @@ function RedPenPlugin(proxyUrl) {
     else redpen.detectLanguage(text, callback);
   }
 
+  function initRedPens() {
+    if (localStorage.redpens) {
+      pub.redpens = JSON.parse(localStorage.redpens);
+      return $.Deferred().resolve(pub.redpens);
+    }
+    else {
+      return loadDefaultConfiguration();
+    }
+  }
+
   function loadDefaultConfiguration() {
+    var deferred = $.Deferred();
     redpen.getRedPens(function (result) {
       pub.redpens = result.redpens;
       onConfigurationChange();
+      deferred.resolve(pub.redpens);
     });
+    return deferred;
   }
 
   function onConfigurationChange() {
